@@ -1,6 +1,5 @@
-package fr.umlv.masterPilote.world;
+package fr.umlv.masterPilote.fr.umlv.masterPilote.main;
 
-import fr.umlv.masterPilote.MasterPilote;
 import fr.umlv.masterPilote.MasterPiloteMotor;
 import fr.umlv.zen3.Application;
 
@@ -12,14 +11,10 @@ public class Main {
         MasterPiloteMotor mPM = new MasterPiloteMotor();
 
         Application.run("Master Pilote Game", mPM.getWIDTH(), mPM.getHEIGHT(), context -> {
-            ;
+
             context.render(graphics -> {
-
                 mPM.launchGame(context);
-                System.out.println(graphics.hashCode());
-
             });
-
         });
 
     }
