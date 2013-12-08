@@ -4,6 +4,7 @@ import fr.umlv.masterPilote.Interface.Bomb;
 import fr.umlv.masterPilote.Interface.SpaceShip;
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObserver;
 import fr.umlv.masterPilote.MasterPilote;
+import fr.umlv.masterPilote.bomb.ClassicBomb;
 import fr.umlv.zen3.KeyboardEvent;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.MathUtils;
@@ -16,6 +17,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private final int y_axis;
     private World world;
     private Body body;
+    private Vec2 heroSpeed = new Vec2(0, -30f);
+    private Vec2 classicBombSpeed = new Vec2(0, -300.0f);
 
     public Hero(World world, int x_axis, int y_axis) {
         this.x_axis = x_axis;
@@ -77,7 +80,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
         bd.angularDamping = 5.0f;
-        bd.linearDamping = 0.1f;
+        bd.linearDamping = 0.10f;
 
 
         bd.position.set(x_axis, y_axis);
@@ -124,6 +127,35 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     @Override
     public void fire() {
+        /**
+         * I try to calculate the tip coordinate
+         * and create a Bomb from that point
+         */
+        Vec2 vec = this.body.getPosition();
+        PolygonShape sha = (PolygonShape)body.getFixtureList().getShape();
+
+        /**
+         * Here the tip is store on third vertices
+         * careful if body construction change
+         * so you must recalculate the tip too
+         */
+        Vec2[] vertices = sha.getVertices();
+
+
+        /**
+         * I get the actual tip coordinate in the world
+         */
+
+        Vec2 worldPoint = body.getWorldPoint(vertices[3]);
+
+
+        ClassicBomb cBomb = new ClassicBomb(this.world,worldPoint.x, worldPoint.y);
+
+        cBomb.create();
+        Vec2 force = body.getWorldVector(classicBombSpeed);
+        Vec2 point = body.getWorldPoint(body.getWorldCenter());
+
+        cBomb.getBody().applyForce(force, point);
 
     }
 
@@ -139,23 +171,34 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     @Override
     public void right() {
+        // this.body.applyTorque(500f);
+
+
+        // this.body.applyAngularImpulse(500);
+
+//TODO ROTATION WITH TORQUES INSTEAD
+        this.body.setTransform(body.getPosition(), this.body.getAngle() - 0.01f);
 
     }
 
     @Override
     public void left() {
-        System.out.println("left");
 
-        this.body.applyTorque(500f);
+        // this.body.applyTorque(500f);
+
+
+        this.body.setTransform(body.getPosition(), this.body.getAngle() + 0.01f);
 
     }
 
     @Override
     public void up() {
-        Vec2 force = body.getWorldVector(new Vec2(0, -150.0f));
+
+
+        Vec2 force = body.getWorldVector(heroSpeed);
         Vec2 point = body.getWorldPoint(body.getWorldCenter());
         this.body.applyForce(force, point);
-//        this.body.applyLinearImpulse(force,point);
+/* this.body.applyLinearImpulse(force,point); */
     }
 
     @Override

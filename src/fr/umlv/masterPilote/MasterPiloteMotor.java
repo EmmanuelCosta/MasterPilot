@@ -57,12 +57,12 @@ public class MasterPiloteMotor implements KeyMotionObservable {
         //        ClassicBomb bombTest = new ClassicBomb(masterPilote.getWorld(), 1, 5);
         //
         //        bombTest.create();
-        ClassicBomb bombTest2 = new ClassicBomb(masterPilote.getWorld(), 1, 30);
+//        ClassicBomb bombTest2 = new ClassicBomb(masterPilote.getWorld(), 1, 30);
+//
+//        bombTest2.create();
+//        bombTest2.getBody().applyForce(new Vec2(50f, -200f), new Vec2(50f, -20f));
 
-        bombTest2.create();
-        bombTest2.getBody().applyForce(new Vec2(50f, -200f), new Vec2(50f, -20f));
-
-        Hero h = new Hero(masterPilote.getWorld(), 20, -20);
+        Hero h = new Hero(masterPilote.getWorld(), 0, 0);
         //
         h.create();
         //
@@ -83,8 +83,8 @@ public class MasterPiloteMotor implements KeyMotionObservable {
             KeyboardEvent keyEvent = context.pollKeyboard();
 
             /**
-             * this for notify the hero that event have been
-             * find
+             * this for notify the hero
+             * that event have been find
              */
             if (keyEvent != null) {
                 this.notifyObserver(keyEvent);
@@ -98,7 +98,7 @@ public class MasterPiloteMotor implements KeyMotionObservable {
                 Body hero = masterPilote.getHero();
 
                 //TODO use this to center view place it in proper place
-//                masterPilote.setCamera(hero.getPosition());
+                masterPilote.setCamera(hero.getPosition());
 
             });
 

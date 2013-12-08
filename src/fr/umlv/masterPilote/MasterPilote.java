@@ -183,4 +183,9 @@ public class MasterPilote {
     public void setCamera(Vec2 position) {
         this.graphic.getViewportTranform().setCenter(position);
     }
+
+    public void updateScreen(){
+//        Graphics2D dispose = (Graphics2D) graphic;
+
+    }
 }
