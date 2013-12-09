@@ -15,7 +15,7 @@ import java.awt.*;
  * <p>
  * Created by emmanuel on 06/12/13.
  */
-public class MasterPilote2D extends DebugDraw {
+public class MasterPilote2DDebug extends DebugDraw {
 
     private final static IntArray xIntsPool = new IntArray();
     private final static IntArray yIntsPool = new IntArray();
@@ -30,7 +30,7 @@ public class MasterPilote2D extends DebugDraw {
     private final Vec2 temp2 = new Vec2();
     private Graphics graphic;
 
-    public MasterPilote2D(Graphics graphic) {
+    public MasterPilote2DDebug(Graphics graphic) {
         super(new OBBViewportTransform());
         viewportTransform.setYFlip(true);
         this.graphic = graphic;
@@ -108,7 +108,7 @@ public class MasterPilote2D extends DebugDraw {
         }
 
         Color c = cpool.getColor(color.x, color.y, color.z, .4f);
-        g.setColor(c);
+        g.setColor(Color.RED);
 
 
         g.fillPolygon(xInts, yInts, vertexCount);

@@ -1,6 +1,6 @@
 package fr.umlv.masterPilote;
 
-import fr.umlv.masterPilote.Graphic.MasterPilote2D;
+import fr.umlv.masterPilote.Graphic.MasterPilote2DDebug;
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.collision.shapes.ChainShape;
 import org.jbox2d.collision.shapes.CircleShape;
@@ -27,6 +27,7 @@ public class MasterPilote {
     public static int HERO = 0x0001;
     public static int ENEMY = 0x0002;
     public static int PLANET = 0x0004;
+    private final World world;
     private final Color3f color = new Color3f();
     private final Transform xf = new Transform();
     private final Vec2 center = new Vec2();
@@ -34,13 +35,12 @@ public class MasterPilote {
     private final Vec2 v1 = new Vec2();
     private final Vec2 v2 = new Vec2();
     private final Vec2Array tlvertices = new Vec2Array();
-    private World world;
     private DebugDraw graphic;
     private Body Hero;
 
     public MasterPilote(Graphics graphic) {
         this.world = new World(new Vec2(0, 0f));
-        this.graphic = new MasterPilote2D(graphic);
+        this.graphic = new MasterPilote2DDebug(graphic);
 
 
     }
@@ -52,18 +52,19 @@ public class MasterPilote {
     /**
      * call this to initiate
      * the plate
+     *
      * @param WIDTH
      * @param HEIGHT
      */
     public void initPlateForm(int WIDTH, int HEIGHT) {
-        MasterPilote2D mp2D = (MasterPilote2D) graphic;
+        MasterPilote2DDebug mp2D = (MasterPilote2DDebug) graphic;
         Graphics2D graphics = (Graphics2D) mp2D.getGraphics();
         graphics.setColor(Color.BLACK);
         graphics.fill(new Rectangle(0, 0, WIDTH, HEIGHT));
     }
 
     public void repaint(int WIDTH, int HEIGHT) {
-        MasterPilote2D mp2D = (MasterPilote2D) graphic;
+        MasterPilote2DDebug mp2D = (MasterPilote2DDebug) graphic;
         Graphics2D graphics = (Graphics2D) mp2D.getGraphics();
         graphics.setColor(Color.BLACK);
         graphics.fill(new Rectangle(0, 0, WIDTH, HEIGHT));
@@ -103,6 +104,7 @@ public class MasterPilote {
     /**
      * this specify how to draw every type of shape
      * in the World
+     *
      * @param fixture
      * @param xf
      * @param color
@@ -166,6 +168,7 @@ public class MasterPilote {
     /**
      * This will set the (0,0) to the
      * specify param
+     *
      * @param i
      * @param j
      */
@@ -174,17 +177,17 @@ public class MasterPilote {
 
     }
 
-
     /**
      * This method resize camera to
      * the position specify
+     *
      * @param position
      */
     public void setCamera(Vec2 position) {
         this.graphic.getViewportTranform().setCenter(position);
     }
 
-    public void updateScreen(){
+    public void updateScreen() {
 //        Graphics2D dispose = (Graphics2D) graphic;
 
     }

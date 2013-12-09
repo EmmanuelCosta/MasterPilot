@@ -2,33 +2,33 @@ package fr.umlv.masterPilote;
 
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObservable;
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObserver;
-import fr.umlv.masterPilote.bomb.ClassicBomb;
+import fr.umlv.masterPilote.fr.umlv.masterPilote.star.Star;
 import fr.umlv.masterPilote.hero.Hero;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by emmanuel on 06/12/13.
  */
-public class MasterPiloteMotor implements KeyMotionObservable {
+public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
     private final int WIDTH = 600;
     private final int HEIGHT = 600;
     //OBSERVER LIST
     private final List<KeyMotionObserver> observerList = new ArrayList<>();
-
-
     //TODO MOVE IT IN MASTERPILOTE WORLD
-    float timeStep = 1.0f / 1f;
+    float timeStep = 1.0f / 6f;
     int velocityIterations = 6;
     int positionIterations = 3;
 
     public void launchGame(ApplicationContext context) {
+
         context.render(graphics -> {
             MasterPilote masterPilote = initPlateform(graphics);
             populatedWorld(masterPilote, context);
@@ -54,9 +54,9 @@ public class MasterPiloteMotor implements KeyMotionObservable {
     private void populatedWorld(MasterPilote masterPilote, ApplicationContext context) {
         //TODO MANAGE WITH FILE CONFIG
 
-        //        ClassicBomb bombTest = new ClassicBomb(masterPilote.getWorld(), 1, 5);
-        //
-        //        bombTest.create();
+        Star star = new Star(masterPilote.getWorld(), 100, 250);
+
+        star.create();
 //        ClassicBomb bombTest2 = new ClassicBomb(masterPilote.getWorld(), 1, 30);
 //
 //        bombTest2.create();
@@ -78,8 +78,21 @@ public class MasterPiloteMotor implements KeyMotionObservable {
     }
 
     private void run(MasterPilote masterPilote, ApplicationContext context) {
+        long beforeTime, afterTime, updateTime, timeDiff, sleepTime, timeSpent, startTime;
+        float timeInSecs;
 
+        beforeTime = startTime = updateTime = System.nanoTime();
+        sleepTime = 0;
         for (; ; ) {
+
+            masterPilote.getWorld().step(timeStep, velocityIterations, positionIterations);
+            timeSpent = beforeTime - updateTime;
+
+
+                updateTime = System.nanoTime();
+
+
+
             KeyboardEvent keyEvent = context.pollKeyboard();
 
             /**
@@ -91,9 +104,11 @@ public class MasterPiloteMotor implements KeyMotionObservable {
             }
 
 
-            masterPilote.getWorld()
-                    .step(timeStep, velocityIterations, positionIterations);
+
+
+
             context.render(graphics -> {
+                masterPilote.repaint(WIDTH, HEIGHT);
                 masterPilote.draw();
                 Body hero = masterPilote.getHero();
 
@@ -102,20 +117,24 @@ public class MasterPiloteMotor implements KeyMotionObservable {
 
             });
 
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+            afterTime = System.nanoTime();
+
+            timeDiff = afterTime - beforeTime;
+            sleepTime = (1000000000 / 60 - timeDiff) / 1000000;
+            if (sleepTime > 0) {
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException ex) {
+                }
             }
-            context.render(graphics -> {
-                masterPilote.repaint(WIDTH, HEIGHT);
 
-            });
-//
+                beforeTime = System.nanoTime();
 
 
+            }
         }
-    }
+
 
     public int getHEIGHT() {
         return HEIGHT;
@@ -140,5 +159,20 @@ public class MasterPiloteMotor implements KeyMotionObservable {
     @Override
     public void delObserver(KeyMotionObserver observer) {
         observerList.remove(observer);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }

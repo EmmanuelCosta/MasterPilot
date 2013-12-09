@@ -18,7 +18,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private World world;
     private Body body;
     private Vec2 heroSpeed = new Vec2(0, -30f);
-    private Vec2 classicBombSpeed = new Vec2(0, -300.0f);
+    private Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
 
     public Hero(World world, int x_axis, int y_axis) {
         this.x_axis = x_axis;
@@ -28,16 +28,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     public void create() {
 
-//        Transform xf1 = new Transform();
-//        xf1.q.set(0.3524f * MathUtils.PI);
-//        Rot.mulToOutUnsafe(xf1.q, new Vec2(1.0f, 0.0f), xf1.p);
-//
-//        System.out.println(xf1.p + " " + xf1.q);
         Vec2 vertices[] = new Vec2[4];
-//        vertices[0] = Transform.mul(xf1, new Vec2(15.0f, 0.0f));
-//        vertices[1] = Transform.mul(xf1, new Vec2(0.0f, -40.0f));
-//        vertices[2] = Transform.mul(xf1, new Vec2(-15f, 0.0f));
-//        System.out.println(vertices[0] + " " + vertices[1] + " " + vertices[2]);
+
         vertices[0] = new Vec2(15.0f, 0.0f);
         vertices[1] = new Vec2(0.0f, -40.0f);
         vertices[2] = new Vec2(-15.0f, 0.0f);
@@ -54,28 +46,9 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         sd1.filter.categoryBits = MasterPilote.HERO;
         sd1.filter.maskBits = MasterPilote.ENEMY | MasterPilote.PLANET;
         sd1.density = 0.0f;
-        sd1.friction = 0.1f;
-        sd1.restitution = 0.5f;
+        sd1.friction = 0.00001f;
+        sd1.restitution = 0.000005f;
 
-//		Transform xf2 = new Transform();
-//		xf2.q.set(-0.3524f * MathUtils.PI);
-//		Rot.mulToOut(xf2.q, new Vec2(-1.0f, 0.0f), xf2.p);
-
-//		vertices[0] = Transform.mul(xf2, new Vec2(-1.0f, 0.0f));
-//		vertices[1] = Transform.mul(xf2, new Vec2(10.0f, 0.0f));
-//		vertices[2] = Transform.mul(xf2, new Vec2(0.0f, 0.5f));
-
-//        vertices[0] =  new Vec2(10.0f, 0.0f);
-//        vertices[1] =  new Vec2(0.0f, 0.0f);
-//        vertices[2] = new Vec2(0.0f, 10f);
-//		System.out.println("vertces = " + vertices[0] + "  " + vertices[1]
-//				+ " " + vertices[2]);
-//		PolygonShape poly2 = new PolygonShape();
-//		poly2.set(vertices, 3);
-
-//		FixtureDef sd2 = new FixtureDef();
-//		sd2.shape = poly2;
-//		sd2.density = 2.0f;
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
@@ -88,6 +61,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         bd.allowSleep = false;
         Body body = this.world.createBody(bd);
         body.createFixture(sd1);
+
         this.body = body;
 //		body.createFixture(sd2);
 
@@ -132,7 +106,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          * and create a Bomb from that point
          */
         Vec2 vec = this.body.getPosition();
-        PolygonShape sha = (PolygonShape)body.getFixtureList().getShape();
+        PolygonShape sha = (PolygonShape) body.getFixtureList().getShape();
 
         /**
          * Here the tip is store on third vertices
@@ -149,7 +123,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         Vec2 worldPoint = body.getWorldPoint(vertices[3]);
 
 
-        ClassicBomb cBomb = new ClassicBomb(this.world,worldPoint.x, worldPoint.y);
+        ClassicBomb cBomb = new ClassicBomb(this.world, worldPoint.x, worldPoint.y);
 
         cBomb.create();
         Vec2 force = body.getWorldVector(classicBombSpeed);
@@ -177,28 +151,27 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         // this.body.applyAngularImpulse(500);
 
 //TODO ROTATION WITH TORQUES INSTEAD
-        this.body.setTransform(body.getPosition(), this.body.getAngle() - 0.01f);
+        this.body.setTransform(body.getPosition(), this.body.getAngle() - 0.05f);
 
     }
 
     @Override
     public void left() {
 
-        // this.body.applyTorque(500f);
+//        this.body.applyTorque(-50000f);
 
 
-        this.body.setTransform(body.getPosition(), this.body.getAngle() + 0.01f);
+        this.body.setTransform(body.getPosition(), this.body.getAngle() + 0.05f);
 
     }
 
     @Override
     public void up() {
-
-
+//TODO MANAGE ACCELERATION
         Vec2 force = body.getWorldVector(heroSpeed);
         Vec2 point = body.getWorldPoint(body.getWorldCenter());
         this.body.applyForce(force, point);
-/* this.body.applyLinearImpulse(force,point); */
+//this.body.applyLinearImpulse(force,point);
     }
 
     @Override
