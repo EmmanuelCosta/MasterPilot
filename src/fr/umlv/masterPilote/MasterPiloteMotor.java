@@ -59,8 +59,6 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
         Star star = new Star(masterPilote.getWorld(), 100, 250);
 
         star.create();
-
-
 //        ClassicBomb bombTest2 = new ClassicBomb(masterPilote.getWorld(), 1, 30);
 //
 //        bombTest2.create();
@@ -72,11 +70,13 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
         //
         //
         masterPilote.setHero(h.getBody());
-//
         this.addObserver(h);
-
-
-        //        h.getBody().applyForce(new Vec2(50.f,60.f),new Vec2(50.f,60.f));
+        
+        TIE tie = new TIE(masterPilote.getWorld(), 50, 50, h.getX(), h.getY());
+        tie.create();
+        for(int i = 0; i < Integer.MAX_VALUE * Integer.MAX_VALUE; i++);
+        tie.fire();
+         //        h.getBody().applyForce(new Vec2(50.f,60.f),new Vec2(50.f,60.f));
 
         //        bombTest.applyForce();
     }

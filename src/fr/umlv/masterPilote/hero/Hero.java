@@ -196,4 +196,12 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     public void down() {
         throw new UnsupportedOperationException();
     }
+    
+    public int getX() {
+        return this.x_axis;
+    }
+    
+    public int getY() {
+        return this.y_axis;
+    }
 }
