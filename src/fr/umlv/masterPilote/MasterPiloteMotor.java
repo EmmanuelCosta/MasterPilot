@@ -2,10 +2,12 @@ package fr.umlv.masterPilote;
 
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObservable;
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObserver;
+import fr.umlv.masterPilote.enemy.TIE;
 import fr.umlv.masterPilote.fr.umlv.masterPilote.star.Star;
 import fr.umlv.masterPilote.hero.Hero;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
+
 import org.jbox2d.dynamics.Body;
 
 import java.awt.*;
@@ -57,7 +59,13 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
         Star star = new Star(masterPilote.getWorld(), 100, 250);
 
         star.create();
+<<<<<<< HEAD
 
+=======
+        
+       TIE tie = new TIE(masterPilote.getWorld(), 300, 250);
+       tie.create();
+>>>>>>> 521cf2d0833d074aaa1002f4b5f46dbed38fb517
 //        ClassicBomb bombTest2 = new ClassicBomb(masterPilote.getWorld(), 1, 30);
 //
 //        bombTest2.create();
