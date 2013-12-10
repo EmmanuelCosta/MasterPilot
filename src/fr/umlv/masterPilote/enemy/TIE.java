@@ -7,8 +7,10 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
+import fr.umlv.masterPilote.Interface.Bomb;
+import fr.umlv.masterPilote.Interface.SpaceShip;
 
-public class TIE {
+public class TIE implements SpaceShip{
  
     private World world;
     private int x_axis; // point x où apparait le TIE
@@ -54,5 +56,47 @@ public class TIE {
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
         this.body = body;
+    }
+
+    @Override
+    public void right() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void left() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void up() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void down() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void fire() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void fireBomb(Bomb bomb) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void shield() {
+        // TODO Auto-generated method stub
+        
     }
 }
