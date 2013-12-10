@@ -31,8 +31,8 @@ public class ClassicBomb {
 		this.x_axis = x_axis;
 		this.y_axis = y_axis;
 
-        this.category = MasterPilote.ENEMY;
-        this.maskBit = MasterPilote.HERO | MasterPilote.PLANET;
+        this.category = MasterPilote.ENEMY ;
+        this.maskBit = MasterPilote.HERO | MasterPilote.PLANET | MasterPilote.ENEMY;
 	}
 
     public ClassicBomb(World world, float x_axis, float y_axis,int category, int maskBit) {
@@ -92,4 +92,11 @@ public class ClassicBomb {
 		return body;
 	}
 
+	public float getX() {
+	    return this.x_axis;
+	}
+	
+	public float getY() {
+	    return this.y_axis;
+	}
 }

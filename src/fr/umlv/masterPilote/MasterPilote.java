@@ -27,6 +27,9 @@ public class MasterPilote {
     public static int HERO = 0x0001;
     public static int ENEMY = 0x0002;
     public static int PLANET = 0x0004;
+    public static int SHOOT = 0x0008;
+    public static int BOMB = 0x00016;
+    
     private final World world;
     private final Color3f color = new Color3f();
     private final Transform xf = new Transform();
