@@ -9,6 +9,8 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
+import java.awt.*;
+
 /**
  * classic bomb are normal bomb
  * by default is hero friendly but
@@ -21,6 +23,7 @@ public class ClassicBomb {
 	private final int radius = 2;
     private final int maskBit;
     private final int category;
+    private final Color color;
     private World world;
 	private float x_axis;
 	private float y_axis;
@@ -33,15 +36,20 @@ public class ClassicBomb {
 
         this.category = MasterPilote.ENEMY;
         this.maskBit = MasterPilote.HERO | MasterPilote.PLANET;
+
+            this.color = Color.WHITE;
+
 	}
 
-    public ClassicBomb(World world, float x_axis, float y_axis,int category, int maskBit) {
+    public ClassicBomb(World world, float x_axis, float y_axis,int category, int maskBit,Color color) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
 
         this.category = category;
         this.maskBit=maskBit;
+
+        this.color = color;
     }
 
 	public void create() {
@@ -56,6 +64,7 @@ public class ClassicBomb {
 
 		bd.position.set(x_axis, y_axis);
 		bd.type = BodyType.DYNAMIC;
+        bd.userData=this;
 
 		// Create a fixture for ball
 		FixtureDef fd = new FixtureDef();
@@ -69,7 +78,7 @@ public class ClassicBomb {
 
 		fd.filter.maskBits = this.maskBit;
 
-		fd.userData = this;
+		fd.userData = color;
 
 		// body
 		Body body = this.world.createBody(bd);

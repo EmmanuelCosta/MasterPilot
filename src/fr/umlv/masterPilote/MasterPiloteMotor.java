@@ -57,6 +57,7 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
         Star star = new Star(masterPilote.getWorld(), 100, 250);
 
         star.create();
+
 //        ClassicBomb bombTest2 = new ClassicBomb(masterPilote.getWorld(), 1, 30);
 //
 //        bombTest2.create();
@@ -68,7 +69,7 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
         //
         //
         masterPilote.setHero(h.getBody());
-
+//
         this.addObserver(h);
 
 
@@ -113,7 +114,7 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
                 Body hero = masterPilote.getHero();
 
                 //TODO use this to center view place it in proper place
-                masterPilote.setCamera(hero.getPosition());
+               masterPilote.setCamera(hero.getPosition());
 
             });
 

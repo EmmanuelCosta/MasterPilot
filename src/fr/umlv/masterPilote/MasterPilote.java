@@ -1,7 +1,6 @@
 package fr.umlv.masterPilote;
 
-import fr.umlv.masterPilote.Graphic.MasterPilote2DDebug;
-import org.jbox2d.callbacks.DebugDraw;
+import fr.umlv.masterPilote.Graphic.MasterPilote2D;
 import org.jbox2d.collision.shapes.ChainShape;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
@@ -23,24 +22,39 @@ import java.util.Objects;
  */
 public class MasterPilote {
 
-
+    /**
+     * This is category of MasterPilote world
+     */
     public static int HERO = 0x0001;
     public static int ENEMY = 0x0002;
     public static int PLANET = 0x0004;
+    /**
+     * this is my world
+     */
     private final World world;
     private final Color3f color = new Color3f();
+    /**
+     * this help to do translation and rotation
+     */
     private final Transform xf = new Transform();
     private final Vec2 center = new Vec2();
     private final Vec2 axis = new Vec2();
     private final Vec2 v1 = new Vec2();
     private final Vec2 v2 = new Vec2();
     private final Vec2Array tlvertices = new Vec2Array();
-    private DebugDraw graphic;
+    /**
+     * use this to render purpose
+     */
+    private MasterPilote2D graphic;
+    /**
+     * keep reference of main character of the game
+     */
     private Body Hero;
 
     public MasterPilote(Graphics graphic) {
         this.world = new World(new Vec2(0, 0f));
-        this.graphic = new MasterPilote2DDebug(graphic);
+//        this.graphic = new MasterPilote2DDebug(graphic);
+        this.graphic = new MasterPilote2D(graphic);
 
 
     }
@@ -57,14 +71,22 @@ public class MasterPilote {
      * @param HEIGHT
      */
     public void initPlateForm(int WIDTH, int HEIGHT) {
-        MasterPilote2DDebug mp2D = (MasterPilote2DDebug) graphic;
+//        MasterPilote2DDebug mp2D = (MasterPilote2DDebug) graphic;
+        MasterPilote2D mp2D = graphic;
         Graphics2D graphics = (Graphics2D) mp2D.getGraphics();
         graphics.setColor(Color.BLACK);
         graphics.fill(new Rectangle(0, 0, WIDTH, HEIGHT));
     }
 
+    /**
+     * reset the panel
+     *
+     * @param WIDTH
+     * @param HEIGHT
+     */
     public void repaint(int WIDTH, int HEIGHT) {
-        MasterPilote2DDebug mp2D = (MasterPilote2DDebug) graphic;
+//        MasterPilote2DDebug mp2D = (MasterPilote2DDebug) graphic;
+        MasterPilote2D mp2D = graphic;
         Graphics2D graphics = (Graphics2D) mp2D.getGraphics();
         graphics.setColor(Color.BLACK);
         graphics.fill(new Rectangle(0, 0, WIDTH, HEIGHT));
@@ -85,8 +107,8 @@ public class MasterPilote {
     }
 
     /**
-     * call this to draw every body
-     * in the World
+     * this iterate on every body in the world
+     * and call the {@code drawShape}
      */
     public void draw() {
         int i = 0;
@@ -94,32 +116,31 @@ public class MasterPilote {
         for (Body b = this.world.getBodyList(); b != null; b = b.getNext()) {
             xf.set(b.getTransform());
             for (Fixture f = b.getFixtureList(); f != null; f = f.getNext()) {
-                // TODO SET TYPE
-                color.set(0.5f, 0.5f, 0.3f);
-                drawShape(f, xf, color);
+
+                drawShape(f, xf);
             }
         }
     }
 
     /**
-     * this specify how to draw every type of shape
-     * in the World
+     * this call the {@code MasterPilote2D }
+     * to draw fixture of the World
+     * in the graphic panel
      *
-     * @param fixture
-     * @param xf
-     * @param color
+     * @param fixture : fixture of the body to draw
+     * @param xf      : necessary for translation purpose
      */
-    private void drawShape(Fixture fixture, Transform xf, Color3f color) {
+    private void drawShape(Fixture fixture, Transform xf) {
+
+        Color color = (Color) fixture.getUserData();
 
         switch (fixture.getType()) {
             case CIRCLE: {
                 CircleShape circle = (CircleShape) fixture.getShape();
-
-                // Vec2 center = Mul(xf, circle.m_p);
                 Transform.mulToOutUnsafe(xf, circle.m_p, center);
                 float radius = circle.m_radius;
                 xf.q.getXAxis(axis);
-                graphic.drawSolidCircle(center, radius, axis, color);
+                graphic.drawFilledCircle(center, radius, axis, color);
             }
             break;
 
@@ -130,11 +151,10 @@ public class MasterPilote {
                 Vec2[] vertices = tlvertices.get(Settings.maxPolygonVertices);
 
                 for (int i = 0; i < vertexCount; ++i) {
-                    // vertices[i] = Mul(xf, poly.m_vertices[i]);
                     Transform.mulToOutUnsafe(xf, poly.m_vertices[i], vertices[i]);
                 }
 
-                graphic.drawSolidPolygon(vertices, vertexCount, color);
+                graphic.drawFilledPolygon(vertices, vertexCount, color);
             }
             break;
             case EDGE: {
