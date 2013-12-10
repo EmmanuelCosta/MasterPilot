@@ -111,7 +111,7 @@ public class MasterPilote {
      * and call the {@code drawShape}
      */
     public void draw() {
-        int i = 0;
+
 
         for (Body b = this.world.getBodyList(); b != null; b = b.getNext()) {
             xf.set(b.getTransform());
@@ -132,11 +132,16 @@ public class MasterPilote {
      */
     private void drawShape(Fixture fixture, Transform xf) {
 
+        /**
+         * retreive body color
+         *
+         */
         Color color = (Color) fixture.getUserData();
 
         switch (fixture.getType()) {
             case CIRCLE: {
                 CircleShape circle = (CircleShape) fixture.getShape();
+
                 Transform.mulToOutUnsafe(xf, circle.m_p, center);
                 float radius = circle.m_radius;
                 xf.q.getXAxis(axis);

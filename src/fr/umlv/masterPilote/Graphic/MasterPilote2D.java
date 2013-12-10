@@ -115,7 +115,6 @@ public class MasterPilote2D {
             xInts[i] = (int) temp.x;
             yInts[i] = (int) temp.y;
 
-//			 System.out.println("====>  "+temp);
         }
 
 
@@ -149,6 +148,7 @@ public class MasterPilote2D {
      */
     public void drawPolygon(Vec2[] vertices, int vertexCount, Color color) {
         if (vertexCount == 1) {
+            System.out.println(vertices[0]);
             drawSegment(vertices[0], vertices[0], color);
             return;
         }

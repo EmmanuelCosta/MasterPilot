@@ -5,6 +5,7 @@ import fr.umlv.masterPilote.Interface.SpaceShip;
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObserver;
 import fr.umlv.masterPilote.MasterPilote;
 import fr.umlv.masterPilote.bomb.ClassicBomb;
+import fr.umlv.masterPilote.bomb.RayBomb;
 import fr.umlv.zen3.KeyboardEvent;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.MathUtils;
@@ -71,7 +72,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
 
         bd.position.set(x_axis, y_axis);
-        bd.angle = MathUtils.PI;
+        bd.angle = 0;
         bd.allowSleep = false;
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
@@ -135,15 +136,16 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
 
         Vec2 worldPoint = body.getWorldPoint(vertices[3]);
-
+        Vec2 force = body.getWorldVector(classicBombSpeed);
+        Vec2 point = body.getWorldPoint(body.getWorldCenter());
+      ;
         /**
          * create the shoot
          */
         ClassicBomb cBomb = new ClassicBomb(this.world, worldPoint.x, worldPoint.y);
 
+
         cBomb.create();
-        Vec2 force = body.getWorldVector(classicBombSpeed);
-        Vec2 point = body.getWorldPoint(body.getWorldCenter());
 
         cBomb.getBody().applyForce(force, point);
 
