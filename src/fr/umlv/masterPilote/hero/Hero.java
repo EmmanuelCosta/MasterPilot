@@ -11,10 +11,13 @@ import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 
+import java.awt.*;
+
 public class Hero implements KeyMotionObserver, SpaceShip {
 
     private final int x_axis;
     private final int y_axis;
+    private final Color color;
     private World world;
     private Body body;
     private Vec2 heroSpeed = new Vec2(0, -30f);
@@ -24,6 +27,14 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.world = world;
+        this.color = Color.lightGray;
+    }
+
+    public Hero(World world, int x_axis, int y_axis,Color color) {
+        this.x_axis = x_axis;
+        this.y_axis = y_axis;
+        this.world = world;
+        this.color = color;
     }
 
     public void create() {
@@ -36,18 +47,19 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         vertices[3] = new Vec2(0.0f, 20f);
 
 
-        System.out.println(vertices[0] + " " + vertices[1] + " " + vertices[2]);
 
         PolygonShape poly1 = new PolygonShape();
         poly1.set(vertices, 4);
 
-        FixtureDef sd1 = new FixtureDef();
-        sd1.shape = poly1;
-        sd1.filter.categoryBits = MasterPilote.HERO;
-        sd1.filter.maskBits = MasterPilote.ENEMY | MasterPilote.PLANET;
-        sd1.density = 0.0f;
-        sd1.friction = 0.00001f;
-        sd1.restitution = 0.000005f;
+        FixtureDef fd = new FixtureDef();
+        fd.shape = poly1;
+        fd.filter.categoryBits = MasterPilote.HERO;
+        fd.filter.maskBits = MasterPilote.ENEMY | MasterPilote.PLANET;
+        fd.density = 0.0f;
+        fd.friction = 0.00001f;
+        fd.restitution = 0.000005f;
+
+        fd.userData = color;
 
 
         BodyDef bd = new BodyDef();
@@ -55,12 +67,14 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         bd.angularDamping = 5.0f;
         bd.linearDamping = 0.10f;
 
+        bd.userData = this;
+
 
         bd.position.set(x_axis, y_axis);
         bd.angle = MathUtils.PI;
         bd.allowSleep = false;
         Body body = this.world.createBody(bd);
-        body.createFixture(sd1);
+        body.createFixture(fd);
 
         this.body = body;
 //		body.createFixture(sd2);
@@ -105,7 +119,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          * I try to calculate the tip coordinate
          * and create a Bomb from that point
          */
-        Vec2 vec = this.body.getPosition();
+
         PolygonShape sha = (PolygonShape) body.getFixtureList().getShape();
 
         /**
@@ -122,7 +136,9 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
         Vec2 worldPoint = body.getWorldPoint(vertices[3]);
 
-
+        /**
+         * create the shoot
+         */
         ClassicBomb cBomb = new ClassicBomb(this.world, worldPoint.x, worldPoint.y);
 
         cBomb.create();
