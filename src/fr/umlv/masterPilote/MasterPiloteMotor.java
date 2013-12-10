@@ -59,13 +59,8 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
         Star star = new Star(masterPilote.getWorld(), 100, 250);
 
         star.create();
-<<<<<<< HEAD
 
-=======
-        
-       TIE tie = new TIE(masterPilote.getWorld(), 300, 250);
-       tie.create();
->>>>>>> 521cf2d0833d074aaa1002f4b5f46dbed38fb517
+
 //        ClassicBomb bombTest2 = new ClassicBomb(masterPilote.getWorld(), 1, 30);
 //
 //        bombTest2.create();
