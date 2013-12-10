@@ -1,55 +1,140 @@
 package fr.umlv.masterPilote;
 
-import fr.umlv.masterPilote.bomb.ClassicBombTest;
+import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObservable;
+import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObserver;
+import fr.umlv.masterPilote.fr.umlv.masterPilote.star.Star;
+import fr.umlv.masterPilote.hero.Hero;
 import fr.umlv.zen3.ApplicationContext;
-import org.jbox2d.common.Vec2;
+import fr.umlv.zen3.KeyboardEvent;
+import org.jbox2d.dynamics.Body;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by emmanuel on 06/12/13.
  */
-public class MasterPiloteMotor {
+public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
     private final int WIDTH = 600;
     private final int HEIGHT = 600;
-
-//TODO MOVE IT IN MASTERPILOTE WORLD
-
-    float timeStep = 1.0f / 60.f;
-    int velocityIterations = 8;
+    //OBSERVER LIST
+    private final List<KeyMotionObserver> observerList = new ArrayList<>();
+    //TODO MOVE IT IN MASTERPILOTE WORLD
+    float timeStep = 1.0f / 6f;
+    int velocityIterations = 6;
     int positionIterations = 3;
 
-    public void launchGame(ApplicationContext context){
+    public void launchGame(ApplicationContext context) {
+
         context.render(graphics -> {
             MasterPilote masterPilote = initPlateform(graphics);
-            populatedWorld(masterPilote);
+            populatedWorld(masterPilote, context);
 
-            run(masterPilote,context);
+
+            run(masterPilote, context);
         });
 
 
     }
 
-    private void run(MasterPilote masterPilote, ApplicationContext context) {
-        for(;;){
-            masterPilote.getWorld()
-                    .step(timeStep, velocityIterations, positionIterations);
-            context.render(graphics->{
-                masterPilote.draw();
-            });
+    private MasterPilote initPlateform(Graphics2D graphics) {
+        //Create Master Pilote
+        MasterPilote mp = new MasterPilote(graphics);
+        mp.initPlateForm(WIDTH, HEIGHT);
 
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        // SET REFERENTIEL
+        mp.setLandMark(WIDTH / 2, HEIGHT / 2);
+
+        return mp;
+    }
+
+    private void populatedWorld(MasterPilote masterPilote, ApplicationContext context) {
+        //TODO MANAGE WITH FILE CONFIG
+
+        Star star = new Star(masterPilote.getWorld(), 100, 250);
+
+        star.create();
+//        ClassicBomb bombTest2 = new ClassicBomb(masterPilote.getWorld(), 1, 30);
+//
+//        bombTest2.create();
+//        bombTest2.getBody().applyForce(new Vec2(50f, -200f), new Vec2(50f, -20f));
+
+        Hero h = new Hero(masterPilote.getWorld(), 0, 0);
+        //
+        h.create();
+        //
+        //
+        masterPilote.setHero(h.getBody());
+
+        this.addObserver(h);
+
+
+        //        h.getBody().applyForce(new Vec2(50.f,60.f),new Vec2(50.f,60.f));
+
+        //        bombTest.applyForce();
+    }
+
+    private void run(MasterPilote masterPilote, ApplicationContext context) {
+        long beforeTime, afterTime, updateTime, timeDiff, sleepTime, timeSpent, startTime;
+        float timeInSecs;
+
+        beforeTime = startTime = updateTime = System.nanoTime();
+        sleepTime = 0;
+        for (; ; ) {
+
+            masterPilote.getWorld().step(timeStep, velocityIterations, positionIterations);
+            timeSpent = beforeTime - updateTime;
+
+
+                updateTime = System.nanoTime();
+
+
+
+            KeyboardEvent keyEvent = context.pollKeyboard();
+
+            /**
+             * this for notify the hero
+             * that event have been find
+             */
+            if (keyEvent != null) {
+                this.notifyObserver(keyEvent);
             }
 
-            context.render(graphics->{
-                masterPilote.repaint(WIDTH,HEIGHT);
+
+
+
+
+            context.render(graphics -> {
+                masterPilote.repaint(WIDTH, HEIGHT);
+                masterPilote.draw();
+                Body hero = masterPilote.getHero();
+
+                //TODO use this to center view place it in proper place
+                masterPilote.setCamera(hero.getPosition());
+
             });
 
 
+            afterTime = System.nanoTime();
+
+            timeDiff = afterTime - beforeTime;
+            sleepTime = (1000000000 / 60 - timeDiff) / 1000000;
+            if (sleepTime > 0) {
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException ex) {
+                }
+            }
+
+                beforeTime = System.nanoTime();
+
+
+            }
         }
-    }
+
 
     public int getHEIGHT() {
         return HEIGHT;
@@ -59,32 +144,35 @@ public class MasterPiloteMotor {
         return WIDTH;
     }
 
-    private void populatedWorld(MasterPilote masterPilote) {
-        //TODO MANAGE WITH FILE CONFIG
-
-        ClassicBombTest bombTest = new ClassicBombTest(masterPilote.getWorld(), 1, 5);
-
-        bombTest.create();
-        ClassicBombTest bombTest2 = new ClassicBombTest(masterPilote.getWorld(), 1, 30);
-
-        bombTest2.create();
-        bombTest2.getBody().applyForce(new Vec2(50f,-200f),new Vec2(50f,-20f));
-//        bombTest.applyForce();
+    @Override
+    public void addObserver(KeyMotionObserver observer) {
+        observerList.add(observer);
     }
 
-
-
-    private MasterPilote initPlateform(Graphics2D graphics) {
-        //Create Master Pilote
-        MasterPilote mp = new MasterPilote(graphics);
-        mp.initPlateForm(WIDTH,HEIGHT);
-
-        // SET REFERENTIEL
-        mp.setLandMark(WIDTH / 2, HEIGHT / 2);
-
-        return mp;
+    @Override
+    public void notifyObserver(KeyboardEvent keyEvent) {
+        for (KeyMotionObserver k : observerList) {
+            k.onKeyPressed(keyEvent);
+        }
     }
 
+    @Override
+    public void delObserver(KeyMotionObserver observer) {
+        observerList.remove(observer);
+    }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
 
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }

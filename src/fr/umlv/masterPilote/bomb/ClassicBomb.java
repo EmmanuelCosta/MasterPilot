@@ -1,5 +1,6 @@
 package fr.umlv.masterPilote.bomb;
 
+import fr.umlv.masterPilote.MasterPilote;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -8,19 +9,40 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
-public class ClassicBombTest {
+/**
+ * classic bomb are normal bomb
+ * by default is hero friendly but
+ * enemy hostile
+ *
+ * created By Babala Costa Emmanuel
+ */
+public class ClassicBomb {
 
-	private final int radius = 8;
-	private World world;
-	private int x_axis;
-	private int y_axis;
+	private final int radius = 2;
+    private final int maskBit;
+    private final int category;
+    private World world;
+	private float x_axis;
+	private float y_axis;
 	private Body body;
 
-	public ClassicBombTest(World world, int x_axis, int y_axis) {
+	public ClassicBomb(World world, float x_axis, float y_axis) {
 		this.world = world;
 		this.x_axis = x_axis;
 		this.y_axis = y_axis;
+
+        this.category = MasterPilote.ENEMY;
+        this.maskBit = MasterPilote.HERO | MasterPilote.PLANET;
 	}
+
+    public ClassicBomb(World world, float x_axis, float y_axis,int category, int maskBit) {
+        this.world = world;
+        this.x_axis = x_axis;
+        this.y_axis = y_axis;
+
+        this.category = category;
+        this.maskBit=maskBit;
+    }
 
 	public void create() {
 
@@ -39,12 +61,13 @@ public class ClassicBombTest {
 		FixtureDef fd = new FixtureDef();
 		// applique toi a cs
 		fd.shape = cs;
-		fd.density = 0.5f;
-		fd.friction = 0.5f;
+		fd.density = 0.0f;
+		fd.friction = 0.1f;
 		fd.restitution = 0.5f;
 
-		fd.filter.categoryBits = 0x001;
-		fd.filter.maskBits = 0x001;
+		fd.filter.categoryBits = this.category;
+
+		fd.filter.maskBits = this.maskBit;
 
 		fd.userData = this;
 
@@ -56,13 +79,13 @@ public class ClassicBombTest {
 	}
 
 	public void applyForce() {
-		Vec2 f = new Vec2(1000f,3000f);
+		Vec2 f = new Vec2(5000f,5000f);
 		Vec2 p = body.getWorldPoint(body.getLocalCenter().add(
 				new Vec2(0.0f, 200.0f)));
 		body.applyLinearImpulse(f, p);
-		
-		//System.out.println("velocity "+body.getLinearVelocity());
-		System.out.println("position "+body.getPosition());
+
+
+
 	}
 
 	public Body getBody() {
