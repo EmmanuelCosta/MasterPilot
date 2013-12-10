@@ -28,17 +28,17 @@ public class MasterPilote {
     public static int HERO = 0x0001;
     public static int ENEMY = 0x0002;
     public static int PLANET = 0x0004;
-<<<<<<< HEAD
+
     public static int SHOOT = 0x0008;
     public static int BOMB = 0x00016;
     
-=======
+
     /**
      * this is my world
      */
->>>>>>> f1e9deeb1e9bce13d497729c4a89845887b5c09b
+
     private final World world;
-    private final Color3f color = new Color3f();
+
     /**
      * this help to do translation and rotation
      */

@@ -15,6 +15,8 @@ import fr.umlv.masterPilote.Interface.Bomb;
 import fr.umlv.masterPilote.Interface.SpaceShip;
 import fr.umlv.masterPilote.bomb.ClassicBomb;
 
+import java.awt.*;
+
 public class TIE implements SpaceShip{
  
     private World world;
@@ -69,7 +71,7 @@ public class TIE implements SpaceShip{
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = this;
+        fd.userData = Color.BLUE;
 
         // body
         Body body = this.world.createBody(bd);
