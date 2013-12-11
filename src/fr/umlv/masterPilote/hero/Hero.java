@@ -57,8 +57,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fd.filter.categoryBits = MasterPilote.HERO;
         fd.filter.maskBits = MasterPilote.ENEMY | MasterPilote.PLANET;
         fd.density = 0.0f;
-        fd.friction = 0.00001f;
-        fd.restitution = 0.000005f;
+        fd.friction = 0.01f;
+        fd.restitution = 0.5f;
 
         fd.userData = color;
 
@@ -136,16 +136,27 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
 
         Vec2 worldPoint = body.getWorldPoint(vertices[3]);
-        Vec2 force = body.getWorldVector(classicBombSpeed);
-        Vec2 point = body.getWorldPoint(body.getWorldCenter());
+
       ;
         /**
          * create the shoot
          */
-        ClassicBomb cBomb = new ClassicBomb(this.world, worldPoint.x, worldPoint.y);
+
+        RayBomb cBomb = new RayBomb(this.world, worldPoint.x, worldPoint.y);
 
 
         cBomb.create();
+
+        Vec2 force = body.getWorldVector(classicBombSpeed);
+        Vec2 point = body.getWorldPoint(cBomb.getBody().getWorldCenter());
+
+        /**
+         * need to do transform to position the shoot
+         * in good direction
+         */
+
+
+        cBomb.getBody().setTransform(worldPoint, body.getAngle());
 
 
         cBomb.getBody().applyLinearImpulse(force, point);
@@ -191,6 +202,14 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         Vec2 point = body.getWorldPoint(body.getWorldCenter());
 //        this.body.applyForce(force, point);
 this.body.applyLinearImpulse(force,point);
+
+//        this.body.m_linearVelocity
+
+//        Vec2 linearVelocity = this.body.getLinearVelocity();
+//        System.out.println(linearVelocity + " 1");
+//        Vec2 v = new Vec2(linearVelocity.x * 200, linearVelocity.y * 200);
+//        this.body.setLinearVelocity(v);
+//        System.out.println(linearVelocity + " 2");
     }
 
     @Override
