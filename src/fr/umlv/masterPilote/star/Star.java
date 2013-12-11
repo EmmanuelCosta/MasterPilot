@@ -1,6 +1,6 @@
-package fr.umlv.masterPilote.fr.umlv.masterPilote.star;
+package fr.umlv.masterPilote.star;
 
-import fr.umlv.masterPilote.MasterPilote;
+import fr.umlv.masterPilote.world.MasterPilote;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.*;
 
@@ -51,8 +51,10 @@ public class Star {
 
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.STATIC;
-
+        bd.allowSleep=true;
         bd.userData = this;
+
+
         // Create a fi xture for ball
         FixtureDef fd = new FixtureDef();
         // applique toi a cs
@@ -60,6 +62,8 @@ public class Star {
         fd.density = 1500f;
         fd.friction = 200f;
         fd.restitution = 100f;
+
+
 
         /**
          * we set the color of

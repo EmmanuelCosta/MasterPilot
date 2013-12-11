@@ -3,12 +3,10 @@ package fr.umlv.masterPilote.hero;
 import fr.umlv.masterPilote.Interface.Bomb;
 import fr.umlv.masterPilote.Interface.SpaceShip;
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObserver;
-import fr.umlv.masterPilote.MasterPilote;
-import fr.umlv.masterPilote.bomb.ClassicBomb;
+import fr.umlv.masterPilote.world.MasterPilote;
 import fr.umlv.masterPilote.bomb.RayBomb;
 import fr.umlv.zen3.KeyboardEvent;
 import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 

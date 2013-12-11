@@ -3,8 +3,9 @@ package fr.umlv.masterPilote;
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObservable;
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObserver;
 import fr.umlv.masterPilote.enemy.TIE;
-import fr.umlv.masterPilote.fr.umlv.masterPilote.star.Star;
+import fr.umlv.masterPilote.star.Star;
 import fr.umlv.masterPilote.hero.Hero;
+import fr.umlv.masterPilote.world.MasterPilote;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
 
@@ -108,9 +109,6 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
             }
 
 
-
-
-
             context.render(graphics -> {
                 masterPilote.repaint(WIDTH, HEIGHT);
                 masterPilote.draw();
@@ -135,7 +133,7 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
 
                 beforeTime = System.nanoTime();
 
-
+            masterPilote.getWorld().clearForces();
             }
         }
 

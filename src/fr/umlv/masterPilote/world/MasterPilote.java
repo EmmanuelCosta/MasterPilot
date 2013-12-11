@@ -1,4 +1,4 @@
-package fr.umlv.masterPilote;
+package fr.umlv.masterPilote.world;
 
 import fr.umlv.masterPilote.Graphic.MasterPilote2D;
 import org.jbox2d.collision.shapes.ChainShape;

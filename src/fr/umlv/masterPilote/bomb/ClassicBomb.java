@@ -1,6 +1,6 @@
 package fr.umlv.masterPilote.bomb;
 
-import fr.umlv.masterPilote.MasterPilote;
+import fr.umlv.masterPilote.world.MasterPilote;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
@@ -83,6 +83,8 @@ public class ClassicBomb {
         body.createFixture(fd);
         this.body = body;
 
+
+
     }
 
     public void applyForce() {
@@ -95,7 +97,7 @@ public class ClassicBomb {
     }
 
     public Body getBody() {
-        return body;
+        return this.body;
     }
 
     public float getX() {

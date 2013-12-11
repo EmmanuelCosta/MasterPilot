@@ -1,9 +1,7 @@
 package fr.umlv.masterPilote.bomb;
 
-import fr.umlv.masterPilote.MasterPilote;
-import org.jbox2d.collision.shapes.CircleShape;
+import fr.umlv.masterPilote.world.MasterPilote;
 import org.jbox2d.collision.shapes.EdgeShape;
-import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -25,6 +23,7 @@ public class RayBomb {
     private final int maskBit;
     private final int category;
     private final Color color;
+    private  float angle =0;
     private float y1=0;
     private float x1=0;
 
@@ -45,6 +44,20 @@ public class RayBomb {
 
     }
 
+    public RayBomb(World world, float x_axis, float y_axis,float angle) {
+        this.world = world;
+        this.x_axis = x_axis;
+        this.y_axis = y_axis;
+
+        this.category = MasterPilote.ENEMY;
+        this.maskBit = MasterPilote.HERO | MasterPilote.PLANET;
+
+        this.color = Color.WHITE;
+
+        this.angle = angle;
+
+    }
+
     public RayBomb(World world, float x_axis, float y_axis,int category, int maskBit,Color color) {
         this.world = world;
         this.x_axis = x_axis;
@@ -55,6 +68,8 @@ public class RayBomb {
 
         this.color = color;
     }
+
+
 
 
 
@@ -79,8 +94,9 @@ public class RayBomb {
 
         Vec2 vertices[] = new Vec2[2];
         vertices[0] = new Vec2(0, 0);
-        vertices[1] = new Vec2(0f+x1, 10f+x1);
-        System.out.println((x_axis+x1)%10+"calcul   "+(y_axis+x1)%10);
+
+        vertices[1] = new Vec2(0, 5f);
+
 //        vertices[2] = new Vec2(1f, 0.0f);
 //
 //        vertices[3] = new Vec2(1f, 10.0f);

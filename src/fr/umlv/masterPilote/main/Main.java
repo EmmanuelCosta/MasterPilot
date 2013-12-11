@@ -1,4 +1,4 @@
-package fr.umlv.masterPilote.fr.umlv.masterPilote.main;
+package fr.umlv.masterPilote.main;
 
 import fr.umlv.masterPilote.MasterPiloteMotor;
 import fr.umlv.zen3.Application;

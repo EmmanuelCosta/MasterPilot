@@ -8,9 +8,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
-import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
-
-import fr.umlv.masterPilote.MasterPilote;
+import fr.umlv.masterPilote.world.MasterPilote;
 import fr.umlv.masterPilote.Interface.Bomb;
 import fr.umlv.masterPilote.Interface.SpaceShip;
 import fr.umlv.masterPilote.bomb.ClassicBomb;
