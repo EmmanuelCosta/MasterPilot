@@ -198,7 +198,11 @@ public class MasterPilote {
 
     /**
      * This will set the (0,0) to the
+     *
      * specify param
+     *
+     * use this to change referentiel
+     * made a translation of (0,0) -> (i,j)
      *
      * @param i
      * @param j
@@ -218,8 +222,5 @@ public class MasterPilote {
         this.graphic.getViewportTranform().setCenter(position);
     }
 
-    public void updateScreen() {
-//        Graphics2D dispose = (Graphics2D) graphic;
 
-    }
 }

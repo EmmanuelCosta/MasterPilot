@@ -65,14 +65,14 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
-        bd.angularDamping = 5.0f;
-        bd.linearDamping = 0.10f;
+        bd.angularDamping = 0.0f;
+        bd.linearDamping = 0.01f;
 
         bd.userData = this;
 
 
         bd.position.set(x_axis, y_axis);
-        bd.angle = 0;
+        bd.angle = 3.14f;
         bd.allowSleep = false;
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
@@ -147,7 +147,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
         cBomb.create();
 
-        cBomb.getBody().applyForce(force, point);
+
+        cBomb.getBody().applyLinearImpulse(force, point);
 
     }
 
@@ -188,8 +189,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 //TODO MANAGE ACCELERATION
         Vec2 force = body.getWorldVector(heroSpeed);
         Vec2 point = body.getWorldPoint(body.getWorldCenter());
-        this.body.applyForce(force, point);
-//this.body.applyLinearImpulse(force,point);
+//        this.body.applyForce(force, point);
+this.body.applyLinearImpulse(force,point);
     }
 
     @Override
