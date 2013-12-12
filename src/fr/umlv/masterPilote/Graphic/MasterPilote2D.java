@@ -1,7 +1,8 @@
 package fr.umlv.masterPilote.Graphic;
 
-import org.jbox2d.collision.AABB;
-import org.jbox2d.common.*;
+import org.jbox2d.common.IViewportTransform;
+import org.jbox2d.common.OBBViewportTransform;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.pooling.arrays.IntArray;
 import org.jbox2d.pooling.arrays.Vec2Array;
 import org.jbox2d.testbed.pooling.ColorPool;
@@ -22,7 +23,6 @@ public class MasterPilote2D {
     private final static IntArray yIntsPool = new IntArray();
     public static int circlePoints = 13;
     private final IViewportTransform viewportTransform;
-    private final Graphics graphic;
     private final ColorPool cpool = new ColorPool();
     private final Vec2Array vec2Array = new Vec2Array();
     private final Vec2 sp1 = new Vec2();
@@ -31,6 +31,7 @@ public class MasterPilote2D {
     // TODO change IntegerArray to a specific class for int[] arrays
     private final Vec2 temp = new Vec2();
     private final Vec2 temp2 = new Vec2();
+    private Graphics graphic;
 
     public MasterPilote2D(Graphics graphic) {
 
@@ -40,63 +41,46 @@ public class MasterPilote2D {
 
     }
 
-    public void drawCircle(Vec2 center, float radius, Color color) {
-
-        Vec2[] vecs = vec2Array.get(circlePoints);
-        generateCirle(center, radius, vecs, circlePoints);
-        drawPolygon(vecs, circlePoints, color);
-    }
-
-    public void drawPoint(Vec2 argPoint, float argRadiusOnScreen,
-                          Color argColor) {
-        getWorldToScreenToOut(argPoint, sp1);
-        Graphics g = getGraphics();
-
-
-        g.setColor(argColor);
-        sp1.x -= argRadiusOnScreen;
-        sp1.y -= argRadiusOnScreen;
-        g.fillOval((int) sp1.x, (int) sp1.y, (int) argRadiusOnScreen * 2,
-                (int) argRadiusOnScreen * 2);
-    }
-
     public void drawSegment(Vec2 p1, Vec2 p2, Color color) {
         getWorldToScreenToOut(p1, sp1);
         getWorldToScreenToOut(p2, sp2);
 
-        Graphics g = getGraphics();
 
+        this.graphic.setColor(color);
 
-
-        g.setColor(color);
-
-        g.drawLine((int) sp1.x, (int) sp1.y, (int) sp2.x, (int) sp2.y);
+        this.graphic.drawLine((int) sp1.x, (int) sp1.y, (int) sp2.x, (int) sp2.y);
 
     }
 
-    public void drawAABB(AABB argAABB, Color color) {
-        Vec2 vecs[] = vec2Array.get(4);
-        argAABB.getVertices(vecs);
-        drawPolygon(vecs, 4, color);
-    }
+    public void drawCircle(Vec2 center, float radius, Vec2 axis,
+                           Color color,boolean filled) {
 
-    public void drawFilledCircle(Vec2 center, float radius, Vec2 axis,
-                                 Color color) {
-        Vec2[] vecs = vec2Array.get(circlePoints);
-        generateCirle(center, radius, vecs, circlePoints);
+        saxis.set(axis).mulLocal(radius).addLocal(center);
 
-        if (axis != null) {
-            saxis.set(axis).mulLocal(radius).addLocal(center);
-            drawSegment(center, saxis, color);
-            drawCircle2(center, saxis, color, (int) radius);
+        this.graphic.setColor(color);
+
+        if(filled == true){
+            filledCircle(center, saxis, color, (int) radius);
+        }else{
+            emptyCircle(center, saxis, color, (int) radius);
         }
+
+
+
     }
-
-
-
-    public void drawCircle2(Vec2 center, Vec2 axis, Color color,int radius) {
-       getWorldToScreenToOut(center, sp1);
+    private void emptyCircle(Vec2 center, Vec2 axis, Color color, int radius) {
+        getWorldToScreenToOut(center, sp1);
         getWorldToScreenToOut(axis, sp2);
+
+        graphic.drawOval((int) ((int) sp1.x - (radius)),
+                (int) ((int) sp1.y - (radius)),
+                (int) ((int) sp2.x - (int) sp1.x) * 2, (int) ((int) sp2.x - (int) sp1.x) * 2);
+
+    }
+    private void filledCircle(Vec2 center, Vec2 axis, Color color, int radius) {
+        getWorldToScreenToOut(center, sp1);
+        getWorldToScreenToOut(axis, sp2);
+
         graphic.fillOval((int) ((int) sp1.x - (radius)),
                 (int) ((int) sp1.y - (radius)),
                 (int) ((int) sp2.x - (int) sp1.x) * 2, (int) ((int) sp2.x - (int) sp1.x) * 2);
@@ -127,16 +111,6 @@ public class MasterPilote2D {
         drawPolygon(vertices, vertexCount, color);
     }
 
-    public void drawString(float x, float y, String s, Color3f color) {
-        Graphics g = getGraphics();
-        if (g == null) {
-            return;
-        }
-        Color c = cpool.getColor(color.x, color.y, color.z);
-        g.setColor(c);
-        g.drawString(s, (int) x, (int) y);
-    }
-
     /**
      * Draw a closed polygon provided in CCW order.  This implementation
      * uses {@link #drawSegment(Vec2, Vec2, Color)} to draw each side of the
@@ -148,7 +122,7 @@ public class MasterPilote2D {
      */
     public void drawPolygon(Vec2[] vertices, int vertexCount, Color color) {
         if (vertexCount == 1) {
-            System.out.println(vertices[0]);
+
             drawSegment(vertices[0], vertices[0], color);
             return;
         }
@@ -163,45 +137,7 @@ public class MasterPilote2D {
     }
 
     public Graphics getGraphics() {
-        return graphic;
-    }
-
-    public void drawTransform(Transform xf) {
-        Graphics g = getGraphics();
-        getWorldToScreenToOut(xf.p, temp);
-        temp2.setZero();
-        float k_axisScale = 0.4f;
-
-        Color c = cpool.getColor(1, 0, 0);
-        g.setColor(c);
-
-        temp2.x = xf.p.x + k_axisScale * xf.q.c;
-        temp2.y = xf.p.y + k_axisScale * xf.q.s;
-        getWorldToScreenToOut(temp2, temp2);
-        g.drawLine((int) temp.x, (int) temp.y, (int) temp2.x, (int) temp2.y);
-
-        c = cpool.getColor(0, 1, 0);
-        g.setColor(c);
-        temp2.x = xf.p.x + k_axisScale * xf.q.c;
-        temp2.y = xf.p.y + k_axisScale * xf.q.s;
-        getWorldToScreenToOut(temp2, temp2);
-        g.drawLine((int) temp.x, (int) temp.y, (int) temp2.x, (int) temp2.y);
-    }
-
-    // CIRCLE GENERATOR
-
-    private void generateCirle(Vec2 argCenter, float argRadius,
-                               Vec2[] argPoints, int argNumPoints) {
-        float inc = MathUtils.TWOPI / argNumPoints;
-
-        for (int i = 0; i < argNumPoints; i++) {
-            argPoints[i].x = (argCenter.x + MathUtils.cos(i * inc) * argRadius);
-            argPoints[i].y = (argCenter.y + MathUtils.sin(i * inc) * argRadius);
-        }
-    }
-
-    public void drawString(Vec2 pos, String s, Color3f color) {
-        drawString(pos.x, pos.y, s, color);
+        return this.graphic;
     }
 
     /**

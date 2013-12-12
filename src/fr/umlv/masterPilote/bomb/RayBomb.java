@@ -37,8 +37,8 @@ public class RayBomb {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
 
-        this.category = MasterPilote.ENEMY;
-        this.maskBit = MasterPilote.HERO | MasterPilote.PLANET;
+        this.category = MasterPilote.HERO;
+        this.maskBit = MasterPilote.ENEMY| MasterPilote.PLANET;
 
         this.color = Color.WHITE;
 
@@ -112,7 +112,7 @@ public class RayBomb {
 
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.DYNAMIC;
-        bd.userData=this;
+        bd.userData=this.getClass();
 
         // Create a fixture for ball
         FixtureDef fd = new FixtureDef();

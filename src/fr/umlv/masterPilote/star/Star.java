@@ -52,7 +52,7 @@ public class Star {
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.STATIC;
         bd.allowSleep=true;
-        bd.userData = this;
+        bd.userData = this.getClass();
 
 
         // Create a fi xture for ball

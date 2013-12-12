@@ -1,34 +1,30 @@
-package fr.umlv.masterPilote.bomb;
+package fr.umlv.masterPilote.hero;
 
 import fr.umlv.masterPilote.world.MasterPilote;
 import org.jbox2d.collision.shapes.CircleShape;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 
 import java.awt.*;
 
 /**
- * classic bomb are normal bomb
- * by default is hero friendly but
- * enemy hostile
- * <p>
- * created By Babala Costa Emmanuel
+ * Created by emmanuel on 11/12/13.
  */
-public class ClassicBomb {
-
-    private final int radius = 2;
+public class Shield {
     private final int maskBit;
     private final int category;
     private final Color color;
+    private int radius = 10;
     private World world;
     private float x_axis;
     private float y_axis;
     private Body body;
 
-    public ClassicBomb(World world, float x_axis, float y_axis) {
+    public Shield(World world, float x_axis, float y_axis, int radius) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
+
+        this.radius = radius;
 
 
         this.category = MasterPilote.ENEMY;
@@ -39,7 +35,7 @@ public class ClassicBomb {
 
     }
 
-    public ClassicBomb(World world, float x_axis, float y_axis, int category, int maskBit, Color color) {
+    public Shield(World world, float x_axis, float y_axis, int category, int maskBit, Color color) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
@@ -84,27 +80,11 @@ public class ClassicBomb {
         this.body = body;
 
 
-
-    }
-
-    public void applyForce() {
-        Vec2 f = new Vec2(5000f, 5000f);
-        Vec2 p = body.getWorldPoint(body.getLocalCenter().add(
-                new Vec2(0.0f, 200.0f)));
-        body.applyLinearImpulse(f, p);
-
-
     }
 
     public Body getBody() {
         return this.body;
     }
 
-    public float getX() {
-        return this.x_axis;
-    }
 
-    public float getY() {
-        return this.y_axis;
-    }
 }

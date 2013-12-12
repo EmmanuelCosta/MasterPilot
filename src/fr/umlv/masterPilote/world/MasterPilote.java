@@ -1,11 +1,10 @@
 package fr.umlv.masterPilote.world;
 
 import fr.umlv.masterPilote.Graphic.MasterPilote2D;
-import org.jbox2d.collision.shapes.ChainShape;
+import fr.umlv.masterPilote.hero.Shield;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Color3f;
 import org.jbox2d.common.Settings;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
@@ -59,7 +58,7 @@ public class MasterPilote {
 
     public MasterPilote(Graphics graphic) {
         this.world = new World(new Vec2(0, 0f));
-//        this.graphic = new MasterPilote2DDebug(graphic);
+        this.world.setContactListener(new MasterContactListener());
         this.graphic = new MasterPilote2D(graphic);
 
 
@@ -123,7 +122,7 @@ public class MasterPilote {
             xf.set(b.getTransform());
             for (Fixture f = b.getFixtureList(); f != null; f = f.getNext()) {
 
-                drawShape(f, xf);
+                drawShape((Class)b.getUserData(),f, xf);
             }
         }
     }
@@ -133,15 +132,17 @@ public class MasterPilote {
      * to draw fixture of the World
      * in the graphic panel
      *
+     * @param clazz
      * @param fixture : fixture of the body to draw
      * @param xf      : necessary for translation purpose
      */
-    private void drawShape(Fixture fixture, Transform xf) {
+    private void drawShape(Class clazz,Fixture fixture, Transform xf) {
 
         /**
          * retreive body color
          *
          */
+
         Color color = (Color) fixture.getUserData();
 
         switch (fixture.getType()) {
@@ -150,8 +151,15 @@ public class MasterPilote {
 
                 Transform.mulToOutUnsafe(xf, circle.m_p, center);
                 float radius = circle.m_radius;
+
                 xf.q.getXAxis(axis);
-                graphic.drawFilledCircle(center, radius, axis, color);
+               // graphic.drawnCircle(center, radius,  color);
+                if(clazz == Shield.class){
+                    graphic.drawCircle(center, radius, axis, color,false);
+                }else{
+                    graphic.drawCircle(center, radius, axis, color,true);
+                }
+
             }
             break;
 
@@ -176,20 +184,7 @@ public class MasterPilote {
             }
             break;
 
-            case CHAIN: {
-                ChainShape chain = (ChainShape) fixture.getShape();
-                int count = chain.m_count;
-                Vec2[] vertices = chain.m_vertices;
 
-                Transform.mulToOutUnsafe(xf, vertices[0], v1);
-                for (int i = 1; i < count; ++i) {
-                    Transform.mulToOutUnsafe(xf, vertices[i], v2);
-                    graphic.drawSegment(v1, v2, color);
-                    graphic.drawCircle(v1, 0.05f, color);
-                    v1.set(v2);
-                }
-            }
-            break;
             default:
                 break;
         }

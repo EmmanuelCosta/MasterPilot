@@ -66,7 +66,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         bd.angularDamping = 0.0f;
         bd.linearDamping = 0.01f;
 
-        bd.userData = this;
+        bd.userData = this.getClass();
 
 
         bd.position.set(x_axis, y_axis);

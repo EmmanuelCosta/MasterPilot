@@ -61,6 +61,8 @@ public class TIE implements SpaceShip{
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.DYNAMIC;
 
+        bd.userData=this.getClass();
+
         // Create a fixture for TIE
         FixtureDef fd = new FixtureDef();
         fd.shape = ps;

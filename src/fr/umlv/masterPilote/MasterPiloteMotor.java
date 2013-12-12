@@ -3,6 +3,7 @@ package fr.umlv.masterPilote;
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObservable;
 import fr.umlv.masterPilote.Interface.fr.umlv.masterPilote.Interface.keyMotion.KeyMotionObserver;
 import fr.umlv.masterPilote.enemy.TIE;
+import fr.umlv.masterPilote.hero.Shield;
 import fr.umlv.masterPilote.star.Star;
 import fr.umlv.masterPilote.hero.Hero;
 import fr.umlv.masterPilote.world.MasterPilote;
@@ -60,6 +61,10 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
         Star star = new Star(masterPilote.getWorld(), 100, 250);
 
         star.create();
+
+        Shield shield = new Shield(masterPilote.getWorld(), 150, 250,15);
+
+        shield.create();
 //        ClassicBomb bombTest2 = new ClassicBomb(masterPilote.getWorld(), 1, 30);
 //
 //        bombTest2.create();
@@ -70,6 +75,8 @@ public class MasterPiloteMotor implements KeyMotionObservable, KeyListener {
         h.create();
         //
         //
+
+
         masterPilote.setHero(h.getBody());
         this.addObserver(h);
         
