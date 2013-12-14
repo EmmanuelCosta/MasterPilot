@@ -14,9 +14,9 @@ public class Shield {
     private final int category;
     private final Color color;
     private int radius = 10;
-    private World world;
-    private float x_axis;
-    private float y_axis;
+    private final World world;
+    private final float x_axis;
+    private final float y_axis;
     private Body body;
 
     public Shield(World world, float x_axis, float y_axis, int radius) {
@@ -76,7 +76,7 @@ public class Shield {
 
         // body
         Body body = this.world.createBody(bd);
-        System.out.println((body == null)+"  "+(this.world == null));
+
         body.createFixture(fd);
         this.body = body;
 

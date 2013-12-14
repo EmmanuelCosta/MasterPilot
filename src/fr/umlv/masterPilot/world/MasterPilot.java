@@ -248,6 +248,12 @@ public class MasterPilot implements ContactListener {
 
             destroyBody.add(fixtureB.getBody());
         }
+        if (fixtureA.getFilterData().categoryBits == MasterPilot.ENEMY) {
+            destroyBody.add(fixtureA.getBody());
+
+        } else if (fixtureB.getFilterData().categoryBits == MasterPilot.ENEMY) {
+            destroyBody.add(fixtureB.getBody());
+        }
     }
 
     @Override

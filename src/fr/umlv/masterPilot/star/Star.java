@@ -36,6 +36,15 @@ public class Star {
         this.maskBit = MasterPilot.ENEMY | MasterPilot.HERO | MasterPilot.SHOOT;
     }
 
+    public Star(World world, float x_axis, float y_axis,Color color) {
+        this.world = world;
+        this.x_axis = x_axis;
+        this.y_axis = y_axis;
+        this.color = color;
+        this.category = MasterPilot.PLANET;
+        this.maskBit = MasterPilot.ENEMY | MasterPilot.HERO | MasterPilot.SHOOT;
+    }
+
     public Star(World world, float x_axis, float y_axis, int category, int maskBit, Color color) {
         this.world = world;
         this.x_axis = x_axis;

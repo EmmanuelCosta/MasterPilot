@@ -39,7 +39,7 @@ public class TIE implements SpaceShip{
         
         // Interactions avec les autres body
         this.category = MasterPilot.ENEMY;
-        this.maskBit = MasterPilot.PLANET | MasterPilot.HERO | MasterPilot.ENEMY;
+        this.maskBit = MasterPilot.PLANET | MasterPilot.HERO | MasterPilot.ENEMY | MasterPilot.SHOOT;
     }
     
     public void create() {

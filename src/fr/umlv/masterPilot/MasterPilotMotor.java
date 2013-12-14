@@ -63,12 +63,12 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
         star.create();
 
 
-        Star star2 = new Star(masterPilot.getWorld(), 100, 550);
+        Star star2 = new Star(masterPilot.getWorld(), 100, 550,Color.blue);
 
         star2.create();
 
 
-        Star star3 = new Star(masterPilot.getWorld(), 400, 350);
+        Star star3 = new Star(masterPilot.getWorld(), 400, 350,Color.GREEN);
 
         star3.create();
 //

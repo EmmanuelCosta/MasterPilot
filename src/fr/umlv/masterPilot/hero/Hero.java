@@ -32,7 +32,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private final int y_axis;
     private final Color color;
     private final World world;
-    private Body body;
+    private  Body body;
     private final Vec2 heroSpeed = new Vec2(0, -700f);
     private final Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
 
@@ -191,7 +191,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         cBomb.getBody().setTransform(worldPoint, body.getAngle());
         cBomb.getBody().applyForce(force, point);
 
-//        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -258,14 +257,14 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private void makeTrail() {
 
         /**
-         * I try to calculate the tip coordinate
-         * and create a Bomb from that point
+         * I  calculate the tip coordinate of the back of my spaceship
+         * and create a trail from that point
          */
 
         PolygonShape sha = (PolygonShape) body.getFixtureList().getShape();
 
         /**
-         * Here the tip is store on third vertices
+         *
          * careful if body construction change
          * so you must recalculate the tip too
          */
@@ -281,7 +280,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         Vec2 worldPoint3 = body.getWorldPoint(vertices[1]);
 
         /**
-         * create the shoot
+         * create the trail
          */
 
         List<ClassicBomb> lBomb= new ArrayList<>();
