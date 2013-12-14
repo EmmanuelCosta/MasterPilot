@@ -16,7 +16,7 @@ import java.awt.*;
  */
 public class ClassicBomb {
 
-    private final int radius = 2;
+    private  int radius = 2;
     private final int maskBit;
     private final int category;
     private final Color color;
@@ -50,6 +50,19 @@ public class ClassicBomb {
         this.color = color;
     }
 
+    public ClassicBomb(World world, float x_axis, float y_axis, int category, int maskBit, Color color,int radius) {
+        this.world = world;
+        this.x_axis = x_axis;
+        this.y_axis = y_axis;
+
+        this.category = category;
+        this.maskBit = maskBit;
+
+        this.color = color;
+
+        this.radius=radius;
+    }
+
     public void create() {
 
         // create ball
@@ -62,6 +75,8 @@ public class ClassicBomb {
 
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.DYNAMIC;
+
+        bd.allowSleep=true;
         bd.userData = this.getClass();
 
         // Create a fixture for ball
@@ -82,9 +97,6 @@ public class ClassicBomb {
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
         this.body = body;
-
-
-
     }
 
     public void applyForce() {

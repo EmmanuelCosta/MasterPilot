@@ -33,7 +33,7 @@ public class MasterContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        System.out.println("end to touch");
+       // System.out.println("end to touch");
     }
 
     @Override

@@ -3,13 +3,12 @@ package fr.umlv.masterPilot;
 import fr.umlv.masterPilot.Interface.KeyMotionObservable;
 import fr.umlv.masterPilot.Interface.KeyMotionObserver;
 import fr.umlv.masterPilot.enemy.TIE;
+import fr.umlv.masterPilot.hero.Hero;
 import fr.umlv.masterPilot.hero.Shield;
 import fr.umlv.masterPilot.star.Star;
-import fr.umlv.masterPilot.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilot;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
-
 import org.jbox2d.dynamics.Body;
 
 import java.awt.*;
@@ -22,7 +21,7 @@ import java.util.List;
  * Created by emmanuel on 06/12/13.
  */
 public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
-    private final int WIDTH = 600;
+    private final int WIDTH = 900;
     private final int HEIGHT = 600;
     //OBSERVER LIST
     private final List<KeyMotionObserver> observerList = new ArrayList<>();
@@ -62,7 +61,7 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
 
         star.create();
 
-        Shield shield = new Shield(masterPilot.getWorld(), 150, 250,15);
+        Shield shield = new Shield(masterPilot.getWorld(), 150, 250, 15);
 
         shield.create();
 //
@@ -76,12 +75,12 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
 
         masterPilot.setHero(h.getBody());
         this.addObserver(h);
-        
+
         TIE tie = new TIE(masterPilot.getWorld(), 50, 50, h.getX(), h.getY());
         tie.create();
-        for(int i = 0; i < Integer.MAX_VALUE * Integer.MAX_VALUE; i++);
+        for (int i = 0; i < Integer.MAX_VALUE * Integer.MAX_VALUE; i++) ;
         tie.fire();
-         //        h.getBody().applyForce(new Vec2(50.f,60.f),new Vec2(50.f,60.f));
+        //        h.getBody().applyForce(new Vec2(50.f,60.f),new Vec2(50.f,60.f));
 
         //        bombTest.applyForce();
     }
@@ -89,17 +88,19 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
     private void run(MasterPilot masterPilot, ApplicationContext context) {
         long beforeTime, afterTime, updateTime, timeDiff, sleepTime, timeSpent, startTime;
         float timeInSecs;
-
+        float frameRate = 60;
         beforeTime = startTime = updateTime = System.nanoTime();
         sleepTime = 0;
         for (; ; ) {
 
             masterPilot.getWorld().step(timeStep, velocityIterations, positionIterations);
             timeSpent = beforeTime - updateTime;
+            if (timeSpent > 0) {
 
-
+                timeInSecs = timeSpent * 1.0f / 1000000000.0f;
                 updateTime = System.nanoTime();
-
+                frameRate = (frameRate * 0.9f) + (1.0f / timeInSecs) * 0.1f;
+            }
 
 
             KeyboardEvent keyEvent = context.pollKeyboard();
@@ -119,7 +120,7 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
                 Body hero = masterPilot.getHero();
 
                 //TODO use this to center view place it in proper place
-               masterPilot.setCamera(hero.getPosition());
+                masterPilot.setCamera(hero.getPosition());
 
             });
 
@@ -130,17 +131,18 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
             sleepTime = (1000000000 / 60 - timeDiff) / 1000000;
             if (sleepTime > 0) {
                 try {
+
+
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException ex) {
                 }
             }
 
-                beforeTime = System.nanoTime();
+            beforeTime = System.nanoTime();
 
-            masterPilot.getWorld().clearForces();
-            }
+            // masterPilot.getWorld().clearForces();
         }
-
+    }
 
     public int getHEIGHT() {
         return HEIGHT;

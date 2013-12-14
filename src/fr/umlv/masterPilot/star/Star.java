@@ -60,7 +60,7 @@ public class Star {
         // applique toi a cs
         fd.shape = cs;
         fd.density = 1500f;
-        fd.friction = 200f;
+        fd.friction = 50f;
         fd.restitution = 100f;
 
 

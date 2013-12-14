@@ -131,6 +131,7 @@ public class RayBomb {
         // body
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
+        bd.allowSleep=true;
         this.body = body;
 
     }
