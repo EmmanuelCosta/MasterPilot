@@ -19,16 +19,29 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+
+/**
+ * Hero is the Main character of the Game
+ * This class create his body and attach it in the world
+ *
+ * created by Emmanuel Babala Costa
+ */
 public class Hero implements KeyMotionObserver, SpaceShip {
 
     private final int x_axis;
     private final int y_axis;
     private final Color color;
-    private World world;
+    private final World world;
     private Body body;
-    private Vec2 heroSpeed = new Vec2(0, -700f);
-    private Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
+    private final Vec2 heroSpeed = new Vec2(0, -700f);
+    private final Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
 
+    /**
+     * create the hero at the specify coordinate
+     * @param world
+     * @param x_axis
+     * @param y_axis
+     */
     public Hero(World world, int x_axis, int y_axis) {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
@@ -36,6 +49,13 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         this.color = Color.lightGray;
     }
 
+    /**
+     * create the hero at the specify coordinate with the specify color
+     * @param world
+     * @param x_axis
+     * @param y_axis
+     * @param color
+     */
     public Hero(World world, int x_axis, int y_axis, Color color) {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
@@ -44,7 +64,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     }
 
     /**
-     * we create the hero body and we add oit to the world
+     * we create the hero body and we add it to the world
      * we add also the shield here
      * which will be a circle arrounding the hero body
      */
@@ -229,9 +249,12 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         makeTrail();
     }
 
-//    private final ScheduledExecutorService scheduler =
-//            Executors.newScheduledThreadPool(1);
+
     private final  Timer timer = new Timer();
+
+    /**
+     * use this to make trail beside the hero spaceship
+     */
     private void makeTrail() {
 
         /**

@@ -7,25 +7,33 @@ import org.jbox2d.dynamics.*;
 import java.awt.*;
 
 /**
- * Created by emmanuel on 08/12/13.
+ * created a start in the world
+ * Created by emmanuel
  */
 public class Star {
     private final int radius = 100;
     private final int maskBit;
     private final int category;
-    private final Color color;
     private final World world;
     private final float x_axis;
     private final float y_axis;
+    private Color color;
     private Body body;
 
+    /**
+     * created a star at the secify coordinate
+     *
+     * @param world
+     * @param x_axis
+     * @param y_axis
+     */
     public Star(World world, float x_axis, float y_axis) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.color = Color.RED;
         this.category = MasterPilot.PLANET;
-        this.maskBit = MasterPilot.ENEMY | MasterPilot.HERO;
+        this.maskBit = MasterPilot.ENEMY | MasterPilot.HERO | MasterPilot.SHOOT;
     }
 
     public Star(World world, float x_axis, float y_axis, int category, int maskBit, Color color) {
@@ -39,19 +47,20 @@ public class Star {
         this.color = color;
     }
 
+    /**
+     *
+     */
     public void create() {
 
-        // create ball
         CircleShape cs = new CircleShape();
 
         cs.m_radius = radius;
 
-        // Create an JBox2D body defination for ball.
         BodyDef bd = new BodyDef();
 
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.STATIC;
-        bd.allowSleep=true;
+        bd.allowSleep = true;
         bd.userData = this.getClass();
 
 
@@ -62,7 +71,6 @@ public class Star {
         fd.density = 1500f;
         fd.friction = 50f;
         fd.restitution = 100f;
-
 
 
         /**

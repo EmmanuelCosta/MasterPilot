@@ -2,6 +2,9 @@ package fr.umlv.masterPilot.world;
 
 import fr.umlv.masterPilot.Graphic.MasterPilot2D;
 import fr.umlv.masterPilot.hero.Shield;
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.collision.Manifold;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -11,18 +14,20 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.pooling.arrays.Vec2Array;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * created by Babala Costa Emmanuel
- *
+ * <p>
  * This represent MasterPilot World
- *
  */
-public class MasterPilot {
+public class MasterPilot implements ContactListener {
 
     /**
      * This is category of MasterPilot world
@@ -30,17 +35,13 @@ public class MasterPilot {
     public static int HERO = 0x0001;
     public static int ENEMY = 0x0002;
     public static int PLANET = 0x0004;
-
     public static int SHOOT = 0x0008;
     public static int BOMB = 0x00016;
-    
-
     /**
      * this is my world
      */
 
     private final World world;
-
     /**
      * this help to do translation and rotation
      */
@@ -50,7 +51,10 @@ public class MasterPilot {
     private final Vec2 v1 = new Vec2();
     private final Vec2 v2 = new Vec2();
     private final Vec2Array tlvertices = new Vec2Array();
-    private final MasterContactListener contactListener;
+    private List<Body> destroyBody = new ArrayList<>();
+
+
+    //private final MasterContactListener contactListener;
     /**
      * use this to render purpose
      */
@@ -62,15 +66,11 @@ public class MasterPilot {
 
     public MasterPilot(Graphics masterPilot2D) {
         this.world = new World(new Vec2(0, 0f));
-        this.contactListener = new MasterContactListener( this.world);
-        this.world.setContactListener(contactListener);
+        //this.contactListener = new MasterContactListener( this.world);
+        this.world.setContactListener(this);
         this.masterPilot2D = new MasterPilot2D(masterPilot2D);
 
 
-    }
-
-    public void initWorld() {
-        // TODO
     }
 
     /**
@@ -111,14 +111,12 @@ public class MasterPilot {
 
     /**
      * set Hero to this class
-     * and to the contact listener
-     * in order to to specific action on it
+     *
      * @param hero
      */
     public void setHero(Body hero) {
         Objects.requireNonNull(hero);
         this.Hero = hero;
-        this.contactListener.setHero(hero);
     }
 
     /**
@@ -131,11 +129,12 @@ public class MasterPilot {
  *
  */
 
+
         for (Body b = this.world.getBodyList(); b != null; b = b.getNext()) {
             xf.set(b.getTransform());
             for (Fixture f = b.getFixtureList(); f != null; f = f.getNext()) {
 
-                drawShape((Class)b.getUserData(),f, xf);
+                drawShape((Class) b.getUserData(), f, xf);
             }
         }
     }
@@ -143,14 +142,14 @@ public class MasterPilot {
     /**
      * this call the {@code MasterPilot2D }
      * to draw fixture of the World
-     *
-     *The key is to use  Transform.mulToOutUnsafe() method to apply
+     * <p>
+     * The key is to use  Transform.mulToOutUnsafe() method to apply
      *
      * @param clazz
      * @param fixture : fixture of the body to draw
      * @param xf      : necessary for translation purpose
      */
-    private void drawShape(Class clazz,Fixture fixture, Transform xf) {
+    private void drawShape(Class clazz, Fixture fixture, Transform xf) {
 
         /**
          * retreive body color
@@ -167,9 +166,9 @@ public class MasterPilot {
                 float radius = circle.m_radius;
 
                 xf.q.getXAxis(axis);
-                if(clazz == Shield.class){
+                if (clazz == Shield.class) {
                     masterPilot2D.drawCircle(center, radius, axis, color, false);
-                }else{
+                } else {
                     masterPilot2D.drawCircle(center, radius, axis, color, true);
                 }
 
@@ -202,13 +201,14 @@ public class MasterPilot {
                 break;
         }
 
+
     }
 
     /**
      * This will set the (0,0) to the
-     *
+     * <p>
      * specify param
-     *
+     * <p>
      * use this to change referentiel
      * made a translation of (0,0) -> (i,j)
      *
@@ -216,7 +216,7 @@ public class MasterPilot {
      * @param j
      */
     public void setLandMark(int i, int j) {
-        this.masterPilot2D.setLandMark(i,j);
+        this.masterPilot2D.setLandMark(i, j);
 
     }
 
@@ -230,5 +230,40 @@ public class MasterPilot {
         this.masterPilot2D.setCamera(position);
     }
 
+    @Override
+    public void beginContact(Contact contact) {
 
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+        Fixture fixtureA = contact.getFixtureA();
+        Fixture fixtureB = contact.getFixtureB();
+
+        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHOOT) {
+
+            destroyBody.add(fixtureA.getBody());
+
+        } else if (fixtureB.getFilterData().categoryBits == MasterPilot.SHOOT) {
+
+            destroyBody.add(fixtureB.getBody());
+        }
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+
+    }
+
+    public List<Body> getDestroyBody() {
+        List<Body> newList = new ArrayList<>(destroyBody);
+        // Collections.addAll(this.getDestroyBody(),newList);
+        destroyBody = new ArrayList<>();
+        return newList;
+    }
 }

@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -61,6 +62,18 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
 
         star.create();
 
+
+        Star star2 = new Star(masterPilot.getWorld(), 100, 550);
+
+        star2.create();
+
+
+        Star star3 = new Star(masterPilot.getWorld(), 400, 350);
+
+        star3.create();
+//
+//
+//
         Shield shield = new Shield(masterPilot.getWorld(), 150, 250, 15);
 
         shield.create();
@@ -75,7 +88,7 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
 
         masterPilot.setHero(h.getBody());
         this.addObserver(h);
-
+//
         TIE tie = new TIE(masterPilot.getWorld(), 50, 50, h.getX(), h.getY());
         tie.create();
         for (int i = 0; i < Integer.MAX_VALUE * Integer.MAX_VALUE; i++) ;
@@ -86,20 +99,23 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
     }
 
     private void run(MasterPilot masterPilot, ApplicationContext context) {
-        long beforeTime, afterTime, updateTime, timeDiff, sleepTime, timeSpent, startTime;
-        float timeInSecs;
-        float frameRate = 60;
-        beforeTime = startTime = updateTime = System.nanoTime();
-        sleepTime = 0;
+        long beforeTime, afterTime, timeDiff, sleepTime;
+
+        beforeTime = System.nanoTime();
+
         for (; ; ) {
 
             masterPilot.getWorld().step(timeStep, velocityIterations, positionIterations);
-            timeSpent = beforeTime - updateTime;
-            if (timeSpent > 0) {
 
-                timeInSecs = timeSpent * 1.0f / 1000000000.0f;
-                updateTime = System.nanoTime();
-                frameRate = (frameRate * 0.9f) + (1.0f / timeInSecs) * 0.1f;
+            List<Body> destroyBody = masterPilot.getDestroyBody();
+
+            Iterator<Body> iterator = destroyBody.iterator();
+
+            while (iterator.hasNext()) {
+                Body next = iterator.next();
+                iterator.remove();
+                masterPilot.getWorld().destroyBody(next);
+
             }
 
 

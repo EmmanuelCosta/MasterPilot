@@ -3,19 +3,15 @@ package fr.umlv.masterPilot.bomb;
 import fr.umlv.masterPilot.world.MasterPilot;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.*;
 
 import java.awt.*;
 
 /**
  * Ray bomb are normal bomb
  * by default is hero friendly but
- * enemy hostile
- *
+ * enemy ans star hostile
+ * <p>
  * created By Babala Costa Emmanuel
  */
 public class RayBomb {
@@ -23,98 +19,75 @@ public class RayBomb {
     private final int maskBit;
     private final int category;
     private final Color color;
-    private  float angle =0;
-    private float y1=0;
-    private float x1=0;
-
-    private World world;
-    private float x_axis;
-    private float y_axis;
+    private final World world;
+    private final float x_axis;
+    private final float y_axis;
     private Body body;
 
+    /**
+     * create a ray Bomb at the given position
+     * @param world
+     * @param x_axis : x coordinate  of the bomb
+     * @param y_axis : y coordinate of the bomb
+     *
+     *               by default is category is SHOOT
+     *               and his mask is PLANET and ENNEMY so it means
+     *               it can collide with them
+     */
     public RayBomb(World world, float x_axis, float y_axis) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
 
-        this.category = MasterPilot.HERO;
-        this.maskBit = MasterPilot.ENEMY| MasterPilot.PLANET;
+        this.category = MasterPilot.SHOOT;
+        this.maskBit = MasterPilot.PLANET | MasterPilot.ENEMY;
 
         this.color = Color.WHITE;
 
     }
 
-    public RayBomb(World world, float x_axis, float y_axis,float angle) {
-        this.world = world;
-        this.x_axis = x_axis;
-        this.y_axis = y_axis;
-
-        this.category = MasterPilot.ENEMY;
-        this.maskBit = MasterPilot.HERO | MasterPilot.PLANET;
-
-        this.color = Color.WHITE;
-
-        this.angle = angle;
-
-    }
-
-    public RayBomb(World world, float x_axis, float y_axis,int category, int maskBit,Color color) {
+    /***
+     *
+     * @param world
+     * @param x_axis
+     * @param y_axis
+     * @param category the category of the rayBomb
+     * @param maskBit  help to set with which category he can collide
+     * @param color
+     */
+    public RayBomb(World world, float x_axis, float y_axis, int category, int maskBit, Color color) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
 
         this.category = category;
-        this.maskBit=maskBit;
+        this.maskBit = maskBit;
 
         this.color = color;
     }
 
-
-
-
-
-    public RayBomb(World world, float x_axis, float y_axis, float x1, float y1) {
-        this.world = world;
-        this.x_axis = x_axis;
-        this.y_axis = y_axis;
-
-        this.x1 = x1;
-        this.y1=y1;
-        ;
-
-        this.category = MasterPilot.ENEMY;
-        this.maskBit = MasterPilot.HERO | MasterPilot.PLANET;
-
-        this.color = Color.WHITE;
-
-
-    }
-
+    /**
+     * create the rayBomb in the world
+     */
     public void create() {
-
+//create body shape and specification
         Vec2 vertices[] = new Vec2[2];
         vertices[0] = new Vec2(0, 0);
 
         vertices[1] = new Vec2(0, 5f);
 
-//        vertices[2] = new Vec2(1f, 0.0f);
-//
-//        vertices[3] = new Vec2(1f, 10.0f);
-
-
         EdgeShape ps = new EdgeShape();
-        ps.set(vertices[0],vertices[1]);
+        ps.set(vertices[0], vertices[1]);
 
 
-
-        // Create an JBox2D body defination for ball.
+// create body
         BodyDef bd = new BodyDef();
 
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.DYNAMIC;
-        bd.userData=this.getClass();
+        bd.userData = this.getClass();
 
-        // Create a fixture for ball
+        // Create a fixture
         FixtureDef fd = new FixtureDef();
         // applique toi a cs
         fd.shape = ps;
@@ -131,20 +104,11 @@ public class RayBomb {
         // body
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
-        bd.allowSleep=true;
+        bd.allowSleep = true;
         this.body = body;
 
     }
 
-    public void applyForce() {
-        Vec2 f = new Vec2(5000f,5000f);
-        Vec2 p = body.getWorldPoint(body.getLocalCenter().add(
-                new Vec2(0.0f, 200.0f)));
-        body.applyLinearImpulse(f, p);
-
-
-
-    }
 
     public Body getBody() {
         return this.body;
