@@ -74,10 +74,6 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
 //
 //
 //
-        Shield shield = new Shield(masterPilot.getWorld(), 150, 250, 15);
-
-        shield.create();
-//
 
         Hero h = new Hero(masterPilot.getWorld(), 0, 0);
         //

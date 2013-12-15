@@ -1,7 +1,6 @@
 package fr.umlv.masterPilot.world;
 
 import fr.umlv.masterPilot.Graphic.MasterPilot2D;
-import fr.umlv.masterPilot.hero.Shield;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -37,6 +36,7 @@ public class MasterPilot implements ContactListener {
     public static int PLANET = 0x0004;
     public static int SHOOT = 0x0008;
     public static int BOMB = 0x00016;
+    public static int SHIELD = 0x00032;
     /**
      * this is my world
      */
@@ -157,7 +157,10 @@ public class MasterPilot implements ContactListener {
          */
 
         Color color = (Color) fixture.getUserData();
-
+        if(fixture.getType() == null){
+            System.out.println("fixture null");
+            return;
+        }
         switch (fixture.getType()) {
             case CIRCLE: {
                 CircleShape circle = (CircleShape) fixture.getShape();
@@ -165,11 +168,20 @@ public class MasterPilot implements ContactListener {
                 Transform.mulToOutUnsafe(xf, circle.m_p, center);
                 float radius = circle.m_radius;
 
-                xf.q.getXAxis(axis);
-                if (clazz == Shield.class) {
-                    masterPilot2D.drawCircle(center, radius, axis, color, false);
+
+                if (fixture.getFilterData().categoryBits == MasterPilot.SHIELD) {
+                    /**
+                     * if shield is set
+                     * so we can draw it
+                     */
+                    if (!fixture.m_isSensor) {
+
+                        masterPilot2D.drawCircle(center, radius,  color, false);
+                    }
+
+
                 } else {
-                    masterPilot2D.drawCircle(center, radius, axis, color, true);
+                    masterPilot2D.drawCircle(center, radius, color, true);
                 }
 
             }
@@ -232,13 +244,32 @@ public class MasterPilot implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
+        Fixture fixtureA = contact.getFixtureA();
+        Fixture fixtureB = contact.getFixtureB();
 
+
+        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD) {
+            fixtureA.m_isSensor = false;
+        }
+
+        if (fixtureB.getFilterData().categoryBits == MasterPilot.SHIELD) {
+            fixtureB.m_isSensor = false;
+        }
     }
 
     @Override
     public void endContact(Contact contact) {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
+
+
+        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD) {
+            fixtureA.m_isSensor = true;
+        }
+
+        if (fixtureB.getFilterData().categoryBits == MasterPilot.SHIELD) {
+            fixtureB.m_isSensor = true;
+        }
 
         if (fixtureA.getFilterData().categoryBits == MasterPilot.SHOOT) {
 

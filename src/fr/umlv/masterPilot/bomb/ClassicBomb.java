@@ -31,7 +31,7 @@ public class ClassicBomb {
 
 
         this.category = MasterPilot.ENEMY;
-        this.maskBit = MasterPilot.HERO | MasterPilot.PLANET;
+        this.maskBit = MasterPilot.PLANET;
 
         this.color = Color.WHITE;
 

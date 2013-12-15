@@ -7,23 +7,22 @@ import fr.umlv.masterPilot.bomb.ClassicBomb;
 import fr.umlv.masterPilot.bomb.RayBomb;
 import fr.umlv.masterPilot.world.MasterPilot;
 import fr.umlv.zen3.KeyboardEvent;
+import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
  * Hero is the Main character of the Game
  * This class create his body and attach it in the world
- *
+ * <p>
  * created by Emmanuel Babala Costa
  */
 public class Hero implements KeyMotionObserver, SpaceShip {
@@ -32,12 +31,14 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private final int y_axis;
     private final Color color;
     private final World world;
-    private  Body body;
     private final Vec2 heroSpeed = new Vec2(0, -700f);
     private final Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
+    private final Timer timer = new Timer();
+    private Body body;
 
     /**
      * create the hero at the specify coordinate
+     *
      * @param world
      * @param x_axis
      * @param y_axis
@@ -51,6 +52,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     /**
      * create the hero at the specify coordinate with the specify color
+     *
      * @param world
      * @param x_axis
      * @param y_axis
@@ -106,8 +108,26 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         bd.position.set(x_axis, y_axis);
         bd.angle = 3.14f;
         bd.allowSleep = false;
+/**************************SHIELD ************************************************************************/
+//Create chield protection
+        CircleShape cs = new CircleShape();
+        cs.setRadius(23);
+        FixtureDef fs = new FixtureDef();
+        fs.shape = cs;
+
+        fs.isSensor = true;
+        fs.density = 0.0f;
+        fs.friction = 0.3f;
+        fs.restitution = 0.5f;
+
+        fs.filter.categoryBits = MasterPilot.SHIELD;
+        fs.filter.maskBits = MasterPilot.ENEMY | MasterPilot.PLANET;
+
+/*************************************************************************************************************/
         Body body = this.world.createBody(bd);
+        body.createFixture(fs);
         body.createFixture(fd);
+
 
         this.body = body;
 //		body.createFixture(sd2);
@@ -132,18 +152,34 @@ public class Hero implements KeyMotionObserver, SpaceShip {
                 right();
                 break;
             case "SPACE":
-                fire();
+                /**
+                 * fire only if we are not in shield mode
+                 */
+                if (! isShieldSet()) {
+                    fire();
+                }
                 break;
-            case "b":
+            case "B":
 //                fireBomb();
                 break;
-            case "s":
+            case "S":
+                shield();
                 break;
 
             default:
                 break;
 
         }
+    }
+
+    /**
+     * set if return is true
+     *
+     * @return
+     */
+    private boolean isShieldSet() {
+        Fixture m_next = this.body.getFixtureList().m_next;
+        return !m_next.m_isSensor;
     }
 
     @Override
@@ -210,6 +246,9 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     @Override
     public void shield() {
+        Fixture m_next = this.body.getFixtureList().m_next;
+        m_next.m_isSensor = !m_next.m_isSensor;
+
 
     }
 
@@ -248,9 +287,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         makeTrail();
     }
 
-
-    private final  Timer timer = new Timer();
-
     /**
      * use this to make trail beside the hero spaceship
      */
@@ -283,20 +319,20 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          * create the trail
          */
 
-        List<ClassicBomb> lBomb= new ArrayList<>();
+        List<ClassicBomb> lBomb = new ArrayList<>();
 //LEFT
         ClassicBomb cBomb = new ClassicBomb(this.world, worldPoint.x, worldPoint.y,
-                MasterPilot.HERO, MasterPilot.ENEMY | MasterPilot.PLANET, Color.RED,1);
-         cBomb.create();
+                MasterPilot.HERO, MasterPilot.ENEMY | MasterPilot.PLANET, Color.RED, 1);
+        cBomb.create();
         lBomb.add(cBomb);
 //RIGHT
         cBomb = new ClassicBomb(this.world, worldPoint2.x, worldPoint2.y,
-                MasterPilot.HERO, MasterPilot.ENEMY | MasterPilot.PLANET, Color.RED,1);
+                MasterPilot.HERO, MasterPilot.ENEMY | MasterPilot.PLANET, Color.RED, 1);
         cBomb.create();
         lBomb.add(cBomb);
 //MIDDLE
         cBomb = new ClassicBomb(this.world, worldPoint3.x, worldPoint3.y,
-                MasterPilot.HERO, MasterPilot.ENEMY | MasterPilot.PLANET, Color.RED,1);
+                MasterPilot.HERO, MasterPilot.ENEMY | MasterPilot.PLANET, Color.RED, 1);
         cBomb.create();
         lBomb.add(cBomb);
 
@@ -304,16 +340,14 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                for(ClassicBomb cBomb : lBomb){
+                for (ClassicBomb cBomb : lBomb) {
                     world.destroyBody(cBomb.getBody());
                 }
             }
-        },100,1);
+        }, 100, 1);
 
 
     }
-
-
 
     @Override
     public void down() {
