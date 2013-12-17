@@ -1,6 +1,9 @@
 package fr.umlv.masterPilot.world;
 
 import fr.umlv.masterPilot.Graphic.MasterPilot2D;
+import fr.umlv.masterPilot.Interface.Bomb;
+import fr.umlv.masterPilot.bomb.ExplodeBomb;
+import fr.umlv.masterPilot.hero.Hero;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -36,7 +39,8 @@ public class MasterPilot implements ContactListener {
     public static int PLANET = 0x0004;
     public static int SHOOT = 0x0008;
     public static int BOMB = 0x00016;
-    public static int SHIELD = 0x00032;
+    public static int MEGABOMB = 0x00032;
+    public static int SHIELD = 0x00064;
     /**
      * this is my world
      */
@@ -47,22 +51,20 @@ public class MasterPilot implements ContactListener {
      */
     private final Transform xf = new Transform();
     private final Vec2 center = new Vec2();
-    private final Vec2 axis = new Vec2();
     private final Vec2 v1 = new Vec2();
     private final Vec2 v2 = new Vec2();
     private final Vec2Array tlvertices = new Vec2Array();
-    private List<Body> destroyBody = new ArrayList<>();
-
-
-    //private final MasterContactListener contactListener;
     /**
      * use this to render purpose
      */
-    private MasterPilot2D masterPilot2D;
+    private final MasterPilot2D masterPilot2D;
+    //private final MasterContactListener contactListener;
+    private List<Body> destroyBody = new ArrayList<>();
     /**
      * keep reference of main character of the game
      */
-    private Body Hero;
+    private Hero hero;
+
 
     public MasterPilot(Graphics masterPilot2D) {
         this.world = new World(new Vec2(0, 0f));
@@ -105,18 +107,14 @@ public class MasterPilot implements ContactListener {
         return world;
     }
 
-    public Body getHero() {
-        return Hero;
-    }
-
     /**
      * set Hero to this class
      *
      * @param hero
      */
-    public void setHero(Body hero) {
+    public void setHero(Hero hero) {
         Objects.requireNonNull(hero);
-        this.Hero = hero;
+        this.hero = hero;
     }
 
     /**
@@ -157,9 +155,10 @@ public class MasterPilot implements ContactListener {
          */
 
         Color color = (Color) fixture.getUserData();
-        if(fixture.getType() == null){
-            System.out.println("fixture null");
-            return;
+        if (Objects.isNull(fixture.getType())) {
+            //Just ignore it
+            throw new RuntimeException();
+            // return;
         }
         switch (fixture.getType()) {
             case CIRCLE: {
@@ -168,15 +167,17 @@ public class MasterPilot implements ContactListener {
                 Transform.mulToOutUnsafe(xf, circle.m_p, center);
                 float radius = circle.m_radius;
 
-
+                /**
+                 * if shield is set
+                 * so we can draw it
+                 */
                 if (fixture.getFilterData().categoryBits == MasterPilot.SHIELD) {
                     /**
-                     * if shield is set
-                     * so we can draw it
+                     * we draw only if
+                     * shield can collide which other
                      */
                     if (!fixture.m_isSensor) {
-
-                        masterPilot2D.drawCircle(center, radius,  color, false);
+                        masterPilot2D.drawCircle(center, radius, color, false);
                     }
 
 
@@ -198,6 +199,18 @@ public class MasterPilot implements ContactListener {
                 }
 
                 masterPilot2D.drawFilledPolygon(vertices, vertexCount, color);
+
+                if (fixture.getFilterData().categoryBits == MasterPilot.BOMB) {
+
+                    Vec2 position = fixture.getBody().getWorldCenter();
+
+                        masterPilot2D.drawString(position, "B");
+
+                }else if (fixture.getFilterData().categoryBits == MasterPilot.MEGABOMB) {
+                    Vec2 position = fixture.getBody().getWorldCenter();
+
+                    masterPilot2D.drawString(position, "M.B");
+                }
             }
             break;
             case EDGE: {
@@ -248,13 +261,68 @@ public class MasterPilot implements ContactListener {
         Fixture fixtureB = contact.getFixtureB();
 
 
-        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD) {
+/**
+ * put the shield only if i won ' t it an item
+ */
+        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD &&
+                fixtureB.getFilterData().categoryBits != MasterPilot.BOMB) {
             fixtureA.m_isSensor = false;
         }
 
-        if (fixtureB.getFilterData().categoryBits == MasterPilot.SHIELD) {
+        if (fixtureB.getFilterData().categoryBits == MasterPilot.SHIELD &&
+                fixtureA.getFilterData().categoryBits != MasterPilot.BOMB) {
             fixtureB.m_isSensor = false;
         }
+/**
+ * collision with bomb
+ */
+        if (fixtureA.getFilterData().categoryBits == MasterPilot.BOMB
+                || fixtureA.getFilterData().categoryBits == MasterPilot.MEGABOMB) {
+
+            if (fixtureB.getBody().getUserData() == Hero.class) {
+                // i have no bomb yet so that i can get it
+                if (this.hero.getBombType() == Bomb.BombType.NONE) {
+                    if(fixtureA.getFilterData().categoryBits == MasterPilot.BOMB){
+                    this.hero.setBombType(Bomb.BombType.BOMB);
+                    }else{
+                        this.hero.setBombType(Bomb.BombType.MEGABOMB);
+                    }
+                    destroyBody.add(fixtureA.getBody());
+                } else {
+                    //  this.hero.triggerExplosion();
+                }
+
+            } else {
+                this.hero.triggerExplosion();
+                destroyBody.add(fixtureA.getBody());
+            }
+
+        }
+
+
+        if (fixtureB.getFilterData().categoryBits == MasterPilot.BOMB ||
+                fixtureB.getFilterData().categoryBits == MasterPilot.MEGABOMB) {
+
+            if (fixtureA.getBody().getUserData() == Hero.class) {
+                // i have no bomb yet so that i can get it
+                if (this.hero.getBombType() == Bomb.BombType.NONE) {
+                    if(fixtureB.getFilterData().categoryBits == MasterPilot.BOMB){
+                        this.hero.setBombType(Bomb.BombType.BOMB);
+                    }else{
+                        this.hero.setBombType(Bomb.BombType.MEGABOMB);
+                    }
+                    destroyBody.add(fixtureB.getBody());
+                } else {
+                    // this.hero.triggerExplosion();
+                }
+
+            } else {
+                this.hero.triggerExplosion();
+                destroyBody.add(fixtureB.getBody());
+            }
+        }
+
+
     }
 
     @Override
@@ -299,8 +367,12 @@ public class MasterPilot implements ContactListener {
 
     public List<Body> getDestroyBody() {
         List<Body> newList = new ArrayList<>(destroyBody);
-        // Collections.addAll(this.getDestroyBody(),newList);
+
         destroyBody = new ArrayList<>();
         return newList;
+    }
+
+    public Body getBodyHero() {
+        return hero.getBody();
     }
 }

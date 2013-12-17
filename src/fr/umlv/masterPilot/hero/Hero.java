@@ -4,6 +4,8 @@ import fr.umlv.masterPilot.Interface.Bomb;
 import fr.umlv.masterPilot.Interface.KeyMotionObserver;
 import fr.umlv.masterPilot.Interface.SpaceShip;
 import fr.umlv.masterPilot.bomb.ClassicBomb;
+import fr.umlv.masterPilot.bomb.ExplodeBomb;
+import fr.umlv.masterPilot.bomb.ImplodeBomb;
 import fr.umlv.masterPilot.bomb.RayBomb;
 import fr.umlv.masterPilot.world.MasterPilot;
 import fr.umlv.zen3.KeyboardEvent;
@@ -35,6 +37,9 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private final Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
     private final Timer timer = new Timer();
     private Body body;
+    private Bomb.BombType bombType = Bomb.BombType.NONE;
+    private Bomb cBomb;
+
 
     /**
      * create the hero at the specify coordinate
@@ -125,6 +130,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
 /*************************************************************************************************************/
         Body body = this.world.createBody(bd);
+
         body.createFixture(fs);
         body.createFixture(fd);
 
@@ -155,12 +161,16 @@ public class Hero implements KeyMotionObserver, SpaceShip {
                 /**
                  * fire only if we are not in shield mode
                  */
-                if (! isShieldSet()) {
+                if (!isShieldSet()) {
                     fire();
                 }
                 break;
             case "B":
-//                fireBomb();
+                if (!isShieldSet() && this.bombType != Bomb.BombType.NONE) {
+                    fireBomb(this.bombType);
+
+                  //  this.bombType = Bomb.BombType.NONE;
+                }
                 break;
             case "S":
                 shield();
@@ -173,7 +183,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     }
 
     /**
-     * set if return is true
+     * if set
+     * return is true
      *
      * @return
      */
@@ -189,8 +200,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          * and create a Bomb from that point
          */
 
-        PolygonShape sha = (PolygonShape) body.getFixtureList().getShape();
 
+        PolygonShape sha = (PolygonShape) body.getFixtureList().getShape();
         /**
          * Here the tip is store on third vertices
          * careful if body construction change
@@ -240,7 +251,94 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     }
 
     @Override
-    public void fireBomb(Bomb bomb) {
+    public void fireBomb(Bomb.BombType bomb) {
+
+
+        launchBomb(bomb);
+
+
+    }
+
+    private void launchBomb(Bomb.BombType type) {
+        /**
+         * I try to calculate the tip coordinate
+         * and create a Bomb from that point
+         */
+
+
+        PolygonShape sha = (PolygonShape) body.getFixtureList().getShape();
+        /**
+         * Here the tip is store on third vertices
+         * careful if body construction change
+         * so you must recalculate the tip too
+         */
+        Vec2[] vertices = sha.getVertices();
+
+
+        /**
+         * I get the actual tip coordinate in the world
+         */
+
+        Vec2 worldPoint = body.getWorldPoint(vertices[3]);
+
+        ;
+        /**
+         * create the shoot
+         */
+
+        // TODO refactor this part
+           switch(type){
+
+               case NONE:
+                   break;
+               case BOMB:
+
+                   ExplodeBomb eBomb = new ExplodeBomb(this.world, worldPoint.x, worldPoint.y, true);
+
+
+                   eBomb.create();
+
+                   Vec2 force = body.getWorldVector(classicBombSpeed.mul(1000));
+                   Vec2 point = body.getWorldPoint(eBomb.getBody().getWorldCenter());
+
+                   /**
+                    * need to do transform to position the shoot
+                    * in good direction
+                    */
+
+                   eBomb.getBody().setTransform(worldPoint, body.getAngle());
+                   eBomb.getBody().applyLinearImpulse(force, point);
+
+                   this.cBomb = eBomb;
+
+                   break;
+               case MEGABOMB:
+                   ImplodeBomb iBomb = new ImplodeBomb(this.world, worldPoint.x, worldPoint.y, true);
+
+
+                   iBomb.create();
+
+                   Vec2 force2 = body.getWorldVector(classicBombSpeed.mul(1000));
+                   Vec2 point2 = body.getWorldPoint(iBomb.getBody().getWorldCenter());
+
+                   /**
+                    * need to do transform to position the shoot
+                    * in good direction
+                    */
+
+                   iBomb.getBody().setTransform(worldPoint, body.getAngle());
+                   iBomb.getBody().applyLinearImpulse(force2, point2);
+
+                   this.cBomb = iBomb;
+                   break;
+
+               default :
+                   throw new UnsupportedOperationException();
+           }
+
+
+
+
 
     }
 
@@ -255,13 +353,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     @Override
     public void right() {
         this.body.applyTorque(-500f);
-
-
-        // this.body.applyAngularImpulse(500);
-
-//TODO ROTATION WITH TORQUES INSTEAD
-//        this.body.setTransform(body.getPosition(), this.body.getAngle() - 0.05f);
-
     }
 
     @Override
@@ -277,7 +368,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     @Override
     public void up() {
-//TODO MANAGE ACCELERATION
+
         Vec2 force = body.getWorldVector(heroSpeed);
         Vec2 point = body.getWorldPoint(body.getLocalCenter().add(
                 new Vec2(0.0f, 100.0f)));
@@ -360,5 +451,19 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     public int getY() {
         return this.y_axis;
+    }
+
+    public Bomb.BombType getBombType() {
+        return bombType;
+    }
+
+    public void setBombType(Bomb.BombType bombType) {
+        this.bombType = bombType;
+    }
+
+    public void triggerExplosion() {
+        this.cBomb.boum();
+
+        this.bombType= Bomb.BombType.NONE;
     }
 }

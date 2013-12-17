@@ -34,6 +34,13 @@ public class MasterPilot2D {
         yIntsPool = new IntArray();
     }
 
+
+    public void drawString(Vec2 position, String s) {
+        getWorldToScreenToOut(position, sp1);
+
+        this.graphic.setColor(Color.white);
+        this.graphic.drawString(s, (int)sp1.x-2, (int)sp1.y+2);
+    }
     public void drawSegment(Vec2 p1, Vec2 p2, Color color) {
         getWorldToScreenToOut(p1, sp1);
         getWorldToScreenToOut(p2, sp2);
@@ -141,14 +148,7 @@ public class MasterPilot2D {
         viewportTransform.setCenter(position);
     }
 
-    /**
-     * @param argScreen
-     * @param argWorld
-     * @see org.jbox2d.common.IViewportTransform#getScreenToWorld(org.jbox2d.common.Vec2, org.jbox2d.common.Vec2)
-     */
-    public void getScreenToWorldToOut(Vec2 argScreen, Vec2 argWorld) {
-        viewportTransform.getScreenToWorld(argScreen, argWorld);
-    }
+
 
     /**
      * @param argWorld

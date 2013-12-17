@@ -36,7 +36,7 @@ public class Cruiser implements SpaceShip{
     }
 
     @Override
-    public void fireBomb(Bomb bomb) {
+    public void fireBomb(Bomb.BombType bomb) {
         // TODO Auto-generated method stub
         
     }
