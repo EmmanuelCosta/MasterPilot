@@ -10,8 +10,10 @@ import java.awt.*;
 /**
  * This is graphical part of MasterPilot Game
  * It use the viewportTransform class of jbox2d
- * which contains some interisting methods
+ * which contains some interesting methods
  * for translation calculation
+ *
+ * it is inspire by DebugDraw2D which is a debug drawing way given by default by jbox lirairie
  * Created by emmanuel on 10/12/13.
  */
 public class MasterPilot2D {

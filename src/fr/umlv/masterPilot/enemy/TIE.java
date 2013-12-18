@@ -138,4 +138,8 @@ public class TIE implements SpaceShip{
         // TODO Auto-generated method stub
         
     }
+
+    public Body getBody() {
+        return body;
+    }
 }

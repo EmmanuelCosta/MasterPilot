@@ -3,6 +3,7 @@ package fr.umlv.masterPilot;
 
 import fr.umlv.masterPilot.Interface.KeyMotionObservable;
 import fr.umlv.masterPilot.Interface.KeyMotionObserver;
+import fr.umlv.masterPilot.Interface.SpaceShip;
 import fr.umlv.masterPilot.bomb.ExplodeBomb;
 import fr.umlv.masterPilot.bomb.ImplodeBomb;
 import fr.umlv.masterPilot.enemy.TIE;
@@ -89,15 +90,20 @@ public class MasterPilotMotor implements KeyMotionObservable {
         TIE tie = new TIE(masterPilot.getWorld(), 150, 50, h.getX(), h.getY());
         tie.create();
 
-
+masterPilot.addToSpaceshipManager(tie.getBody(),tie);
         tie = new TIE(masterPilot.getWorld(), 20, 90, h.getX(), h.getY());
         tie.create();
-
+        Body body = tie.getBody();
+        System.out.println(tie);
+        masterPilot.addToSpaceshipManager(tie.getBody(),tie);
         tie = new TIE(masterPilot.getWorld(), 120, 90, h.getX(), h.getY());
         tie.create();
-
+        System.out.println(tie);
+        masterPilot.addToSpaceshipManager(tie.getBody(),tie);
         tie = new TIE(masterPilot.getWorld(), 50, 90, h.getX(), h.getY());
         tie.create();
+        System.out.println(tie);
+        masterPilot.addToSpaceshipManager(tie.getBody(),tie);
 
         ImplodeBomb impBomb = new ImplodeBomb(masterPilot.getWorld(), 50, 35);
         impBomb.create();
@@ -105,6 +111,12 @@ public class MasterPilotMotor implements KeyMotionObservable {
         ExplodeBomb empBomb = new ExplodeBomb(masterPilot.getWorld(), 70, -35);
         empBomb.create();
 
+      //SpaceShip tie2 =  masterPilot.removeToSpaceshipManager(body);
+        //System.out.println(tie2);
+        System.out.println("==========");
+       for(SpaceShip space :  masterPilot.getEnemyList()){
+           System.out.println(space);
+       }
     }
 
 
@@ -129,6 +141,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
             while (iterator.hasNext()) {
                 Body next = iterator.next();
+
                 iterator.remove();
                 masterPilot.getWorld().destroyBody(next);
 

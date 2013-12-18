@@ -13,7 +13,7 @@ public interface Bomb {
      * we simulate here an explode blast
      *
      * we will apply force on the body
-     * see c++ source here : http://www.iforce2d.net/b2dtut/explosions
+     * @see c++ source here : http://www.iforce2d.net/b2dtut/explosions
      *
      * @param body
      * @param blastCenter
