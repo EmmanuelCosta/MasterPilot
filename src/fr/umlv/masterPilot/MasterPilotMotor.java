@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by emmanuel on 06/12/13.
  */
-public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
+public class MasterPilotMotor implements KeyMotionObservable {
     private final int WIDTH = 900;
     private final int HEIGHT = 600;
     //OBSERVER LIST
@@ -141,6 +141,8 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
              * this for notify the hero
              * that event have been find
              */
+
+
             if (keyEvent != null) {
                 this.notifyObserver(keyEvent);
             }
@@ -201,18 +203,5 @@ public class MasterPilotMotor implements KeyMotionObservable, KeyListener {
         observerList.remove(observer);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
 
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
 }

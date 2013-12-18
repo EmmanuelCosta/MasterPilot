@@ -68,7 +68,7 @@ public class MasterPilot implements ContactListener {
 
     public MasterPilot(Graphics masterPilot2D) {
         this.world = new World(new Vec2(0, 0f));
-        //this.contactListener = new MasterContactListener( this.world);
+
         this.world.setContactListener(this);
         this.masterPilot2D = new MasterPilot2D(masterPilot2D);
 
@@ -264,8 +264,8 @@ public class MasterPilot implements ContactListener {
 /**
  * put the shield only if i won ' t it an item
  */
-        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD &&
-                fixtureB.getFilterData().categoryBits != MasterPilot.BOMB) {
+        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD &&(
+                fixtureB.getFilterData().categoryBits != MasterPilot.BOMB )) {
             fixtureA.m_isSensor = false;
         }
 
