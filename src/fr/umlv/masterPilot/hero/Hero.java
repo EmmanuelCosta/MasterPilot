@@ -1,6 +1,7 @@
 package fr.umlv.masterPilot.hero;
 
 import fr.umlv.masterPilot.Interface.Bomb;
+
 import fr.umlv.masterPilot.Interface.KeyMotionObserver;
 import fr.umlv.masterPilot.Interface.SpaceShip;
 import fr.umlv.masterPilot.bomb.ClassicBomb;

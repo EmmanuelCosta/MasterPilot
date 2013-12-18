@@ -2,8 +2,10 @@ package fr.umlv.masterPilot.world;
 
 import fr.umlv.masterPilot.Graphic.MasterPilot2D;
 import fr.umlv.masterPilot.Interface.Bomb;
+import fr.umlv.masterPilot.Interface.SpaceShip;
 import fr.umlv.masterPilot.bomb.ExplodeBomb;
 import fr.umlv.masterPilot.hero.Hero;
+
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -60,8 +62,10 @@ public class MasterPilot implements ContactListener {
     private final MasterPilot2D masterPilot2D;
     //private final MasterContactListener contactListener;
     private List<Body> destroyBody = new ArrayList<>();
+    private final List<SpaceShip> enemyList = new ArrayList<>();
+    
     /**
-     * keep reference of main character of the game
+     * keep reference o main character of the game
      */
     private Hero hero;
 
@@ -370,6 +374,10 @@ public class MasterPilot implements ContactListener {
 
         destroyBody = new ArrayList<>();
         return newList;
+    }
+    
+    public List<SpaceShip> getEnemyList() {
+        return enemyList;
     }
 
     public Body getBodyHero() {
