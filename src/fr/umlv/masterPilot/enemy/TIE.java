@@ -1,6 +1,8 @@
 package fr.umlv.masterPilot.enemy;
 
 import java.awt.Color;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -30,20 +32,21 @@ public class TIE implements SpaceShip{
     private Vec2 shoot1;
     private Vec2 shoot2;
     private Hero hero;
+    private final Timer timer = new Timer();
 
     public TIE(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.hero = hero;
-        this.shoot1 = new Vec2(x_axis - 20, y_axis - 5);
-        this.shoot2 = new Vec2 (x_axis + 20, y_axis - 5);
+        this.shoot1 = new Vec2(- 20, - 5);
+        this.shoot2 = new Vec2(+ 20, - 5);
        
         /**
          *  Interactions with the other bodies.
          */
         this.category = MasterPilot.ENEMY;
-        this.maskBit = MasterPilot.PLANET | MasterPilot.HERO | MasterPilot.ENEMY | MasterPilot.SHOOT;
+        this.maskBit = MasterPilot.PLANET | MasterPilot.SHIELD ;
     }
     
     public void create() {
@@ -57,12 +60,12 @@ public class TIE implements SpaceShip{
          * Number of vertices.
          */
         Vec2[] vertices = new Vec2[6];
-        vertices[0] = new Vec2(x_axis - 10, y_axis - 5);
-        vertices[1] = new Vec2(x_axis - 20, y_axis);
-        vertices[2] = new Vec2(x_axis - 10, y_axis + 5);
-        vertices[3] = new Vec2(x_axis + 10, y_axis + 5);
-        vertices[4] = new Vec2(x_axis + 20,  y_axis);
-        vertices[5] = new Vec2(x_axis + 10, y_axis - 5);
+        vertices[0] = new Vec2( - 10, - 5);
+        vertices[1] = new Vec2( - 20, + 0);
+        vertices[2] = new Vec2( - 10, + 5);
+        vertices[3] = new Vec2( + 10, + 5);
+        vertices[4] = new Vec2( + 20, + 0);
+        vertices[5] = new Vec2( + 10, - 5);
         ps.set(vertices, 6);
         
         /**
@@ -133,9 +136,11 @@ public class TIE implements SpaceShip{
         /**
          * create the shoot
          */
-        RayBomb rayon1 = new RayBomb(this.world, worldPoint1.x, worldPoint1.y);
+        int maskBit  = MasterPilot.SHIELD | MasterPilot.PLANET;
+        int category = MasterPilot.SHOOT;
+        RayBomb rayon1 = new RayBomb(this.world, worldPoint1.x, worldPoint1.y, category, maskBit, Color.orange);
         rayon1.create();
-        RayBomb rayon2 = new RayBomb(this.world, worldPoint2.x, worldPoint2.y);
+        RayBomb rayon2 = new RayBomb(this.world, worldPoint2.x, worldPoint2.y, category, maskBit, Color.orange);
         rayon2.create();
 
         /**
@@ -153,6 +158,14 @@ public class TIE implements SpaceShip{
         rayon1.getBody().applyForce(force, point1);
         rayon2.getBody().setTransform(worldPoint2, body.getAngle());
         rayon2.getBody().applyForce(force, point2);
+        
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                    world.destroyBody(rayon1.getBody());
+                    world.destroyBody(rayon2.getBody());
+            }
+        }, 100, 1);
         
     }
 

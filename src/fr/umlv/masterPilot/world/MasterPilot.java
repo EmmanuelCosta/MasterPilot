@@ -334,7 +334,6 @@ public class MasterPilot implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-
         if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD) {
             fixtureA.m_isSensor = true;
         }

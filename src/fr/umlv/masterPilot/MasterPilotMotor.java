@@ -85,11 +85,11 @@ public class MasterPilotMotor implements KeyMotionObservable {
         tie1.create();
         masterPilot.getEnemyList().add(tie1);
         
-        TIE tie2 = new TIE(masterPilot.getWorld(), 20, 90, h);
+        TIE tie2 = new TIE(masterPilot.getWorld(), -20, 90, h);
         tie2.create();
         masterPilot.getEnemyList().add(tie2);
 
-        TIE tie3 = new TIE(masterPilot.getWorld(), 120, 90, h);
+        TIE tie3 = new TIE(masterPilot.getWorld(), 200, 90, h);
         tie3.create();
         masterPilot.getEnemyList().add(tie3);
 
@@ -119,15 +119,17 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         for (;;) {
 
+            
             masterPilot.getWorld().step(timeStep, velocityIterations, positionIterations);       
-         
+            
             List<Body> destroyBody = masterPilot.getDestroyBody();
             Iterator<Body> iterator = destroyBody.iterator();
-//            while (iterator.hasNext()) {
-//                Body next = iterator.next();
-//                iterator.remove();
-//                masterPilot.getWorld().destroyBody(next);
-//            }
+           while (iterator.hasNext()) {
+                Body next = iterator.next();
+                iterator.remove();
+                masterPilot.getWorld().destroyBody(next);
+           }
+
 
             /**
              * the tie shoot every 1 second once.
@@ -136,16 +138,15 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //                
 //                @Override
 //                public void run() {
-//                    
-//                    List<SpaceShip> enemeyList = masterPilot.getEnemyList();
-//                    Iterator<SpaceShip> it = enemeyList.iterator();
-//                    
-//                    while(it.hasNext()) {
-//                        SpaceShip sp = it.next();
-//                        sp.fire(); 
-//                    }
+                    
+                    List<SpaceShip> enemeyList = masterPilot.getEnemyList();
+                    Iterator<SpaceShip> it = enemeyList.iterator();
+                    
+                    for(SpaceShip enemy : enemeyList) {
+                        enemy.fire();
+                    }
 //                }
-//            }, 5000, 1);
+//            }, 1000, 1);
             
             KeyboardEvent keyEvent = context.pollKeyboard();
 
