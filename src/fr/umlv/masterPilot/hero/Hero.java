@@ -1,6 +1,7 @@
 package fr.umlv.masterPilot.hero;
 
 import fr.umlv.masterPilot.Interface.Bomb;
+
 import fr.umlv.masterPilot.Interface.KeyMotionObserver;
 import fr.umlv.masterPilot.Interface.SpaceShip;
 import fr.umlv.masterPilot.bomb.ClassicBomb;
@@ -219,12 +220,10 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
 
         Vec2 worldPoint = body.getWorldPoint(vertices[3]);
-
-        ;
+        
         /**
          * create the shoot
          */
-
         RayBomb cBomb = new RayBomb(this.world, worldPoint.x, worldPoint.y);
 
 
@@ -237,8 +236,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          * need to do transform to position the shoot
          * in good direction
          */
-
-
         cBomb.getBody().setTransform(worldPoint, body.getAngle());
         cBomb.getBody().applyForce(force, point);
         Timer timer = new Timer();
@@ -266,11 +263,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     @Override
     public void fireBomb(Bomb.BombType bomb) {
-
-
         launchBomb(bomb);
-
-
     }
 
     private void launchBomb(Bomb.BombType type) {

@@ -59,10 +59,8 @@ public class RayBomb {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
-
         this.category = category;
         this.maskBit = maskBit;
-
         this.color = color;
     }
 
@@ -70,38 +68,38 @@ public class RayBomb {
      * create the rayBomb in the world
      */
     public void create() {
-//create body shape and specification
+        /**
+         * create body shape and specification
+         */
         Vec2 vertices[] = new Vec2[2];
         vertices[0] = new Vec2(0, 0);
-
         vertices[1] = new Vec2(0, 5f);
-
         EdgeShape ps = new EdgeShape();
         ps.set(vertices[0], vertices[1]);
 
-
-// create body
+        /**
+         * create body
+         */
         BodyDef bd = new BodyDef();
-
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.DYNAMIC;
         bd.userData = this.getClass();
 
-        // Create a fixture
+        /**
+         *  Create a fixture
+         */
         FixtureDef fd = new FixtureDef();
-        // applique toi a cs
         fd.shape = ps;
         fd.density = 0.0f;
         fd.friction = 0.1f;
         fd.restitution = 0.5f;
-
         fd.filter.categoryBits = this.category;
-
         fd.filter.maskBits = this.maskBit;
-
         fd.userData = color;
 
-        // body
+        /**
+         * join the fixture to the body
+         */
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
         bd.allowSleep = true;

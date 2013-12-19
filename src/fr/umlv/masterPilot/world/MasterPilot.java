@@ -23,6 +23,8 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+
+
 /**
  * created by Babala Costa Emmanuel
  * <p>
@@ -57,15 +59,15 @@ public class MasterPilot implements ContactListener {
      * use this to render purpose
      */
     private final MasterPilot2D masterPilot2D;
-
+    private final List<SpaceShip> enemyList = new ArrayList<>();
+    private final Map<Body, SpaceShip> enemyManager = new HashMap<>();
+    private final Map<Body, Bomb> bombManager = new HashMap<>();
     //private final MasterContactListener contactListener;
     private List<Body> destroyBody = new ArrayList<>();
     /**
-     * keep reference of main character of the game
+     * keep reference o main character of the game
      */
     private Hero hero;
-    private final Map<Body, SpaceShip> enemyManager = new HashMap<>();
-    private final Map<Body, Bomb> bombManager = new HashMap<>();
 
 
     public MasterPilot(Graphics masterPilot2D) {
@@ -269,11 +271,9 @@ public class MasterPilot implements ContactListener {
  */
         if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD &&
                 fixtureB.getFilterData().categoryBits != MasterPilot.BOMB
-                &&fixtureB.getFilterData().categoryBits !=  MasterPilot.MEGABOMB) {
+                && fixtureB.getFilterData().categoryBits != MasterPilot.MEGABOMB) {
             fixtureA.m_isSensor = false;
-        }
-
-       else if (fixtureB.getFilterData().categoryBits == MasterPilot.SHIELD &&
+        } else if (fixtureB.getFilterData().categoryBits == MasterPilot.SHIELD &&
                 fixtureA.getFilterData().categoryBits != MasterPilot.BOMB
                 && fixtureA.getFilterData().categoryBits != MasterPilot.MEGABOMB) {
             fixtureB.m_isSensor = false;
@@ -294,7 +294,7 @@ public class MasterPilot implements ContactListener {
                     }
                     destroyBody.add(fixtureA.getBody());
                 } else {
-                      this.hero.triggerExplosion();
+                    this.hero.triggerExplosion();
 
                 }
 
@@ -337,8 +337,7 @@ public class MasterPilot implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-
-        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD ) {
+        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD) {
 
             fixtureA.m_isSensor = true;
         }
@@ -377,12 +376,13 @@ public class MasterPilot implements ContactListener {
     /**
      * this will return a body list of all body
      * which collide and it is destinate to be destroyed
+     *
      * @return
      */
     public List<Body> getDestroyBody() {
         List<Body> newList = new ArrayList<>(destroyBody);
-        int i=0;
-        for(Body bd : newList){
+        int i = 0;
+        for (Body bd : newList) {
             this.removeToSpaceshipManager(bd);
 
         }
@@ -397,28 +397,28 @@ public class MasterPilot implements ContactListener {
     }
 
     public void addToSpaceshipManager(Body bodySpaceship, SpaceShip spaceShip) {
-        if(! enemyManager.containsKey(bodySpaceship)){
-                 this.enemyManager.put(bodySpaceship, spaceShip);
-        }
-    }
-
-    public SpaceShip removeToSpaceshipManager(Body bodySpaceship){
-
-            return this.enemyManager.remove(bodySpaceship);
-
-    }
-
-    public List<SpaceShip> getEnemyList(){
-        return new ArrayList<>(this.enemyManager.values());
-    }
-
-    public void addToBombManager(Body bodySpaceship, SpaceShip spaceShip) {
-        if(! this.bombManager.containsKey(bodySpaceship)){
+        if (!enemyManager.containsKey(bodySpaceship)) {
             this.enemyManager.put(bodySpaceship, spaceShip);
         }
     }
 
-    public Bomb removeToBombManager(Body bodySpaceship){
+    public SpaceShip removeToSpaceshipManager(Body bodySpaceship) {
+
+        return this.enemyManager.remove(bodySpaceship);
+
+    }
+
+    public List<SpaceShip> getEnemyList() {
+        return new ArrayList<>(this.enemyManager.values());
+    }
+
+    public void addToBombManager(Body bodySpaceship, SpaceShip spaceShip) {
+        if (!this.bombManager.containsKey(bodySpaceship)) {
+            this.enemyManager.put(bodySpaceship, spaceShip);
+        }
+    }
+
+    public Bomb removeToBombManager(Body bodySpaceship) {
 
         return this.bombManager.remove(bodySpaceship);
 

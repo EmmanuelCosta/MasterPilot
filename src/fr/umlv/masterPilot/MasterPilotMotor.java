@@ -12,6 +12,7 @@ import fr.umlv.masterPilot.star.Star;
 import fr.umlv.masterPilot.world.MasterPilot;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
+
 import org.jbox2d.dynamics.Body;
 
 import java.awt.*;
@@ -20,6 +21,8 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by emmanuel on 06/12/13.
@@ -27,8 +30,10 @@ import java.util.List;
 public class MasterPilotMotor implements KeyMotionObservable {
     private final int WIDTH = 900;
     private final int HEIGHT = 600;
+    
     //OBSERVER LIST
     private final List<KeyMotionObserver> observerList = new ArrayList<>();
+    
     //TODO MOVE IT IN MASTERPILOTE WORLD
     float timeStep = 1.0f / 6f;
     int velocityIterations = 6;
@@ -39,12 +44,8 @@ public class MasterPilotMotor implements KeyMotionObservable {
         context.render(graphics -> {
             MasterPilot masterPilot = initPlateform(graphics);
             populatedWorld(masterPilot, context);
-
-
             run(masterPilot, context);
         });
-
-
     }
 
     private MasterPilot initPlateform(Graphics2D graphics) {
@@ -62,48 +63,38 @@ public class MasterPilotMotor implements KeyMotionObservable {
         //TODO MANAGE WITH FILE CONFIG
 
         Star star = new Star(masterPilot.getWorld(), 100, 250);
-
         star.create();
 
-
         Star star2 = new Star(masterPilot.getWorld(), 100, 550, Color.blue);
-
         star2.create();
 
-
         Star star3 = new Star(masterPilot.getWorld(), 400, 350, Color.GREEN);
-
         star3.create();
-//
-//
-//
+
 
         Hero h = new Hero(masterPilot.getWorld(), 0, 0);
         //
         h.create();
-        //
-        //
-
+      
         masterPilot.setHero(h);
         this.addObserver(h);
-//
-        TIE tie = new TIE(masterPilot.getWorld(), 150, 50, h.getX(), h.getY());
-        tie.create();
 
-masterPilot.addToSpaceshipManager(tie.getBody(),tie);
-        tie = new TIE(masterPilot.getWorld(), 20, 90, h.getX(), h.getY());
-        tie.create();
-        Body body = tie.getBody();
-        System.out.println(tie);
-        masterPilot.addToSpaceshipManager(tie.getBody(),tie);
-        tie = new TIE(masterPilot.getWorld(), 120, 90, h.getX(), h.getY());
-        tie.create();
-        System.out.println(tie);
-        masterPilot.addToSpaceshipManager(tie.getBody(),tie);
-        tie = new TIE(masterPilot.getWorld(), 50, 90, h.getX(), h.getY());
-        tie.create();
-        System.out.println(tie);
-        masterPilot.addToSpaceshipManager(tie.getBody(),tie);
+        TIE tie1 = new TIE(masterPilot.getWorld(), 150, 50, h);
+        tie1.create();
+        masterPilot.getEnemyList().add(tie1);
+        
+        TIE tie2 = new TIE(masterPilot.getWorld(), -20, 90, h);
+        tie2.create();
+        masterPilot.getEnemyList().add(tie2);
+
+        TIE tie3 = new TIE(masterPilot.getWorld(), 200, 90, h);
+        tie3.create();
+        masterPilot.getEnemyList().add(tie3);
+
+        TIE tie4 = new TIE(masterPilot.getWorld(), 50, 90, h);
+        tie4.create();
+        masterPilot.getEnemyList().add(tie4);
+
 
         ImplodeBomb impBomb = new ImplodeBomb(masterPilot.getWorld(), 50, 35);
         impBomb.create();
@@ -129,25 +120,40 @@ masterPilot.addToSpaceshipManager(tie.getBody(),tie);
         long beforeTime, afterTime, timeDiff, sleepTime;
 
         beforeTime = System.nanoTime();
+        Timer timer = new Timer();
 
+        for (;;) {
 
-        for (; ; ) {
-
-            masterPilot.getWorld().step(timeStep, velocityIterations, positionIterations);
-
+            
+            masterPilot.getWorld().step(timeStep, velocityIterations, positionIterations);       
+            
             List<Body> destroyBody = masterPilot.getDestroyBody();
-
             Iterator<Body> iterator = destroyBody.iterator();
-
-            while (iterator.hasNext()) {
+           while (iterator.hasNext()) {
                 Body next = iterator.next();
 
                 iterator.remove();
                 masterPilot.getWorld().destroyBody(next);
+           }
 
-            }
 
-
+            /**
+             * the tie shoot every 1 second once.
+             */
+//            timer.schedule(new TimerTask() {
+//                
+//                @Override
+//                public void run() {
+                    
+                    List<SpaceShip> enemeyList = masterPilot.getEnemyList();
+                    Iterator<SpaceShip> it = enemeyList.iterator();
+                    
+                    for(SpaceShip enemy : enemeyList) {
+                        enemy.fire();
+                    }
+//                }
+//            }, 1000, 1);
+            
             KeyboardEvent keyEvent = context.pollKeyboard();
 
             /**
