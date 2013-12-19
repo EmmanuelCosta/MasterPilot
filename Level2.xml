@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Level>
+	<!-- Start level 2-->
+	<Bomb>
+		<TotalPercentage>5</TotalPercentage>
+	</Bomb>
+	<MegaBomb>
+		<TotalPercentage>5</TotalPercentage>	
+	</MegaBomb>
+	<Wave>
+		<TotalNumber>4</TotalNumber>
+	</Wave>
+	<Enemy>
+		<TotalPercentage>30</TotalPercentage>
+		<TiePercentage>5</TiePercentage>
+		<CruiserPercentage>5</CruiserPercentage>
+		<SquadronPercentage>3</SquadronPercentage>
+	</Enemy>	
+	<Planet> 
+		<TotalPercentage>15</TotalPercentage>
+		<RadiusMin>10</RadiusMin>
+		<RadiusMax>100</RadiusMax>
+		<DensityMin>1500</DensityMin>
+		<DensityMax>2500</DensityMax>  
+	</Planet>
+</Level>
+
