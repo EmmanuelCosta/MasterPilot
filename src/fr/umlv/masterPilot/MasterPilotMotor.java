@@ -83,24 +83,22 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         TIE tie1 = new TIE(masterPilot.getWorld(), 150, 50, h);
         tie1.create();
-      //  masterPilot.getEnemyList().add(tie1);
-//
+
+        
+        masterPilot.addToSpaceshipManager(tie1.getBody(), tie1);
+
+
         TIE tie2 = new TIE(masterPilot.getWorld(), -20, 90, h);
         tie2.create();
-//        masterPilot.getEnemyList().add(tie2);
+
 //
         TIE tie3 = new TIE(masterPilot.getWorld(), 200, 90, h);
         tie3.create();
-//        masterPilot.getEnemyList().add(tie3);
+
 //
         TIE tie4 = new TIE(masterPilot.getWorld(), 50, 90, h);
         tie4.create();
-//        masterPilot.getEnemyList().add(tie4);
-//
-//
-//        ImplodeBomb impBomb = new ImplodeBomb(masterPilot.getWorld(), 50, 35);
-//        impBomb.create();
-//
+
         GenericBomb empBomb = new GenericBomb(masterPilot.getWorld(), 70, -35, Bomb.BombType.BOMB);
         empBomb.create();
 
@@ -109,8 +107,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         masterPilot.addToBombManager(empBomb.getBody(),empBomb);
 
-      //SpaceShip tie2 =  masterPilot.removeToSpaceshipManager(body);
-        //System.out.println(tie2);
+
         System.out.println("==========");
        for(SpaceShip space :  masterPilot.getEnemyList()){
            System.out.println(space);
@@ -144,22 +141,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
            }
 
 
-            /**
-             * the tie shoot every 1 second once.
-             */
-//            timer.schedule(new TimerTask() {
-//                
-//                @Override
-//                public void run() {
-                    
-                    List<SpaceShip> enemeyList = masterPilot.getEnemyList();
-                    Iterator<SpaceShip> it = enemeyList.iterator();
 
-                    for(SpaceShip enemy : enemeyList) {
-                        enemy.fire();
-                    }
-//                }
-//            }, 1000, 1);
             
             KeyboardEvent keyEvent = context.pollKeyboard();
 
