@@ -5,26 +5,20 @@ import fr.umlv.masterPilot.Interface.Bomb;
 import fr.umlv.masterPilot.Interface.KeyMotionObservable;
 import fr.umlv.masterPilot.Interface.KeyMotionObserver;
 import fr.umlv.masterPilot.Interface.SpaceShip;
-import fr.umlv.masterPilot.bomb.ExplodeBomb;
 import fr.umlv.masterPilot.bomb.GenericBomb;
-import fr.umlv.masterPilot.bomb.ImplodeBomb;
 import fr.umlv.masterPilot.enemy.TIE;
 import fr.umlv.masterPilot.hero.Hero;
 import fr.umlv.masterPilot.star.Star;
 import fr.umlv.masterPilot.world.MasterPilot;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
-
 import org.jbox2d.dynamics.Body;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by emmanuel on 06/12/13.
@@ -32,10 +26,8 @@ import java.util.TimerTask;
 public class MasterPilotMotor implements KeyMotionObservable {
     private final int WIDTH = 900;
     private final int HEIGHT = 600;
-    
     //OBSERVER LIST
     private final List<KeyMotionObserver> observerList = new ArrayList<>();
-    
     //TODO MOVE IT IN MASTERPILOTE WORLD
     float timeStep = 1.0f / 6f;
     int velocityIterations = 6;
@@ -84,39 +76,48 @@ public class MasterPilotMotor implements KeyMotionObservable {
         TIE tie1 = new TIE(masterPilot.getWorld(), 150, 50, h);
         tie1.create();
 
-        
-        masterPilot.addToSpaceshipManager(tie1.getBody(), tie1);
 
+        masterPilot.addToSpaceshipManager(tie1.getBody(), tie1);
 
         TIE tie2 = new TIE(masterPilot.getWorld(), -20, 90, h);
         tie2.create();
-
+        masterPilot.addToSpaceshipManager(tie1.getBody(), tie2);
+//        masterPilot.getEnemyList().add(tie2);
 //
         TIE tie3 = new TIE(masterPilot.getWorld(), 200, 90, h);
         tie3.create();
-
+        masterPilot.addToSpaceshipManager(tie1.getBody(), tie3);
+//        masterPilot.getEnemyList().add(tie3);
 //
         TIE tie4 = new TIE(masterPilot.getWorld(), 50, 90, h);
         tie4.create();
-
+        masterPilot.addToSpaceshipManager(tie1.getBody(), tie4);
+//        masterPilot.getEnemyList().add(tie4);
+//
+//
+//        ImplodeBomb impBomb = new ImplodeBomb(masterPilot.getWorld(), 50, 35);
+//        impBomb.create();
+//
         GenericBomb empBomb = new GenericBomb(masterPilot.getWorld(), 70, -35, Bomb.BombType.BOMB);
         empBomb.create();
 
+        masterPilot.addToBombManager(empBomb.getBody(), empBomb);
         empBomb = new GenericBomb(masterPilot.getWorld(), 170, -35, Bomb.BombType.MEGABOMB);
         empBomb.create();
 
-        masterPilot.addToBombManager(empBomb.getBody(),empBomb);
+        masterPilot.addToBombManager(empBomb.getBody(), empBomb);
 
-
+        //SpaceShip tie2 =  masterPilot.removeToSpaceshipManager(body);
+        //System.out.println(tie2);
         System.out.println("==========");
-       for(SpaceShip space :  masterPilot.getEnemyList()){
-           System.out.println(space);
-       }
+        for (SpaceShip space : masterPilot.getEnemyList()) {
+            System.out.println(space);
+        }
     }
-
 
     /**
      * main loop of the game
+     *
      * @param masterPilot : This is the masterpilote world
      * @param context
      */
@@ -126,23 +127,21 @@ public class MasterPilotMotor implements KeyMotionObservable {
         beforeTime = System.nanoTime();
         Timer timer = new Timer();
 
-        for (;;) {
+        for (; ; ) {
 
-            
-            masterPilot.getWorld().step(timeStep, velocityIterations, positionIterations);       
-            
+
+            masterPilot.getWorld().step(timeStep, velocityIterations, positionIterations);
+
             List<Body> destroyBody = masterPilot.getDestroyBody();
             Iterator<Body> iterator = destroyBody.iterator();
-           while (iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 Body next = iterator.next();
 
                 iterator.remove();
                 masterPilot.getWorld().destroyBody(next);
-           }
+            }
 
 
-
-            
             KeyboardEvent keyEvent = context.pollKeyboard();
 
             /**
@@ -213,12 +212,13 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
     /**
      * this will apply the spaceship logic for all ennemy
-     * @see #doEnemyLogic(fr.umlv.masterPilot.Interface.SpaceShip, fr.umlv.masterPilot.hero.Hero)
+     *
      * @param spaceShips
      * @param hero
+     * @see #doEnemyLogic(fr.umlv.masterPilot.Interface.SpaceShip, fr.umlv.masterPilot.hero.Hero)
      */
-    private void proccessManager(List<SpaceShip> spaceShips,Hero hero){
-        for(SpaceShip space :spaceShips){
+    private void proccessManager(List<SpaceShip> spaceShips, Hero hero) {
+        for (SpaceShip space : spaceShips) {
             doEnemyLogic(space, hero);
         }
     }
@@ -228,7 +228,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
      * according to the hero
      *
      * @param space : the enemy spaceship
-     * @param hero : the spaceship hero
+     * @param hero  : the spaceship hero
      */
     private void doEnemyLogic(SpaceShip space, Hero hero) {
 

@@ -13,7 +13,7 @@ import fr.umlv.masterPilot.parser.xml.Wave;
 
 public class LevelHandler extends DefaultHandler {
     
-    //résultats de notre parsing>
+//    //résultats de notre parsing>
 //    private Bomb bomb;
 //    private Megabomb megaBomb;
 //    private Enemy enemy;
