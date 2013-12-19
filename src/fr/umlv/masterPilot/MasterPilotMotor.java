@@ -75,12 +75,10 @@ public class MasterPilotMotor implements KeyMotionObservable {
         Hero h = new Hero(masterPilot.getWorld(), 0, 0);
         //
         h.create();
-        //
-        //
-
+      
         masterPilot.setHero(h);
         this.addObserver(h);
-//
+
         TIE tie1 = new TIE(masterPilot.getWorld(), 150, 50, h);
         tie1.create();
         masterPilot.getEnemyList().add(tie1);
@@ -97,12 +95,19 @@ public class MasterPilotMotor implements KeyMotionObservable {
         tie4.create();
         masterPilot.getEnemyList().add(tie4);
 
+
         ImplodeBomb impBomb = new ImplodeBomb(masterPilot.getWorld(), 50, 35);
         impBomb.create();
 
         ExplodeBomb empBomb = new ExplodeBomb(masterPilot.getWorld(), 70, -35);
         empBomb.create();
 
+      //SpaceShip tie2 =  masterPilot.removeToSpaceshipManager(body);
+        //System.out.println(tie2);
+        System.out.println("==========");
+       for(SpaceShip space :  masterPilot.getEnemyList()){
+           System.out.println(space);
+       }
     }
 
 
@@ -126,6 +131,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
             Iterator<Body> iterator = destroyBody.iterator();
            while (iterator.hasNext()) {
                 Body next = iterator.next();
+
                 iterator.remove();
                 masterPilot.getWorld().destroyBody(next);
            }
@@ -216,5 +222,27 @@ public class MasterPilotMotor implements KeyMotionObservable {
         observerList.remove(observer);
     }
 
+    /**
+     * this will apply the spaceship logic for all ennemy
+     * @see #doEnemyLogic(fr.umlv.masterPilot.Interface.SpaceShip, fr.umlv.masterPilot.hero.Hero)
+     * @param spaceShips
+     * @param hero
+     */
+    private void proccessManager(List<SpaceShip> spaceShips,Hero hero){
+        for(SpaceShip space :spaceShips){
+            doEnemyLogic(space, hero);
+        }
+    }
+
+    /**
+     * this will contains the logic of enemy spaceship for move and fire
+     * according to the hero
+     *
+     * @param space : the enemy spaceship
+     * @param hero : the spaceship hero
+     */
+    private void doEnemyLogic(SpaceShip space, Hero hero) {
+
+    }
 
 }

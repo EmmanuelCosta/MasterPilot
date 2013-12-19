@@ -169,4 +169,8 @@ public class TIE implements SpaceShip{
     public void shield() {
        throw new NotImplementedException();
     }
+
+    public Body getBody() {
+        return body;
+    }
 }

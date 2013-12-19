@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -36,11 +39,12 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private final World world;
     private final Vec2 heroSpeed = new Vec2(0, -700f);
     private final Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
-    private final Timer timer = new Timer();
+    private final ScheduledExecutorService worker =
+            Executors.newSingleThreadScheduledExecutor();
+    //    private final Timer timer = new Timer();
     private Body body;
     private Bomb.BombType bombType = Bomb.BombType.NONE;
     private Bomb cBomb;
-
 
     /**
      * create the hero at the specify coordinate
@@ -170,7 +174,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
                 if (!isShieldSet() && this.bombType != Bomb.BombType.NONE) {
                     fireBomb(this.bombType);
 
-                  //  this.bombType = Bomb.BombType.NONE;
+//                    this.bombType = Bomb.BombType.NONE;
                 }
                 break;
             case "S":
@@ -234,7 +238,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
         cBomb.getBody().setTransform(worldPoint, body.getAngle());
         cBomb.getBody().applyForce(force, point);
-
+        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -243,6 +247,16 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
             }
         }, 5000, 1);
+
+
+        worker.schedule(new Runnable() {
+            @Override
+            public void run() {
+
+                timer.cancel();
+
+            }
+        }, 7000, TimeUnit.MILLISECONDS);
 
 
     }
@@ -280,59 +294,75 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
 
         // TODO refactor this part
-           switch(type){
+        switch (type) {
 
-               case NONE:
-                   break;
-               case BOMB:
+            case NONE:
+                break;
+            case BOMB:
 
-                   ExplodeBomb eBomb = new ExplodeBomb(this.world, worldPoint.x, worldPoint.y, true);
-
-
-                   eBomb.create();
-
-                   Vec2 force = body.getWorldVector(classicBombSpeed.mul(1000));
-                   Vec2 point = body.getWorldPoint(eBomb.getBody().getWorldCenter());
-
-                   /**
-                    * need to do transform to position the shoot
-                    * in good direction
-                    */
-
-                   eBomb.getBody().setTransform(worldPoint, body.getAngle());
-                   eBomb.getBody().applyLinearImpulse(force, point);
-
-                   this.cBomb = eBomb;
-
-                   break;
-               case MEGABOMB:
-                   ImplodeBomb iBomb = new ImplodeBomb(this.world, worldPoint.x, worldPoint.y, true);
+                ExplodeBomb eBomb = new ExplodeBomb(this.world, worldPoint.x, worldPoint.y, true);
 
 
-                   iBomb.create();
+                eBomb.create();
 
-                   Vec2 force2 = body.getWorldVector(classicBombSpeed.mul(1000));
-                   Vec2 point2 = body.getWorldPoint(iBomb.getBody().getWorldCenter());
+                Vec2 force = body.getWorldVector(classicBombSpeed.mul(1000));
+                Vec2 point = body.getWorldPoint(eBomb.getBody().getWorldCenter());
 
-                   /**
-                    * need to do transform to position the shoot
-                    * in good direction
-                    */
+                /**
+                 * need to do transform to position the shoot
+                 * in good direction
+                 */
 
-                   iBomb.getBody().setTransform(worldPoint, body.getAngle());
-                   iBomb.getBody().applyLinearImpulse(force2, point2);
+                eBomb.getBody().setTransform(worldPoint, body.getAngle());
+                eBomb.getBody().applyLinearImpulse(force, point);
 
-                   this.cBomb = iBomb;
-                   break;
+                this.cBomb = eBomb;
 
-               default :
-                   throw new UnsupportedOperationException();
-           }
-
+                break;
+            case MEGABOMB:
+                ImplodeBomb iBomb = new ImplodeBomb(this.world, worldPoint.x, worldPoint.y, true);
 
 
+                iBomb.create();
+
+                Vec2 force2 = body.getWorldVector(classicBombSpeed.mul(1000));
+                Vec2 point2 = body.getWorldPoint(iBomb.getBody().getWorldCenter());
+
+                /**
+                 * need to do transform to position the shoot
+                 * in good direction
+                 */
+
+                iBomb.getBody().setTransform(worldPoint, body.getAngle());
+                iBomb.getBody().applyLinearImpulse(force2, point2);
+
+                this.cBomb = iBomb;
+                break;
+
+            default:
+                throw new UnsupportedOperationException();
+        }
 
 
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                bombType = Bomb.BombType.NONE;
+
+            }
+        }, 500, 1);
+
+        worker.schedule(new Runnable() {
+            @Override
+            public void run() {
+
+                timer.cancel();
+                ;
+
+            }
+        }, 800, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -345,13 +375,13 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     @Override
     public void right() {
-        this.body.applyTorque(-500f);
+        this.body.applyTorque(-1000f);
     }
 
     @Override
     public void left() {
 
-        this.body.applyTorque(500f);
+        this.body.applyTorque(1000f);
         // this.body.applyTorque(200f);
 
         //
@@ -421,14 +451,41 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         lBomb.add(cBomb);
 
 
+///
+
+//        worker.schedule(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                for (ClassicBomb cBomb : lBomb) {
+//                    world.destroyBody(cBomb.getBody());
+//
+//                }
+//
+//            }
+//        }, 50, TimeUnit.MILLISECONDS);
+
+        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+
                 for (ClassicBomb cBomb : lBomb) {
                     world.destroyBody(cBomb.getBody());
+
                 }
+
             }
-        }, 100, 1);
+        }, 50, 1);
+
+        worker.schedule(new Runnable() {
+            @Override
+            public void run() {
+
+                timer.cancel();
+
+            }
+        }, 80, TimeUnit.MILLISECONDS);
 
 
     }
@@ -457,6 +514,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     public void triggerExplosion() {
         this.cBomb.boum();
 
-        this.bombType= Bomb.BombType.NONE;
+        // this.bombType= Bomb.BombType.NONE;
     }
 }
