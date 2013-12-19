@@ -81,6 +81,8 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         TIE tie1 = new TIE(masterPilot.getWorld(), 150, 50, h);
         tie1.create();
+        
+        masterPilot.addToSpaceshipManager(tie1.getBody(), tie1);
         masterPilot.getEnemyList().add(tie1);
         
         TIE tie2 = new TIE(masterPilot.getWorld(), -20, 90, h);
