@@ -139,12 +139,12 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //                @Override
 //                public void run() {
                     
-                    List<SpaceShip> enemeyList = masterPilot.getEnemyList();
-                    Iterator<SpaceShip> it = enemeyList.iterator();
-                    
-                    for(SpaceShip enemy : enemeyList) {
-                        enemy.fire();
-                    }
+//                    List<SpaceShip> enemeyList = masterPilot.getEnemyList();
+//                    Iterator<SpaceShip> it = enemeyList.iterator();
+//                    
+//                    for(SpaceShip enemy : enemeyList) {
+//                        enemy.fire();
+//                    }
 //                }
 //            }, 1000, 1);
             

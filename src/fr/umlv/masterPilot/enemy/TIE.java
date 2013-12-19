@@ -157,16 +157,7 @@ public class TIE implements SpaceShip{
         rayon1.getBody().setTransform(worldPoint1, body.getAngle());
         rayon1.getBody().applyForce(force, point1);
         rayon2.getBody().setTransform(worldPoint2, body.getAngle());
-        rayon2.getBody().applyForce(force, point2);
-        
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                    world.destroyBody(rayon1.getBody());
-                    world.destroyBody(rayon2.getBody());
-            }
-        }, 100, 1);
-        
+        rayon2.getBody().applyForce(force, point2);        
     }
 
     @Override
