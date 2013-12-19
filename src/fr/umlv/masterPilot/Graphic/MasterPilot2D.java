@@ -12,7 +12,7 @@ import java.awt.*;
  * It use the viewportTransform class of jbox2d
  * which contains some interesting methods
  * for translation calculation
- *
+ * <p>
  * it is inspire by DebugDraw2D which is a debug drawing way given by default by jbox lirairie
  * Created by emmanuel on 10/12/13.
  */
@@ -36,13 +36,13 @@ public class MasterPilot2D {
         yIntsPool = new IntArray();
     }
 
-
     public void drawString(Vec2 position, String s) {
         getWorldToScreenToOut(position, sp1);
 
         this.graphic.setColor(Color.white);
-        this.graphic.drawString(s, (int)sp1.x-2, (int)sp1.y+2);
+        this.graphic.drawString(s, (int) sp1.x - 2, (int) sp1.y + 2);
     }
+
     public void drawSegment(Vec2 p1, Vec2 p2, Color color) {
         getWorldToScreenToOut(p1, sp1);
         getWorldToScreenToOut(p2, sp2);
@@ -87,6 +87,7 @@ public class MasterPilot2D {
         graphic.drawOval((int) ((int) sp1.x - (radius)),
                 (int) ((int) sp1.y - (radius)),
                 radius * 2, radius * 2);
+
 
     }
 
@@ -149,8 +150,6 @@ public class MasterPilot2D {
 
         viewportTransform.setCenter(position);
     }
-
-
 
     /**
      * @param argWorld

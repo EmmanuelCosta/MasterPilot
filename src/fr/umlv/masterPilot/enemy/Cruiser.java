@@ -1,13 +1,10 @@
 package fr.umlv.masterPilot.enemy;
 import java.awt.Color;
 
+import fr.umlv.masterPilot.common.UserSpec;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.*;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import fr.umlv.masterPilot.Interface.Bomb;
@@ -87,7 +84,34 @@ public class Cruiser implements SpaceShip {
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = Color.cyan;
+//        Color.cyan
+        fd.userData = new UserSpec() {
+
+            private boolean destroy = false;
+
+            @Override
+            public void onCollide(Fixture fix2, boolean flag) {
+
+                if (flag == false) {
+                    if (fix2.getFilterData().categoryBits == (MasterPilot.SHOOT)
+                            || fix2.getFilterData().categoryBits == (MasterPilot.SHIELD)) {
+
+                        this.destroy = true;
+
+                    }
+                }
+            }
+
+            @Override
+            public boolean isDestroyedSet() {
+                return destroy;
+            }
+
+            @Override
+            public Color getColor() {
+                return Color.CYAN;
+            }
+        };
 
         /**
          * Integrate the body in the world.
@@ -95,6 +119,11 @@ public class Cruiser implements SpaceShip {
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
         this.body = body;
+    }
+
+    @Override
+    public Body getBody() {
+        return this.body;
     }
 
     @Override

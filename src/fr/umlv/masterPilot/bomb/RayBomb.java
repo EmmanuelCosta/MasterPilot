@@ -1,5 +1,6 @@
 package fr.umlv.masterPilot.bomb;
 
+import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilot;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
@@ -95,7 +96,25 @@ public class RayBomb {
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = color;
+        fd.userData = new UserSpec() {
+            private boolean destroy=false;
+            @Override
+            public void onCollide(Fixture fix2, boolean flag) {
+                if(flag == false){
+                    this.destroy=true;
+                }
+            }
+
+            @Override
+            public boolean isDestroyedSet() {
+                return destroy;
+            }
+
+            @Override
+            public Color getColor() {
+                return color;
+            }
+        };
 
         /**
          * join the fixture to the body

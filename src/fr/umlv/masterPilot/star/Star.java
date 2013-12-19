@@ -1,5 +1,6 @@
 package fr.umlv.masterPilot.star;
 
+import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilot;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.*;
@@ -86,7 +87,24 @@ public class Star {
          * we set the color of
          * the body
          */
-        fd.userData = this.color;
+        fd.userData = new UserSpec() {
+            @Override
+            public void onCollide(Fixture fix2, boolean flag) {
+                /**
+                 * i have to put hero shield when  it
+                 * will collide with a star
+                 */
+                if(fix2.getFilterData().categoryBits == MasterPilot.SHIELD){
+
+                    fix2.m_isSensor = false;
+                }
+            }
+
+            @Override
+            public Color getColor() {
+                return color;
+            }
+        };
 
         fd.filter.categoryBits = this.category;
 

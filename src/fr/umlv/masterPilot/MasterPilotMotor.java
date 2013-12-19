@@ -1,10 +1,12 @@
 package fr.umlv.masterPilot;
 
 
+import fr.umlv.masterPilot.Interface.Bomb;
 import fr.umlv.masterPilot.Interface.KeyMotionObservable;
 import fr.umlv.masterPilot.Interface.KeyMotionObserver;
 import fr.umlv.masterPilot.Interface.SpaceShip;
 import fr.umlv.masterPilot.bomb.ExplodeBomb;
+import fr.umlv.masterPilot.bomb.GenericBomb;
 import fr.umlv.masterPilot.bomb.ImplodeBomb;
 import fr.umlv.masterPilot.enemy.TIE;
 import fr.umlv.masterPilot.hero.Hero;
@@ -75,32 +77,37 @@ public class MasterPilotMotor implements KeyMotionObservable {
         Hero h = new Hero(masterPilot.getWorld(), 0, 0);
         //
         h.create();
-      
+
         masterPilot.setHero(h);
         this.addObserver(h);
 
         TIE tie1 = new TIE(masterPilot.getWorld(), 150, 50, h);
         tie1.create();
-        masterPilot.getEnemyList().add(tie1);
-        
+      //  masterPilot.getEnemyList().add(tie1);
+//
         TIE tie2 = new TIE(masterPilot.getWorld(), -20, 90, h);
         tie2.create();
-        masterPilot.getEnemyList().add(tie2);
-
+//        masterPilot.getEnemyList().add(tie2);
+//
         TIE tie3 = new TIE(masterPilot.getWorld(), 200, 90, h);
         tie3.create();
-        masterPilot.getEnemyList().add(tie3);
-
+//        masterPilot.getEnemyList().add(tie3);
+//
         TIE tie4 = new TIE(masterPilot.getWorld(), 50, 90, h);
         tie4.create();
-        masterPilot.getEnemyList().add(tie4);
-
-
-        ImplodeBomb impBomb = new ImplodeBomb(masterPilot.getWorld(), 50, 35);
-        impBomb.create();
-
-        ExplodeBomb empBomb = new ExplodeBomb(masterPilot.getWorld(), 70, -35);
+//        masterPilot.getEnemyList().add(tie4);
+//
+//
+//        ImplodeBomb impBomb = new ImplodeBomb(masterPilot.getWorld(), 50, 35);
+//        impBomb.create();
+//
+        GenericBomb empBomb = new GenericBomb(masterPilot.getWorld(), 70, -35, Bomb.BombType.BOMB);
         empBomb.create();
+
+        empBomb = new GenericBomb(masterPilot.getWorld(), 170, -35, Bomb.BombType.MEGABOMB);
+        empBomb.create();
+
+        masterPilot.addToBombManager(empBomb.getBody(),empBomb);
 
       //SpaceShip tie2 =  masterPilot.removeToSpaceshipManager(body);
         //System.out.println(tie2);
@@ -147,7 +154,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
                     
                     List<SpaceShip> enemeyList = masterPilot.getEnemyList();
                     Iterator<SpaceShip> it = enemeyList.iterator();
-                    
+
                     for(SpaceShip enemy : enemeyList) {
                         enemy.fire();
                     }

@@ -4,16 +4,27 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
 public interface Bomb {
+
     public enum BombType{
         NONE,BOMB,MEGABOMB;
     }
+
+    public enum BombState{
+        NOT_ARMED,LAUNCHED,ARMED,;
+    }
+
+    /**
+     * call this to explode your bomb
+     * this have to define the component of bomb
+     * when it explode
+     */
 	public void boum();
 
     /**
      * we simulate here an explode blast
      *
      * we will apply force on the body
-     * @see c++ source here : http://www.iforce2d.net/b2dtut/explosions
+     * See c++ source here : http://www.iforce2d.net/b2dtut/explosions
      *
      * @param body
      * @param blastCenter
@@ -34,6 +45,16 @@ public interface Bomb {
 
     }
 
+    public BombType getBombType();
 
+    public Body getBody();
+
+    public default BombState getBombeState(){
+        return BombState.NOT_ARMED;
+    }
+
+    public default void setBombState(BombState launched){
+
+    }
 
 }

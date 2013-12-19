@@ -1,56 +1,51 @@
 package fr.umlv.masterPilot.enemy;
 
-import java.awt.Color;
+import fr.umlv.masterPilot.Interface.Bomb;
+import fr.umlv.masterPilot.Interface.SpaceShip;
+import fr.umlv.masterPilot.bomb.RayBomb;
+import fr.umlv.masterPilot.common.UserSpec;
+import fr.umlv.masterPilot.hero.Hero;
+import fr.umlv.masterPilot.world.MasterPilot;
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.World;
+public class TIE implements SpaceShip {
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import fr.umlv.masterPilot.world.MasterPilot;
-import fr.umlv.masterPilot.Interface.Bomb;
-import fr.umlv.masterPilot.Interface.SpaceShip;
-import fr.umlv.masterPilot.bomb.ClassicBomb;
-import fr.umlv.masterPilot.bomb.RayBomb;
-import fr.umlv.masterPilot.hero.Hero;
-
-public class TIE implements SpaceShip{
- 
-    private World world;
-    private int x_axis; 
-    private int y_axis;
-    private Body body;
     private final int maskBit;
     private final int category;
+    private final Timer timer = new Timer();
+    private World world;
+    private final int x_axis;
+    private  final int y_axis;
+    private Body body;
     private Vec2 rayonForce = new Vec2(0f, -10f);
     private Vec2 shoot1;
     private Vec2 shoot2;
-    private Hero hero;
-    private final Timer timer = new Timer();
+    private final Hero hero;
 
     public TIE(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.hero = hero;
-        this.shoot1 = new Vec2(- 20, - 5);
-        this.shoot2 = new Vec2(+ 20, - 5);
-       
+        this.shoot1 = new Vec2(-20, -5);
+        this.shoot2 = new Vec2(+20, -5);
+
         /**
          *  Interactions with the other bodies.
          */
         this.category = MasterPilot.ENEMY;
-        this.maskBit = MasterPilot.PLANET | MasterPilot.SHIELD ;
+        this.maskBit = MasterPilot.PLANET | MasterPilot.SHIELD | MasterPilot.SHOOT;
     }
-    
+
     public void create() {
-        
+
         /**
          * Primitive form
          */
@@ -60,21 +55,21 @@ public class TIE implements SpaceShip{
          * Number of vertices.
          */
         Vec2[] vertices = new Vec2[6];
-        vertices[0] = new Vec2( - 10, - 5);
-        vertices[1] = new Vec2( - 20, + 0);
-        vertices[2] = new Vec2( - 10, + 5);
-        vertices[3] = new Vec2( + 10, + 5);
-        vertices[4] = new Vec2( + 20, + 0);
-        vertices[5] = new Vec2( + 10, - 5);
+        vertices[0] = new Vec2(-10, -5);
+        vertices[1] = new Vec2(-20, +0);
+        vertices[2] = new Vec2(-10, +5);
+        vertices[3] = new Vec2(+10, +5);
+        vertices[4] = new Vec2(+20, +0);
+        vertices[5] = new Vec2(+10, -5);
         ps.set(vertices, 6);
-        
+
         /**
          * Body definition of the TIE        
          */
         BodyDef bd = new BodyDef();
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.DYNAMIC;
-        bd.userData=this.getClass();
+        bd.userData = this.getClass();
 
         /**
          * Body fixtures of the TIE
@@ -86,7 +81,34 @@ public class TIE implements SpaceShip{
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = Color.blue;
+
+        fd.userData = new UserSpec() {
+
+            private boolean destroy = false;
+
+            @Override
+            public void onCollide(Fixture fix2, boolean flag) {
+
+                if (flag == false) {
+                    if (fix2.getFilterData().categoryBits == (MasterPilot.SHOOT)
+                            || fix2.getFilterData().categoryBits == (MasterPilot.SHIELD)) {
+
+                        this.destroy = true;
+
+                    }
+                }
+            }
+
+            @Override
+            public boolean isDestroyedSet() {
+                return destroy;
+            }
+
+            @Override
+            public Color getColor() {
+                return Color.BLUE;
+            }
+        };
 
         /**
          * Integrate the body in the world.
@@ -123,7 +145,7 @@ public class TIE implements SpaceShip{
         this.body.applyAngularImpulse(0.05f);
         this.body.applyForceToCenter(force);
     }
-    
+
     @Override
     public void fire() {
 
@@ -136,7 +158,7 @@ public class TIE implements SpaceShip{
         /**
          * create the shoot
          */
-        int maskBit  = MasterPilot.SHIELD | MasterPilot.PLANET;
+        int maskBit = MasterPilot.SHIELD | MasterPilot.PLANET;
         int category = MasterPilot.SHOOT;
         RayBomb rayon1 = new RayBomb(this.world, worldPoint1.x, worldPoint1.y, category, maskBit, Color.orange);
         rayon1.create();
@@ -158,15 +180,15 @@ public class TIE implements SpaceShip{
         rayon1.getBody().applyForce(force, point1);
         rayon2.getBody().setTransform(worldPoint2, body.getAngle());
         rayon2.getBody().applyForce(force, point2);
-        
+
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                    world.destroyBody(rayon1.getBody());
-                    world.destroyBody(rayon2.getBody());
+                world.destroyBody(rayon1.getBody());
+                world.destroyBody(rayon2.getBody());
             }
         }, 100, 1);
-        
+
     }
 
     @Override
@@ -176,7 +198,7 @@ public class TIE implements SpaceShip{
 
     @Override
     public void shield() {
-       throw new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Body getBody() {

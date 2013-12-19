@@ -1,13 +1,12 @@
 package fr.umlv.masterPilot.hero;
 
 import fr.umlv.masterPilot.Interface.Bomb;
-
 import fr.umlv.masterPilot.Interface.KeyMotionObserver;
 import fr.umlv.masterPilot.Interface.SpaceShip;
 import fr.umlv.masterPilot.bomb.ClassicBomb;
-import fr.umlv.masterPilot.bomb.ExplodeBomb;
-import fr.umlv.masterPilot.bomb.ImplodeBomb;
+import fr.umlv.masterPilot.bomb.GenericBomb;
 import fr.umlv.masterPilot.bomb.RayBomb;
+import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilot;
 import fr.umlv.zen3.KeyboardEvent;
 import org.jbox2d.collision.shapes.CircleShape;
@@ -16,10 +15,8 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -101,7 +98,14 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fd.friction = 0.001f;
         fd.restitution = 1.5f;
 
-        fd.userData = color;
+        fd.userData = new UserSpec() {
+            @Override
+            public void onCollide(Fixture fix2, boolean flag) {
+
+            }
+
+
+        };
         // fd garder une reference sur la classe
         //fd.isSensor=true;
         // si un contact verifier si il est du type shield
@@ -133,6 +137,48 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fs.filter.categoryBits = MasterPilot.SHIELD;
         fs.filter.maskBits = MasterPilot.ENEMY | MasterPilot.PLANET;
 
+
+        fs.userData = new
+
+                UserSpec() {
+                    private boolean collide = true;
+
+                    @Override
+                    public void onCollide(Fixture fix2, boolean flag) {
+
+/**
+ * i put the shield in the begining of collision
+ * and i retreive it a the end
+ */
+                        if (flag == true) {
+
+                            if (fix2.getFilterData().categoryBits != MasterPilot.BOMB &&
+                                    fix2.getFilterData().categoryBits != MasterPilot.MEGABOMB
+                                    ) {
+
+
+                                collide = false;
+                            }
+
+
+                        } else if (flag == false) {
+
+                            collide = true;
+
+                        }
+
+                    }
+
+                    /**
+                     * according to jbox sensor if is set to false
+                     * so collision must append
+                     * @return
+                     */
+                    @Override
+                    public boolean getSensor() {
+                        return collide;
+                    }
+                };
 /*************************************************************************************************************/
         Body body = this.world.createBody(bd);
 
@@ -172,6 +218,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
                 break;
             case "B":
                 if (!isShieldSet() && this.bombType != Bomb.BombType.NONE) {
+
                     fireBomb(this.bombType);
 
 //                    this.bombType = Bomb.BombType.NONE;
@@ -188,8 +235,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     }
 
     /**
-     * if set
-     * return is true
+     * test if shield is set
+     * return  true
      *
      * @return
      */
@@ -220,7 +267,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
 
         Vec2 worldPoint = body.getWorldPoint(vertices[3]);
-        
+
         /**
          * create the shoot
          */
@@ -294,60 +341,32 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
 
         // TODO refactor this part
-        switch (type) {
-
-            case NONE:
-                break;
-            case BOMB:
-
-                ExplodeBomb eBomb = new ExplodeBomb(this.world, worldPoint.x, worldPoint.y, true);
 
 
-                eBomb.create();
-
-                Vec2 force = body.getWorldVector(classicBombSpeed.mul(1000));
-                Vec2 point = body.getWorldPoint(eBomb.getBody().getWorldCenter());
-
-                /**
-                 * need to do transform to position the shoot
-                 * in good direction
-                 */
-
-                eBomb.getBody().setTransform(worldPoint, body.getAngle());
-                eBomb.getBody().applyLinearImpulse(force, point);
-
-                this.cBomb = eBomb;
-
-                break;
-            case MEGABOMB:
-                ImplodeBomb iBomb = new ImplodeBomb(this.world, worldPoint.x, worldPoint.y, true);
 
 
-                iBomb.create();
 
-                Vec2 force2 = body.getWorldVector(classicBombSpeed.mul(1000));
-                Vec2 point2 = body.getWorldPoint(iBomb.getBody().getWorldCenter());
+        Vec2 force = body.getWorldVector(classicBombSpeed.mul(1000));
+        Vec2 point = body.getWorldPoint(this.cBomb.getBody().getWorldCenter());
 
-                /**
-                 * need to do transform to position the shoot
-                 * in good direction
-                 */
+        /**
+         * need to do transform to position the shoot
+         * in good direction
+         */
 
-                iBomb.getBody().setTransform(worldPoint, body.getAngle());
-                iBomb.getBody().applyLinearImpulse(force2, point2);
+        this.cBomb.setBombState(Bomb.BombState.ARMED);
 
-                this.cBomb = iBomb;
-                break;
+        this.cBomb.getBody().setTransform(worldPoint, body.getAngle());
+        this.cBomb.getBody().applyLinearImpulse(force, point);
 
-            default:
-                throw new UnsupportedOperationException();
-        }
+
 
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+
 
                 bombType = Bomb.BombType.NONE;
 
@@ -365,6 +384,10 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         }, 800, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * call this to set or unset the shield
+     * dependant to his actual state
+     */
     @Override
     public void shield() {
         Fixture m_next = this.body.getFixtureList().m_next;
@@ -451,20 +474,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         lBomb.add(cBomb);
 
 
-///
-
-//        worker.schedule(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                for (ClassicBomb cBomb : lBomb) {
-//                    world.destroyBody(cBomb.getBody());
-//
-//                }
-//
-//            }
-//        }, 50, TimeUnit.MILLISECONDS);
-
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -515,5 +524,13 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         this.cBomb.boum();
 
         // this.bombType= Bomb.BombType.NONE;
+    }
+
+    public void setBomb(Bomb bomb) {
+        if (!Objects.isNull(bomb) && bomb.getBombeState() != Bomb.BombState.ARMED) {
+
+            this.bombType = bomb.getBombType();
+            this.cBomb = bomb;
+        }
     }
 }

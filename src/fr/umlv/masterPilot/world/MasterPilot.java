@@ -3,6 +3,7 @@ package fr.umlv.masterPilot.world;
 import fr.umlv.masterPilot.Graphic.MasterPilot2D;
 import fr.umlv.masterPilot.Interface.Bomb;
 import fr.umlv.masterPilot.Interface.SpaceShip;
+import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.hero.Hero;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -22,7 +23,6 @@ import org.jbox2d.pooling.arrays.Vec2Array;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-
 
 
 /**
@@ -136,7 +136,7 @@ public class MasterPilot implements ContactListener {
             xf.set(b.getTransform());
             for (Fixture f = b.getFixtureList(); f != null; f = f.getNext()) {
 
-                drawShape((Class) b.getUserData(), f, xf);
+                drawShape(f, xf);
             }
         }
     }
@@ -147,11 +147,10 @@ public class MasterPilot implements ContactListener {
      * <p>
      * The key is to use  Transform.mulToOutUnsafe() method to apply
      *
-     * @param clazz
      * @param fixture : fixture of the body to draw
      * @param xf      : necessary for translation purpose
      */
-    private void drawShape(Class clazz, Fixture fixture, Transform xf) {
+    private void drawShape(Fixture fixture, Transform xf) {
 
         /**
          * retreive body color
@@ -159,14 +158,17 @@ public class MasterPilot implements ContactListener {
          */
 
 
-        if (Objects.isNull(fixture)) {
+        if (Objects.isNull(fixture) || Objects.isNull(fixture.getType())) {
             //Just ignore it
             System.out.println("null");
             throw new RuntimeException();
             // return;
         }
 
-        Color color = (Color) fixture.getUserData();
+//
+        if (fixture.m_isSensor) return;
+        UserSpec userData = (UserSpec) fixture.getUserData();
+        Color color = userData.getColor();
         switch (fixture.getType()) {
             case CIRCLE: {
                 CircleShape circle = (CircleShape) fixture.getShape();
@@ -183,8 +185,10 @@ public class MasterPilot implements ContactListener {
                      * we draw only if
                      * shield can collide which other
                      */
+
                     if (!fixture.m_isSensor) {
                         masterPilot2D.drawCircle(center, radius, color, false);
+
                     }
                 } else {
                     masterPilot2D.drawCircle(center, radius, color, true);
@@ -269,66 +273,86 @@ public class MasterPilot implements ContactListener {
 /**
  * put the shield only if i won ' t it an item
  */
-        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD &&
-                fixtureB.getFilterData().categoryBits != MasterPilot.BOMB
-                && fixtureB.getFilterData().categoryBits != MasterPilot.MEGABOMB) {
-            fixtureA.m_isSensor = false;
-        } else if (fixtureB.getFilterData().categoryBits == MasterPilot.SHIELD &&
-                fixtureA.getFilterData().categoryBits != MasterPilot.BOMB
-                && fixtureA.getFilterData().categoryBits != MasterPilot.MEGABOMB) {
-            fixtureB.m_isSensor = false;
+//        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD &&
+//                fixtureB.getFilterData().categoryBits != MasterPilot.BOMB
+//                && fixtureB.getFilterData().categoryBits != MasterPilot.MEGABOMB) {
+//            fixtureA.m_isSensor = false;
+//        } else if (fixtureB.getFilterData().categoryBits == MasterPilot.SHIELD &&
+//                fixtureA.getFilterData().categoryBits != MasterPilot.BOMB
+//                && fixtureA.getFilterData().categoryBits != MasterPilot.MEGABOMB) {
+//            fixtureB.m_isSensor = false;
+//        }
+
+        UserSpec userData = (UserSpec) fixtureA.getUserData();
+        userData.onCollide(fixtureB, true);
+        fixtureA.m_isSensor = userData.getSensor();
+
+        UserSpec userData2 = (UserSpec) fixtureB.getUserData();
+        userData2.onCollide(fixtureA, true);
+        fixtureB.m_isSensor = userData2.getSensor();
+
+        if (userData.isAddableBomb()) {
+            Body b = fixtureA.getBody();
+
+            Bomb bomb = this.bombManager.get(b);
+
+            this.hero.setBomb(bomb);
+        }
+        if (userData2.isAddableBomb()) {
+            Bomb bomb = this.bombManager.get(fixtureB.getBody());
+            this.hero.setBomb(bomb);
         }
 /**
  * collision with bomb
  */
-        if (fixtureA.getFilterData().categoryBits == MasterPilot.BOMB
-                || fixtureA.getFilterData().categoryBits == MasterPilot.MEGABOMB) {
-
-            if (fixtureB.getBody().getUserData() == Hero.class) {
-                // i have no bomb yet so that i can get it
-                if (this.hero.getBombType() == Bomb.BombType.NONE) {
-                    if (fixtureA.getFilterData().categoryBits == MasterPilot.BOMB) {
-                        this.hero.setBombType(Bomb.BombType.BOMB);
-                    } else {
-                        this.hero.setBombType(Bomb.BombType.MEGABOMB);
-                    }
-                    destroyBody.add(fixtureA.getBody());
-                } else {
-                    this.hero.triggerExplosion();
-
-                }
-
-            } else {
-                this.hero.triggerExplosion();
-
-                destroyBody.add(fixtureA.getBody());
-            }
-
-        }
-
-
-        if (fixtureB.getFilterData().categoryBits == MasterPilot.BOMB ||
-                fixtureB.getFilterData().categoryBits == MasterPilot.MEGABOMB) {
-
-
-            if (fixtureA.getBody().getUserData() == Hero.class) {
-                // i have no bomb yet so that i can get it
-                if (this.hero.getBombType() == Bomb.BombType.NONE) {
-                    if (fixtureB.getFilterData().categoryBits == MasterPilot.BOMB) {
-                        this.hero.setBombType(Bomb.BombType.BOMB);
-                    } else {
-                        this.hero.setBombType(Bomb.BombType.MEGABOMB);
-                    }
-                    destroyBody.add(fixtureB.getBody());
-                } else {
-                    this.hero.triggerExplosion();
-                }
-
-            } else {
-                this.hero.triggerExplosion();
-                destroyBody.add(fixtureB.getBody());
-            }
-        }
+//        if (fixtureA.getFilterData().categoryBits == MasterPilot.BOMB
+//                || fixtureA.getFilterData().categoryBits == MasterPilot.MEGABOMB) {
+//
+//            if (fixtureB.getBody().getUserData() == Hero.class) {
+//                // i have no bomb yet so that i can get it
+//                if (this.hero.getBombType() == Bomb.BombType.NONE) {
+//                    if (fixtureA.getFilterData().categoryBits == MasterPilot.BOMB) {
+//                        this.hero.setBombType(Bomb.BombType.BOMB);
+//                    } else {
+//                        this.hero.setBombType(Bomb.BombType.MEGABOMB);
+//                    }
+//                    destroyBody.add(fixtureA.getBody());
+//                } else {
+//                    this.hero.triggerExplosion();
+//
+//                }
+//
+//            } else {
+//                this.hero.triggerExplosion();
+//
+//                destroyBody.add(fixtureA.getBody());
+//            }
+//
+//        }
+//
+//
+//        if (fixtureB.getFilterData().categoryBits == MasterPilot.BOMB ||
+//                fixtureB.getFilterData().categoryBits == MasterPilot.MEGABOMB) {
+//
+//
+//            if (fixtureA.getBody().getUserData() == Hero.class) {
+//                // i have no bomb yet so that i can get it
+//                if (this.hero.getBombType() == Bomb.BombType.NONE) {
+//                    if (fixtureB.getFilterData().categoryBits == MasterPilot.BOMB) {
+//                        this.hero.setBombType(Bomb.BombType.BOMB);
+//                    } else {
+//                        this.hero.setBombType(Bomb.BombType.MEGABOMB);
+//                    }
+//                    destroyBody.add(fixtureB.getBody());
+//                } else {
+//                    this.hero.triggerExplosion();
+//                }
+//
+//            } else {
+//                this.hero.triggerExplosion();
+//                destroyBody.add(fixtureB.getBody());
+//            }
+//        }
 
     }
 
@@ -337,30 +361,44 @@ public class MasterPilot implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD) {
+//        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHIELD) {
+//
+//            fixtureA.m_isSensor = true;
+//        }
+//
+//        if (fixtureB.getFilterData().categoryBits == MasterPilot.SHIELD) {
+//
+//            fixtureB.m_isSensor = true;
+//        }
 
-            fixtureA.m_isSensor = true;
-        }
+        UserSpec userData = (UserSpec) fixtureA.getUserData();
+        userData.onCollide(fixtureB, false);
+        fixtureA.m_isSensor = userData.getSensor();
 
-        if (fixtureB.getFilterData().categoryBits == MasterPilot.SHIELD) {
-
-            fixtureB.m_isSensor = true;
-        }
-
-        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHOOT) {
-
+        if (userData.isDestroyedSet()) {
             destroyBody.add(fixtureA.getBody());
-
-        } else if (fixtureB.getFilterData().categoryBits == MasterPilot.SHOOT) {
-
+        }
+        UserSpec userData2 = (UserSpec) fixtureB.getUserData();
+        userData2.onCollide(fixtureA, false);
+        fixtureB.m_isSensor = userData2.getSensor();
+        if (userData2.isDestroyedSet()) {
             destroyBody.add(fixtureB.getBody());
         }
-        if (fixtureA.getFilterData().categoryBits == MasterPilot.ENEMY) {
-            destroyBody.add(fixtureA.getBody());
 
-        } else if (fixtureB.getFilterData().categoryBits == MasterPilot.ENEMY) {
-            destroyBody.add(fixtureB.getBody());
-        }
+//        if (fixtureA.getFilterData().categoryBits == MasterPilot.SHOOT) {
+//
+//            destroyBody.add(fixtureA.getBody());
+//
+//        } else if (fixtureB.getFilterData().categoryBits == MasterPilot.SHOOT) {
+//
+//            destroyBody.add(fixtureB.getBody());
+//        }
+//        if (fixtureA.getFilterData().categoryBits == MasterPilot.ENEMY) {
+//            destroyBody.add(fixtureA.getBody());
+//
+//        } else if (fixtureB.getFilterData().categoryBits == MasterPilot.ENEMY) {
+//            destroyBody.add(fixtureB.getBody());
+//        }
     }
 
     @Override
@@ -412,9 +450,9 @@ public class MasterPilot implements ContactListener {
         return new ArrayList<>(this.enemyManager.values());
     }
 
-    public void addToBombManager(Body bodySpaceship, SpaceShip spaceShip) {
-        if (!this.bombManager.containsKey(bodySpaceship)) {
-            this.enemyManager.put(bodySpaceship, spaceShip);
+    public void addToBombManager(Body body, Bomb bomb) {
+        if (!this.bombManager.containsKey(body)) {
+            this.bombManager.put(body, bomb);
         }
     }
 

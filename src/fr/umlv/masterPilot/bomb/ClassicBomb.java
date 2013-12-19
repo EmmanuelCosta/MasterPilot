@@ -1,5 +1,6 @@
 package fr.umlv.masterPilot.bomb;
 
+import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilot;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.*;
@@ -79,7 +80,19 @@ public class ClassicBomb {
 
         fd.filter.maskBits = this.maskBit;
 
-        fd.userData = color;
+        fd.userData = new UserSpec() {
+
+
+            @Override
+            public void onCollide(Fixture fix2, boolean flag) {
+
+            }
+
+            @Override
+            public Color getColor() {
+                return color;
+            }
+        };
 
         // body
         Body body = this.world.createBody(bd);

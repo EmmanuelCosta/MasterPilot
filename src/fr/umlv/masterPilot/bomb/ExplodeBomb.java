@@ -136,6 +136,11 @@ public class ExplodeBomb implements Bomb {
 
     }
 
+    @Override
+    public BombType getBombType() {
+        return this.bombType;
+    }
+
     public Body getBody() {
         return body;
     }
