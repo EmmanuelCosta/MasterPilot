@@ -216,5 +216,27 @@ masterPilot.addToSpaceshipManager(tie.getBody(),tie);
         observerList.remove(observer);
     }
 
+    /**
+     * this will apply the spaceship logic for all ennemy
+     * @see #doEnemyLogic(fr.umlv.masterPilot.Interface.SpaceShip, fr.umlv.masterPilot.hero.Hero)
+     * @param spaceShips
+     * @param hero
+     */
+    private void proccessManager(List<SpaceShip> spaceShips,Hero hero){
+        for(SpaceShip space :spaceShips){
+            doEnemyLogic(space, hero);
+        }
+    }
+
+    /**
+     * this will contains the logic of enemy spaceship for move and fire
+     * according to the hero
+     *
+     * @param space : the enemy spaceship
+     * @param hero : the spaceship hero
+     */
+    private void doEnemyLogic(SpaceShip space, Hero hero) {
+
+    }
 
 }

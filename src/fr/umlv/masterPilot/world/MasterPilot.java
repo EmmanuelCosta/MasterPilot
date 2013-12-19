@@ -294,7 +294,7 @@ public class MasterPilot implements ContactListener {
                     }
                     destroyBody.add(fixtureA.getBody());
                 } else {
-                    //  this.hero.triggerExplosion();
+                      this.hero.triggerExplosion();
 
                 }
 
@@ -321,7 +321,7 @@ public class MasterPilot implements ContactListener {
                     }
                     destroyBody.add(fixtureB.getBody());
                 } else {
-                    // this.hero.triggerExplosion();
+                    this.hero.triggerExplosion();
                 }
 
             } else {
