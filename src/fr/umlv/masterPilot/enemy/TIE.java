@@ -190,7 +190,7 @@ public class TIE implements SpaceShip {
     }
 
     @Override
-    public void fireBomb(Bomb.BombType bomb) {
+    public void fireBomb() {
         throw new NotImplementedException();
     }
 

@@ -3,7 +3,6 @@ package fr.umlv.masterPilot.bomb;
 import fr.umlv.masterPilot.Interface.Bomb;
 import fr.umlv.masterPilot.common.CustomQueryCalledBack;
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilot;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -14,24 +13,31 @@ import java.awt.*;
 import java.util.Iterator;
 
 /**
+ *
+ * this bomb will can create a bomb of two type
+ * explode and implode
+ * this behaviour depend on the type given in constructor
  * Created by emmanuel on 19/12/13.
  */
 public class GenericBomb implements Bomb {
     private final int maskBit;
     private final int category;
     private final Bomb.BombType bombType;
-    private BombState bombstate =BombState.NOT_ARMED;
+
+
+    private BombState bombstate = BombState.NOT_ARMED;
+    private final World world;
+    private final float x_axis;
+    private final float y_axis;
+    private  Body body;
+
     /**
-     * true : bomb armed explode on collision
-     * false: not armed
+     * create a bomb in the position given with the specify type
+     * @param world : The jbox world @see World
+     * @param x_axis x_coordinate
+     * @param y_axis y_coordinate
+     * @param bombType type of the bomb @see BombType
      */
-    private final boolean flag;
-    private World world;
-    private float x_axis;
-    private float y_axis;
-    private Body body;
-
-
 
     public GenericBomb(World world, float x_axis, float y_axis, BombType bombType) {
         this.world = world;
@@ -54,32 +60,10 @@ public class GenericBomb implements Bomb {
 
         this.maskBit = MasterPilot.PLANET | MasterPilot.ENEMY;
         this.bombType = bombType;
-        this.flag = false;
+
     }
 
-    public GenericBomb(World world, float x_axis, float y_axis, BombType bombType, boolean flag) {
-        this.world = world;
-        this.x_axis = x_axis;
-        this.y_axis = y_axis;
-
-        switch (bombType) {
-
-
-            case BOMB:
-                this.category = MasterPilot.BOMB;
-                break;
-            case MEGABOMB:
-                this.category = MasterPilot.MEGABOMB;
-                break;
-            default:
-                throw new UnsupportedOperationException();
-        }
-
-        this.maskBit = MasterPilot.PLANET | MasterPilot.ENEMY;
-        this.bombType = bombType;
-        this.flag = flag;
-    }
-
+//
     public void create() {
 
         PolygonShape ps = new PolygonShape();
@@ -107,36 +91,37 @@ public class GenericBomb implements Bomb {
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-       fd.userData = new UserSpec() {
-           private boolean hide = false;
-           private boolean addable = false;
-           private boolean destroyed=false;
-           private int state =0;
-           @Override
-           public void onCollide(Fixture fix2, boolean flag) {
-               /**
-                * hero take bomb
-                */
-                if((fix2.getFilterData().categoryBits == MasterPilot.HERO
-                        || fix2.getFilterData().categoryBits == MasterPilot.SHIELD) && state == 0){
-                    addable =true;
-                    hide =true;
-                    state ++;
+        fd.userData = new UserSpec() {
+            private boolean hide = false;
+            private boolean addable = false;
+            private boolean destroyed = false;
+            private int state = 0;
+
+            @Override
+            public void onCollide(Fixture fix2, boolean flag) {
+                /**
+                 * hero take bomb
+                 */
+                if ((fix2.getFilterData().categoryBits == MasterPilot.HERO
+                        || fix2.getFilterData().categoryBits == MasterPilot.SHIELD) && state == 0) {
+                    addable = true;
+                    hide = true;
+                    state++;
 
 
-                }else if(bombstate != BombState.NOT_ARMED){
-                    hide=false;
+                } else if (bombstate != BombState.NOT_ARMED) {
+                    hide = false;
                 }
-                 if(flag == true){
-                    if(bombstate == BombState.ARMED  ){
+                if (flag == true) {
+                    if (bombstate == BombState.ARMED) {
                         /**
                          * can collide if is not hero or shield
                          */
 
-                        if(fix2.getFilterData().categoryBits != MasterPilot.HERO
-                            && fix2.getFilterData().categoryBits != MasterPilot.SHIELD){
+                        if (fix2.getFilterData().categoryBits != MasterPilot.HERO
+                                && fix2.getFilterData().categoryBits != MasterPilot.SHIELD) {
                             boum();
-                            destroyed=true;
+                            destroyed = true;
 
                         }
                         /**
@@ -144,19 +129,19 @@ public class GenericBomb implements Bomb {
                          * only after bomb has been lauch
                          * not inside the launcher
                          */
-                       else if ((fix2.getFilterData().categoryBits == MasterPilot.HERO
-                                  || fix2.getFilterData().categoryBits == MasterPilot.SHIELD) && state >= 2){
+                        else if ((fix2.getFilterData().categoryBits == MasterPilot.HERO
+                                || fix2.getFilterData().categoryBits == MasterPilot.SHIELD) && state >= 2) {
                             boum();
-                            destroyed=true;
+                            destroyed = true;
 
                         }
                         /**
                          * if is hero or shield do not explode
                          * when launching
                          */
-                        else if((fix2.getFilterData().categoryBits == MasterPilot.HERO
-                                || fix2.getFilterData().categoryBits == MasterPilot.SHIELD) ){
-                            state ++;
+                        else if ((fix2.getFilterData().categoryBits == MasterPilot.HERO
+                                || fix2.getFilterData().categoryBits == MasterPilot.SHIELD)) {
+                            state++;
                             hide = false;
 
                         }
@@ -164,30 +149,30 @@ public class GenericBomb implements Bomb {
                     }
 
                 }
-           }
+            }
 
-           @Override
-           public boolean isDestroyedSet() {
-               //hide =true;
-               return destroyed;
-           }
+            @Override
+            public boolean isDestroyedSet() {
+                //hide =true;
+                return destroyed;
+            }
 
-           @Override
-           public boolean isAddableBomb() {
+            @Override
+            public boolean isAddableBomb() {
 
-               return addable;
-           }
+                return addable;
+            }
 
-           @Override
-           public Color getColor() {
-               return Color.LIGHT_GRAY;
-           }
+            @Override
+            public Color getColor() {
+                return Color.LIGHT_GRAY;
+            }
 
-           @Override
-           public boolean getSensor() {
-               return hide;
-           }
-       };
+            @Override
+            public boolean getSensor() {
+                return hide;
+            }
+        };
 
 
         // body
@@ -257,7 +242,7 @@ public class GenericBomb implements Bomb {
 
     @Override
     public void setBombState(BombState bombState) {
-        this.bombstate=bombState;
+        this.bombstate = bombState;
     }
 
 }

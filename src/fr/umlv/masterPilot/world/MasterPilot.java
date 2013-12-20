@@ -47,23 +47,18 @@ public class MasterPilot implements ContactListener {
      */
 
     private final World world;
-    /**
-     * this help to do translation and rotation
-     */
-    private final Transform xf = new Transform();
-    private final Vec2 center = new Vec2();
-    private final Vec2 v1 = new Vec2();
-    private final Vec2 v2 = new Vec2();
-    private final Vec2Array tlvertices = new Vec2Array();
+
+
+
     /**
      * use this to render purpose
      */
     private final MasterPilot2D masterPilot2D;
-    private final List<SpaceShip> enemyList = new ArrayList<>();
-    private final Map<Body, SpaceShip> enemyManager = new HashMap<>();
-    private final Map<Body, Bomb> bombManager = new HashMap<>();
+    private final ArrayList<SpaceShip> enemyList ;
+    private final HashMap<Body, SpaceShip> enemyManager ;
+    private final HashMap<Body, Bomb> bombManager ;
     //private final MasterContactListener contactListener;
-    private List<Body> destroyBody = new ArrayList<>();
+    private ArrayList<Body> destroyBody;
     /**
      * keep reference o main character of the game
      */
@@ -75,6 +70,12 @@ public class MasterPilot implements ContactListener {
 
         this.world.setContactListener(this);
         this.masterPilot2D = new MasterPilot2D(masterPilot2D);
+
+        this.enemyList = new ArrayList<>();
+        this.enemyManager = new HashMap<>();
+        this.bombManager = new HashMap<>();
+        this.destroyBody = new ArrayList<>();
+
 
 
     }
@@ -131,7 +132,7 @@ public class MasterPilot implements ContactListener {
  *
  */
 
-
+        Transform xf = new Transform();
         for (Body b = this.world.getBodyList(); b != null; b = b.getNext()) {
             xf.set(b.getTransform());
             for (Fixture f = b.getFixtureList(); f != null; f = f.getNext()) {
@@ -158,6 +159,7 @@ public class MasterPilot implements ContactListener {
          */
 
 
+
         if (Objects.isNull(fixture) || Objects.isNull(fixture.getType())) {
             //Just ignore it
             System.out.println("null");
@@ -171,8 +173,9 @@ public class MasterPilot implements ContactListener {
         Color color = userData.getColor();
         switch (fixture.getType()) {
             case CIRCLE: {
+                Vec2 center = new Vec2();
                 CircleShape circle = (CircleShape) fixture.getShape();
-
+//take the default position and calculate his actual position in the world
                 Transform.mulToOutUnsafe(xf, circle.m_p, center);
                 float radius = circle.m_radius;
 
@@ -198,6 +201,9 @@ public class MasterPilot implements ContactListener {
             break;
 
             case POLYGON: {
+
+                Vec2Array tlvertices = new Vec2Array();
+
                 PolygonShape poly = (PolygonShape) fixture.getShape();
                 int vertexCount = poly.m_count;
                 assert (vertexCount <= Settings.maxPolygonVertices);
@@ -223,6 +229,9 @@ public class MasterPilot implements ContactListener {
             }
             break;
             case EDGE: {
+                Vec2 v1 = new Vec2();
+                Vec2 v2 = new Vec2();
+
                 EdgeShape edge = (EdgeShape) fixture.getShape();
                 Transform.mulToOutUnsafe(xf, edge.m_vertex1, v1);
                 Transform.mulToOutUnsafe(xf, edge.m_vertex2, v2);

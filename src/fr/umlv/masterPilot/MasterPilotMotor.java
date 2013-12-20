@@ -10,6 +10,7 @@ import fr.umlv.masterPilot.enemy.TIE;
 import fr.umlv.masterPilot.hero.Hero;
 import fr.umlv.masterPilot.star.Star;
 import fr.umlv.masterPilot.world.MasterPilot;
+import fr.umlv.masterPilot.world.SpaceshipFactory;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
 import org.jbox2d.dynamics.Body;
@@ -73,30 +74,33 @@ public class MasterPilotMotor implements KeyMotionObservable {
         masterPilot.setHero(h);
         this.addObserver(h);
 
-        TIE tie1 = new TIE(masterPilot.getWorld(), 150, 50, h);
-        tie1.create();
+        SpaceshipFactory factory = new SpaceshipFactory(masterPilot);
+        factory.createEnemy("TIE", 350, 50, h);
 
 
-        masterPilot.addToSpaceshipManager(tie1.getBody(), tie1);
+//        TIE tie1 = new TIE(masterPilot.getWorld(), 150, 50, h);
+//        tie1.create();
+//        masterPilot.addToSpaceshipManager(tie1.getBody(), tie1);
+        factory.createEnemy("TIE", 150, 50, h);
 
-        TIE tie2 = new TIE(masterPilot.getWorld(), -20, 90, h);
-        tie2.create();
-        masterPilot.addToSpaceshipManager(tie1.getBody(), tie2);
-//        masterPilot.getEnemyList().add(tie2);
+//        TIE tie2 = new TIE(masterPilot.getWorld(), -20, 90, h);
+//        tie2.create();
+//        masterPilot.addToSpaceshipManager(tie2.getBody(), tie2);
+
+        factory.createEnemy("TIE", -20, 90, h);
 //
-        TIE tie3 = new TIE(masterPilot.getWorld(), 200, 90, h);
-        tie3.create();
-        masterPilot.addToSpaceshipManager(tie1.getBody(), tie3);
-//        masterPilot.getEnemyList().add(tie3);
-//
-        TIE tie4 = new TIE(masterPilot.getWorld(), 50, 90, h);
-        tie4.create();
-        masterPilot.addToSpaceshipManager(tie1.getBody(), tie4);
-//        masterPilot.getEnemyList().add(tie4);
-//
-//
-//        ImplodeBomb impBomb = new ImplodeBomb(masterPilot.getWorld(), 50, 35);
-//        impBomb.create();
+//        TIE tie3 = new TIE(masterPilot.getWorld(), 200, 90, h);
+//        tie3.create();
+//        masterPilot.addToSpaceshipManager(tie3.getBody(), tie3);
+
+        factory.createEnemy("TIE", 200, 90, h);
+
+//        TIE tie4 = new TIE(masterPilot.getWorld(), 50, 90, h);
+//        tie4.create();
+//        masterPilot.addToSpaceshipManager(tie4.getBody(), tie4);
+
+        factory.createEnemy("TIE", 50, 90, h);
+
 //
         GenericBomb empBomb = new GenericBomb(masterPilot.getWorld(), 70, -35, Bomb.BombType.BOMB);
         empBomb.create();

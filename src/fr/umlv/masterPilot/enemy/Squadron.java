@@ -37,7 +37,7 @@ public class Squadron implements SpaceShip{
     }
 
     @Override
-    public void fireBomb(Bomb.BombType bomb) {
+    public void fireBomb() {
         // TODO Auto-generated method stub
         
     }

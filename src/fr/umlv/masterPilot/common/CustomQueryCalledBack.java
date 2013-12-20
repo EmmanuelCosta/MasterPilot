@@ -14,15 +14,15 @@ import java.util.List;
 /**
  * our custom query called back
  * store in a list all the body touched by the given AABB param in the world
- * world.queryAABB(this, AABB)
- * this AABB param convert a radius on which all body can be touch
+ * while using this method world.queryAABB(this, AABB)
+ *
  * <p>
  * so that query stored all that body in a list
  * <p>
  * so you can retreive it and perform some action on that
  */
 public class CustomQueryCalledBack implements QueryCallback {
-    public List<Body> bodyTouch = new ArrayList<>();
+    private final ArrayList<Body> bodyTouch = new ArrayList<>();
 
     public List<Body> getBodyTouch() {
         return bodyTouch;

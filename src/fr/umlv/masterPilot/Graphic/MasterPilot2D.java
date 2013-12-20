@@ -12,18 +12,15 @@ import java.awt.*;
  * It use the viewportTransform class of jbox2d
  * which contains some interesting methods
  * for translation calculation
+ *
+ * using @IViewportTransform which is use every time to manage with transformation from jbox world to oustide
  * <p>
- * it is inspire by DebugDraw2D which is a debug drawing way given by default by jbox lirairie
  * Created by emmanuel on 10/12/13.
  */
 public class MasterPilot2D {
 
 
-    private final IntArray xIntsPool;
-    private final IntArray yIntsPool;
     private final IViewportTransform viewportTransform;
-    private final Vec2 sp1 = new Vec2();
-    private final Vec2 sp2 = new Vec2();
     private final Graphics graphic;
 
     public MasterPilot2D(Graphics graphic) {
@@ -32,11 +29,13 @@ public class MasterPilot2D {
         viewportTransform.setYFlip(true);
         this.graphic = graphic;
 
-        xIntsPool = new IntArray();
-        yIntsPool = new IntArray();
+
     }
 
     public void drawString(Vec2 position, String s) {
+        Vec2 sp1 = new Vec2();
+
+
         getWorldToScreenToOut(position, sp1);
 
         this.graphic.setColor(Color.white);
@@ -44,6 +43,10 @@ public class MasterPilot2D {
     }
 
     public void drawSegment(Vec2 p1, Vec2 p2, Color color) {
+
+        Vec2 sp1 = new Vec2();
+        Vec2 sp2 = new Vec2();
+
         getWorldToScreenToOut(p1, sp1);
         getWorldToScreenToOut(p2, sp2);
 
@@ -53,6 +56,7 @@ public class MasterPilot2D {
         this.graphic.drawLine((int) sp1.x, (int) sp1.y, (int) sp2.x, (int) sp2.y);
 
     }
+
 
     public void drawCircle(Vec2 center, float radius,
                            Color color, boolean filled) {
@@ -70,6 +74,8 @@ public class MasterPilot2D {
     }
 
     public void drawShield(Vec2 center, float radius) {
+        Vec2 sp1 = new Vec2();
+
         getWorldToScreenToOut(center, sp1);
 
         graphic.setColor(Color.white);
@@ -79,6 +85,8 @@ public class MasterPilot2D {
     }
 
     private void emptyCircle(Vec2 center, Color color, int radius) {
+
+        Vec2 sp1 = new Vec2();
         getWorldToScreenToOut(center, sp1);
 
 
@@ -92,6 +100,8 @@ public class MasterPilot2D {
     }
 
     private void filledCircle(Vec2 center, Color color, int radius) {
+        Vec2 sp1 = new Vec2();
+
         getWorldToScreenToOut(center, sp1);
 
 
@@ -107,6 +117,8 @@ public class MasterPilot2D {
 
     public void drawFilledPolygon(Vec2[] vertices, int vertexCount, Color color) {
 
+        IntArray xIntsPool = new IntArray();
+        IntArray yIntsPool = new IntArray();
 
         int[] xInts = xIntsPool.get(vertexCount);
         int[] yInts = yIntsPool.get(vertexCount);
@@ -133,15 +145,6 @@ public class MasterPilot2D {
     }
 
     /**
-     * use this to manage with translation and rotation
-     *
-     * @return
-     */
-    public IViewportTransform getViewportTranform() {
-        return viewportTransform;
-    }
-
-    /**
      * This method will position your graphic cam to the specify coordinate(x,y)
      *
      * @param position : the position af the camera
@@ -152,6 +155,8 @@ public class MasterPilot2D {
     }
 
     /**
+     * Use this to get position in the world and conver it into outside coordinate
+     *
      * @param argWorld
      * @param argScreen
      * @see org.jbox2d.common.IViewportTransform#getWorldToScreen(org.jbox2d.common.Vec2, org.jbox2d.common.Vec2)

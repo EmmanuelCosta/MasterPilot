@@ -219,7 +219,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
             case "B":
                 if (!isShieldSet() && this.bombType != Bomb.BombType.NONE) {
 
-                    fireBomb(this.bombType);
+                    fireBomb();
 
 //                    this.bombType = Bomb.BombType.NONE;
                 }
@@ -309,11 +309,11 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     }
 
     @Override
-    public void fireBomb(Bomb.BombType bomb) {
-        launchBomb(bomb);
+    public void fireBomb() {
+        launchBomb();
     }
 
-    private void launchBomb(Bomb.BombType type) {
+    private void launchBomb() {
         /**
          * I try to calculate the tip coordinate
          * and create a Bomb from that point

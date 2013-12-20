@@ -10,7 +10,7 @@ public interface Bomb {
     }
 
     public enum BombState{
-        NOT_ARMED,LAUNCHED,ARMED,;
+        NOT_ARMED,ARMED,;
     }
 
     /**

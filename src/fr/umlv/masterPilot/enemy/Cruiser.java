@@ -1,26 +1,24 @@
 package fr.umlv.masterPilot.enemy;
-import java.awt.Color;
 
+import fr.umlv.masterPilot.Interface.SpaceShip;
+import fr.umlv.masterPilot.bomb.RayBomb;
 import fr.umlv.masterPilot.common.UserSpec;
+import fr.umlv.masterPilot.world.MasterPilot;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import fr.umlv.masterPilot.Interface.Bomb;
-import fr.umlv.masterPilot.Interface.Bomb.BombType;
-import fr.umlv.masterPilot.Interface.SpaceShip;
-import fr.umlv.masterPilot.bomb.RayBomb;
-import fr.umlv.masterPilot.world.MasterPilot;
+
+import java.awt.*;
 
 public class Cruiser implements SpaceShip {
 
+    private final int maskBit;
+    private final int category;
     private World world;
     private int x_axis;
     private int y_axis;
     private Body body;
-    private final int maskBit;
-    private final int category;
     private Vec2 cruiserSpeed = new Vec2(0, -30f);
     private Vec2 rayonForce = new Vec2(0f, -10f);
     private Vec2 shoot1;
@@ -207,16 +205,15 @@ public class Cruiser implements SpaceShip {
         rayon4.getBody().applyForce(force, point4);
 
 
-
     }
 
     @Override
-    public void fireBomb(BombType bomb) {
-       throw new NotImplementedException();        
+    public void fireBomb() {
+        throw new NotImplementedException();
     }
 
     @Override
     public void shield() {
-       throw new  NotImplementedException();
+        throw new NotImplementedException();
     }
 }
