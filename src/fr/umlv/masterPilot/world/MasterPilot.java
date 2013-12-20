@@ -21,8 +21,10 @@ import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.pooling.arrays.Vec2Array;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -47,35 +49,30 @@ public class MasterPilot implements ContactListener {
      */
 
     private final World world;
-
-
-
     /**
      * use this to render purpose
      */
     private final MasterPilot2D masterPilot2D;
-    private final ArrayList<SpaceShip> enemyList ;
-    private final HashMap<Body, SpaceShip> enemyManager ;
-    private final HashMap<Body, Bomb> bombManager ;
-    //private final MasterContactListener contactListener;
-    private ArrayList<Body> destroyBody;
+    private final HashMap<Body, SpaceShip> enemyManager;
+    private final HashMap<Body, Bomb> bombManager;
+
+    private final ArrayList<Body> destroyBody;
     /**
      * keep reference o main character of the game
      */
     private Hero hero;
 
 
-    public MasterPilot(Graphics masterPilot2D) {
+    public MasterPilot(Graphics2D masterPilot2D) {
         this.world = new World(new Vec2(0, 0f));
 
         this.world.setContactListener(this);
         this.masterPilot2D = new MasterPilot2D(masterPilot2D);
 
-        this.enemyList = new ArrayList<>();
+
         this.enemyManager = new HashMap<>();
         this.bombManager = new HashMap<>();
         this.destroyBody = new ArrayList<>();
-
 
 
     }
@@ -159,12 +156,11 @@ public class MasterPilot implements ContactListener {
          */
 
 
-
         if (Objects.isNull(fixture) || Objects.isNull(fixture.getType())) {
             //Just ignore it
             System.out.println("null");
             throw new RuntimeException();
-            // return;
+
         }
 
 //
@@ -428,14 +424,17 @@ public class MasterPilot implements ContactListener {
      */
     public List<Body> getDestroyBody() {
         List<Body> newList = new ArrayList<>(destroyBody);
-        int i = 0;
+        /**
+         * retreive spaceship destroyed from manager
+         */
         for (Body bd : newList) {
+
             this.removeToSpaceshipManager(bd);
 
         }
 
 
-        destroyBody = new ArrayList<>();
+        destroyBody.clear();
         return newList;
     }
 
@@ -465,9 +464,10 @@ public class MasterPilot implements ContactListener {
         }
     }
 
-    public Bomb removeToBombManager(Body bodySpaceship) {
 
-        return this.bombManager.remove(bodySpaceship);
-
+    public void drawFrameworkClock(int hour,int minute,int second){
+        this.masterPilot2D.drawFrameworkClock(hour,minute,second);
     }
+
+
 }

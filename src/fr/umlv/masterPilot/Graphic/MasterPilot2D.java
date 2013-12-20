@@ -5,6 +5,7 @@ import org.jbox2d.common.OBBViewportTransform;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.pooling.arrays.IntArray;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -12,7 +13,7 @@ import java.awt.*;
  * It use the viewportTransform class of jbox2d
  * which contains some interesting methods
  * for translation calculation
- *
+ * <p>
  * using @IViewportTransform which is use every time to manage with transformation from jbox world to oustide
  * <p>
  * Created by emmanuel on 10/12/13.
@@ -21,9 +22,9 @@ public class MasterPilot2D {
 
 
     private final IViewportTransform viewportTransform;
-    private final Graphics graphic;
+    private final Graphics2D graphic;
 
-    public MasterPilot2D(Graphics graphic) {
+    public MasterPilot2D(Graphics2D graphic) {
 
         viewportTransform = new OBBViewportTransform();
         viewportTransform.setYFlip(true);
@@ -38,8 +39,16 @@ public class MasterPilot2D {
 
         getWorldToScreenToOut(position, sp1);
 
+//        AffineTransform inverse = new AffineTransform();
+//        AffineTransform transform = new AffineTransform() ;
+//        transform.scale(20,20);
+//        inverse.scale(-20,20);
+//
+//        Graphics2D g2d = (Graphics2D) graphic ;
+//        g2d.transform(transform);
         this.graphic.setColor(Color.white);
         this.graphic.drawString(s, (int) sp1.x - 2, (int) sp1.y + 2);
+//        g2d.transform(inverse);
     }
 
     public void drawSegment(Vec2 p1, Vec2 p2, Color color) {
@@ -56,7 +65,6 @@ public class MasterPilot2D {
         this.graphic.drawLine((int) sp1.x, (int) sp1.y, (int) sp2.x, (int) sp2.y);
 
     }
-
 
     public void drawCircle(Vec2 center, float radius,
                            Color color, boolean filled) {
@@ -155,7 +163,7 @@ public class MasterPilot2D {
     }
 
     /**
-     * Use this to get position in the world and conver it into outside coordinate
+     * Use this to get position in the world and convert it into outside coordinate
      *
      * @param argWorld
      * @param argScreen
@@ -178,6 +186,31 @@ public class MasterPilot2D {
      */
     public void setLandMark(int i, int j) {
         this.viewportTransform.setExtents(i, j);
+
+    }
+
+    public void drawFrameworkClock(int hour, int minute, int second) {
+
+        this.graphic.setColor(Color.WHITE);
+//        this.graphic.fill3DRect(0, 0, 100, 30, true);
+
+//           this.graphic.draw3DRect(0,0,100,30,false);
+
+//        this.graphic.setColor(Color.BLACK);
+
+        StringBuilder strb = new StringBuilder();
+
+        strb.append(hour)
+            .append(":")
+            .append(minute)
+            .append(":")
+            .append(second);
+
+        Font font = this.graphic.getFont();
+        this.graphic.setFont(new Font(null, Font.PLAIN, 28));
+        this.graphic.drawString(strb.toString(), 7, 23);
+        this.graphic.setFont(font);
+
 
     }
 

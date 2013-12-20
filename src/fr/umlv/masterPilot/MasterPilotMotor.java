@@ -6,7 +6,6 @@ import fr.umlv.masterPilot.Interface.KeyMotionObservable;
 import fr.umlv.masterPilot.Interface.KeyMotionObserver;
 import fr.umlv.masterPilot.Interface.SpaceShip;
 import fr.umlv.masterPilot.bomb.GenericBomb;
-import fr.umlv.masterPilot.enemy.TIE;
 import fr.umlv.masterPilot.hero.Hero;
 import fr.umlv.masterPilot.star.Star;
 import fr.umlv.masterPilot.world.MasterPilot;
@@ -16,10 +15,8 @@ import fr.umlv.zen3.KeyboardEvent;
 import org.jbox2d.dynamics.Body;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Timer;
 
 /**
  * Created by emmanuel on 06/12/13.
@@ -30,14 +27,19 @@ public class MasterPilotMotor implements KeyMotionObservable {
     //OBSERVER LIST
     private final List<KeyMotionObserver> observerList = new ArrayList<>();
     //TODO MOVE IT IN MASTERPILOTE WORLD
-    float timeStep = 1.0f / 6f;
-    int velocityIterations = 6;
-    int positionIterations = 3;
+    private final float timeStep = 1.0f / 6f;
+    private final int velocityIterations = 6;
+    private final int positionIterations = 3;
+    private int gameTiming;
 
     public void launchGame(ApplicationContext context) {
 
         context.render(graphics -> {
             MasterPilot masterPilot = initPlateform(graphics);
+               gameTiming=Integer.valueOf("500");
+
+
+
             populatedWorld(masterPilot, context);
             run(masterPilot, context);
         });
@@ -57,14 +59,17 @@ public class MasterPilotMotor implements KeyMotionObservable {
     private void populatedWorld(MasterPilot masterPilot, ApplicationContext context) {
         //TODO MANAGE WITH FILE CONFIG
 
-        Star star = new Star(masterPilot.getWorld(), 100, 250);
+        Star star = new Star(masterPilot.getWorld(), 100, 250, Color.yellow);
         star.create();
 
-        Star star2 = new Star(masterPilot.getWorld(), 100, 550, Color.blue);
+        Star star2 = new Star(masterPilot.getWorld(), 100, 550, Color.GREEN);
         star2.create();
 
-        Star star3 = new Star(masterPilot.getWorld(), 400, 350, Color.GREEN);
+        Star star3 = new Star(masterPilot.getWorld(), 400, 350, Color.RED);
         star3.create();
+
+        Star star4 = new Star(masterPilot.getWorld(), 400, 650, Color.BLUE);
+        star4.create();
 
 
         Hero h = new Hero(masterPilot.getWorld(), 0, 0);
@@ -130,6 +135,14 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         beforeTime = System.nanoTime();
         Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                gameTiming--;
+
+            }
+        },1000,1000);
 
         for (; ; ) {
 
@@ -162,6 +175,11 @@ public class MasterPilotMotor implements KeyMotionObservable {
             context.render(graphics -> {
                 masterPilot.repaint(WIDTH, HEIGHT);
                 masterPilot.draw();
+
+
+                masterPilot.drawFrameworkClock(gameTiming/3600,(gameTiming%3600)/60,(gameTiming%3600)%60);
+
+
                 Body hero = masterPilot.getBodyHero();
 
                 //TODO use this to center view place it in proper place
@@ -183,9 +201,15 @@ public class MasterPilotMotor implements KeyMotionObservable {
                 }
             }
 
+
+            if(gameTiming < 0){
+                return;
+            }
             beforeTime = System.nanoTime();
 
             // masterPilot.getWorld().clearForces();
+
+
         }
     }
 

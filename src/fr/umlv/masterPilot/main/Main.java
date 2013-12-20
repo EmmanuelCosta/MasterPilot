@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         MasterPilotMotor mPM = new MasterPilotMotor();
 
-        Application.run("Master Pilote Game", mPM.getWIDTH(), mPM.getHEIGHT(), context -> {
+        Application.run("Master Pilot Game", mPM.getWIDTH(), mPM.getHEIGHT(), context -> {
 
             context.render(graphics -> {
                 mPM.launchGame(context);

@@ -527,9 +527,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     }
 
     public void setBomb(Bomb bomb) {
-        System.out.println("arm 1");
         if (!Objects.isNull(bomb) && bomb.getBombeState() != Bomb.BombState.ARMED) {
-            System.out.println("arm 2");
             this.bombType = bomb.getBombType();
             this.cBomb = bomb;
         }
