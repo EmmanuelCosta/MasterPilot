@@ -1,17 +1,18 @@
 package fr.umlv.masterPilot;
 
 
-import fr.umlv.masterPilot.Interface.Bomb;
-import fr.umlv.masterPilot.Interface.KeyMotionObservable;
-import fr.umlv.masterPilot.Interface.KeyMotionObserver;
-import fr.umlv.masterPilot.Interface.SpaceShip;
+import fr.umlv.masterPilot.bomb.Bomb;
+import fr.umlv.masterPilot.world.KeyMotionObservable;
+import fr.umlv.masterPilot.world.KeyMotionObserver;
 import fr.umlv.masterPilot.bomb.GenericBomb;
-import fr.umlv.masterPilot.hero.Hero;
+import fr.umlv.masterPilot.ship.SpaceShip;
+import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.star.Star;
-import fr.umlv.masterPilot.world.MasterPilot;
+import fr.umlv.masterPilot.world.MasterPilotWorld;
 import fr.umlv.masterPilot.world.SpaceshipFactory;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
+
 import org.jbox2d.dynamics.Body;
 
 import java.awt.*;
@@ -35,18 +36,18 @@ public class MasterPilotMotor implements KeyMotionObservable {
     public void launchGame(ApplicationContext context) {
 
         context.render(graphics -> {
-            MasterPilot masterPilot = initPlateform(graphics);
-            gameTiming = Integer.valueOf("500");
+            MasterPilotWorld masterPilotWorld = initPlateform(graphics);
+            gameTiming = Integer.valueOf("100");
 
 
-            populatedWorld(masterPilot, context);
-            run(masterPilot, context);
+            populatedWorld(masterPilotWorld, context);
+            run(masterPilotWorld, context);
         });
     }
 
-    private MasterPilot initPlateform(Graphics2D graphics) {
+    private MasterPilotWorld initPlateform(Graphics2D graphics) {
         //Create Master Pilote
-        MasterPilot mp = new MasterPilot(graphics);
+        MasterPilotWorld mp = new MasterPilotWorld(graphics);
         mp.initPlateForm(WIDTH, HEIGHT);
 
         // SET REFERENTIEL
@@ -55,70 +56,60 @@ public class MasterPilotMotor implements KeyMotionObservable {
         return mp;
     }
 
-    private void populatedWorld(MasterPilot masterPilot, ApplicationContext context) {
+    private void populatedWorld(MasterPilotWorld masterPilotWorld, ApplicationContext context) {
         //TODO MANAGE WITH FILE CONFIG
 
-        Star star = new Star(masterPilot.getWorld(), 100, 250, Color.yellow);
+        Star star = new Star(masterPilotWorld.getWorld(), 100, 250, Color.yellow);
         star.create();
 
-        Star star2 = new Star(masterPilot.getWorld(), 100, 550, Color.GREEN);
+        Star star2 = new Star(masterPilotWorld.getWorld(), 100, 550, Color.GREEN);
         star2.create();
 
-        Star star3 = new Star(masterPilot.getWorld(), 400, 350, Color.RED);
+        Star star3 = new Star(masterPilotWorld.getWorld(), 400, 350, Color.RED);
         star3.create();
 
-        Star star4 = new Star(masterPilot.getWorld(), 400, 650, Color.BLUE);
+        Star star4 = new Star(masterPilotWorld.getWorld(), 400, 650, Color.BLUE);
         star4.create();
 
 
-        Hero h = new Hero(masterPilot.getWorld(), 0, 0);
+        Hero h = new Hero(masterPilotWorld.getWorld(), 0, 0);
         //
         h.create();
 
-        masterPilot.setHero(h);
+        masterPilotWorld.setHero(h);
         this.addObserver(h);
 
-        SpaceshipFactory factory = new SpaceshipFactory(masterPilot);
-        factory.createEnemy("TIE", 0, 300, h);
+        SpaceshipFactory factory = new SpaceshipFactory(masterPilotWorld);
+        factory.createEnemy("TIE", 350, 50, h);
+
+        factory.createEnemy("TIE", 350, -50, h);
 
 
-//        TIE tie1 = new TIE(masterPilot.getWorld(), 150, 50, h);
-//        tie1.create();
-//        masterPilot.addToSpaceshipManager(tie1.getBody(), tie1);
         factory.createEnemy("TIE", 150, 50, h);
 
-//        TIE tie2 = new TIE(masterPilot.getWorld(), -20, 90, h);
-//        tie2.create();
-//        masterPilot.addToSpaceshipManager(tie2.getBody(), tie2);
+        factory.createEnemy("CRUISER", 350, 50, h);
 
         factory.createEnemy("TIE", -20, 90, h);
-//
-//        TIE tie3 = new TIE(masterPilot.getWorld(), 200, 90, h);
-//        tie3.create();
-//        masterPilot.addToSpaceshipManager(tie3.getBody(), tie3);
+
 
         factory.createEnemy("TIE", 200, 90, h);
 
-//        TIE tie4 = new TIE(masterPilot.getWorld(), 50, 90, h);
-//        tie4.create();
-//        masterPilot.addToSpaceshipManager(tie4.getBody(), tie4);
 
         factory.createEnemy("TIE", 50, 90, h);
 
 //
-        GenericBomb empBomb = new GenericBomb(masterPilot.getWorld(), 70, -35, Bomb.BombType.BOMB);
+        GenericBomb empBomb = new GenericBomb(masterPilotWorld.getWorld(), 70, -35, Bomb.BombType.BOMB);
         empBomb.create();
 
-        masterPilot.addToBombManager(empBomb.getBody(), empBomb);
-        empBomb = new GenericBomb(masterPilot.getWorld(), 170, -35, Bomb.BombType.MEGABOMB);
+        masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
+        empBomb = new GenericBomb(masterPilotWorld.getWorld(), 170, -35, Bomb.BombType.MEGABOMB);
         empBomb.create();
 
-        masterPilot.addToBombManager(empBomb.getBody(), empBomb);
+        masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
 
-        //SpaceShip tie2 =  masterPilot.removeToSpaceshipManager(body);
-        //System.out.println(tie2);
+
         System.out.println("==========");
-        for (SpaceShip space : masterPilot.getEnemyList()) {
+        for (SpaceShip space : masterPilotWorld.getEnemyList()) {
             System.out.println(space);
         }
     }
@@ -126,10 +117,10 @@ public class MasterPilotMotor implements KeyMotionObservable {
     /**
      * main loop of the game
      *
-     * @param masterPilot : This is the masterpilote world
+     * @param masterPilotWorld : This is the masterpilote world
      * @param context
      */
-    private void run(MasterPilot masterPilot, ApplicationContext context) {
+    private void run(MasterPilotWorld masterPilotWorld, ApplicationContext context) {
         long beforeTime, afterTime, timeDiff, sleepTime;
 
         beforeTime = System.nanoTime();
@@ -146,15 +137,15 @@ public class MasterPilotMotor implements KeyMotionObservable {
         for (; ; ) {
 
 
-            masterPilot.getWorld().step(timeStep, velocityIterations, positionIterations);
+            masterPilotWorld.getWorld().step(timeStep, velocityIterations, positionIterations);
 
-            List<Body> destroyBody = masterPilot.getDestroyBody();
+            List<Body> destroyBody = masterPilotWorld.getDestroyBody();
             Iterator<Body> iterator = destroyBody.iterator();
             while (iterator.hasNext()) {
                 Body next = iterator.next();
 
                 iterator.remove();
-                masterPilot.getWorld().destroyBody(next);
+                masterPilotWorld.getWorld().destroyBody(next);
             }
 
 
@@ -172,17 +163,17 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
 
             context.render(graphics -> {
-                masterPilot.repaint(WIDTH, HEIGHT);
-                masterPilot.draw();
+                masterPilotWorld.repaint(WIDTH, HEIGHT);
+                masterPilotWorld.draw();
 
 
-                masterPilot.drawFrameworkClock(gameTiming / 3600, (gameTiming % 3600) / 60, (gameTiming % 3600) % 60);
+                masterPilotWorld.drawFrameworkClock(gameTiming / 3600, (gameTiming % 3600) / 60, (gameTiming % 3600) % 60);
 
 
-                Body hero = masterPilot.getBodyHero();
+                Body hero = masterPilotWorld.getBodyHero();
 
                 //TODO use this to center view place it in proper place
-                masterPilot.setCamera(hero.getPosition());
+                masterPilotWorld.setCamera(hero.getPosition());
 
             });
 
@@ -201,12 +192,17 @@ public class MasterPilotMotor implements KeyMotionObservable {
             }
 
 
-            if (gameTiming < 0) {
+            if (gameTiming < 0 ) {
+                masterPilotWorld.drawFrameworkEnd(false,WIDTH/2,HEIGHT/2);
+                return;
+            }
+            else if(masterPilotWorld.getEnemyList().isEmpty()){
+                masterPilotWorld.drawFrameworkEnd(true,WIDTH/2,HEIGHT/2);
                 return;
             }
             beforeTime = System.nanoTime();
 
-            // masterPilot.getWorld().clearForces();
+
 
 
         }
@@ -242,7 +238,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
      *
      * @param spaceShips
      * @param hero
-     * @see #doEnemyLogic(fr.umlv.masterPilot.Interface.SpaceShip, fr.umlv.masterPilot.hero.Hero)
+     * @see #doEnemyLogic(fr.umlv.masterPilot.ship.SpaceShip, fr.umlv.masterPilot.ship.hero.Hero)
      */
     private void proccessManager(List<SpaceShip> spaceShips, Hero hero) {
         for (SpaceShip space : spaceShips) {
@@ -262,7 +258,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
     }
 
-    public void run2(MasterPilot masterPilot, ApplicationContext context) {
+    public void run2(MasterPilotWorld masterPilotWorld, ApplicationContext context) {
         long lastLoopTime = System.nanoTime();
         final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
@@ -281,7 +277,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         // keep looping round til the game ends
         while (true) {
-            masterPilot.getWorld().step(timeStep, velocityIterations, positionIterations);
+            masterPilotWorld.getWorld().step(timeStep, velocityIterations, positionIterations);
             // work out how long its been since the last update, this
             // will be used to calculate how far the entities should
             // move this loop
@@ -303,13 +299,13 @@ public class MasterPilotMotor implements KeyMotionObservable {
             }
 
 
-            List<Body> destroyBody = masterPilot.getDestroyBody();
+            List<Body> destroyBody = masterPilotWorld.getDestroyBody();
             Iterator<Body> iterator = destroyBody.iterator();
             while (iterator.hasNext()) {
                 Body next = iterator.next();
 
                 iterator.remove();
-                masterPilot.getWorld().destroyBody(next);
+                masterPilotWorld.getWorld().destroyBody(next);
             }
 
             KeyboardEvent keyEvent = context.pollKeyboard();
@@ -326,17 +322,17 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
 
             context.render(graphics -> {
-                masterPilot.repaint(WIDTH, HEIGHT);
-                masterPilot.draw();
+                masterPilotWorld.repaint(WIDTH, HEIGHT);
+                masterPilotWorld.draw();
 
 
-                masterPilot.drawFrameworkClock(gameTiming / 3600, (gameTiming % 3600) / 60, (gameTiming % 3600) % 60);
+                masterPilotWorld.drawFrameworkClock(gameTiming / 3600, (gameTiming % 3600) / 60, (gameTiming % 3600) % 60);
 
 
-                Body hero = masterPilot.getBodyHero();
+                Body hero = masterPilotWorld.getBodyHero();
 
                 //TODO use this to center view place it in proper place
-                masterPilot.setCamera(hero.getPosition());
+                masterPilotWorld.setCamera(hero.getPosition());
 
             });
             // we want each frame to take 10 milliseconds, to do this
@@ -355,7 +351,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
             }
 
             if(gameTiming < 0){
-                return;
+              return;
             }
         }
     }

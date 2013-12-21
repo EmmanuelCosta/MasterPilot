@@ -1,7 +1,7 @@
 package fr.umlv.masterPilot.star;
 
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.world.MasterPilot;
+import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.*;
 
@@ -33,10 +33,10 @@ public class Star {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.color = Color.RED;
-        this.category = MasterPilot.PLANET;
-        this.maskBit = MasterPilot.ENEMY | MasterPilot.HERO
-                | MasterPilot.SHOOT | MasterPilot.SHIELD
-                | MasterPilot.MEGABOMB |MasterPilot.BOMB;
+        this.category = MasterPilotWorld.PLANET;
+        this.maskBit = MasterPilotWorld.ENEMY | MasterPilotWorld.HERO
+                | MasterPilotWorld.SHOOT | MasterPilotWorld.SHIELD
+                | MasterPilotWorld.MEGABOMB | MasterPilotWorld.BOMB;
     }
 
     public Star(World world, float x_axis, float y_axis,Color color) {
@@ -44,10 +44,10 @@ public class Star {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.color = color;
-        this.category = MasterPilot.PLANET;
-        this.maskBit = MasterPilot.ENEMY | MasterPilot.HERO
-                | MasterPilot.SHOOT | MasterPilot.SHIELD
-                | MasterPilot.MEGABOMB |MasterPilot.BOMB;
+        this.category = MasterPilotWorld.PLANET;
+        this.maskBit = MasterPilotWorld.ENEMY | MasterPilotWorld.HERO
+                | MasterPilotWorld.SHOOT | MasterPilotWorld.SHIELD
+                | MasterPilotWorld.MEGABOMB | MasterPilotWorld.BOMB;
     }
 
     public Star(World world, float x_axis, float y_axis, int category, int maskBit, Color color) {
@@ -98,7 +98,7 @@ public class Star {
                  * i have to put hero shield when  it
                  * will collide with a star
                  */
-                if(fix2.getFilterData().categoryBits == MasterPilot.SHIELD){
+                if(fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD){
 
                     fix2.m_isSensor = false;
                 }

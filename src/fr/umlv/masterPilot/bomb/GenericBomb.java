@@ -1,9 +1,7 @@
 package fr.umlv.masterPilot.bomb;
 
-import fr.umlv.masterPilot.Interface.Bomb;
-import fr.umlv.masterPilot.common.CustomQueryCalledBack;
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.world.MasterPilot;
+import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -48,17 +46,17 @@ public class GenericBomb implements Bomb {
 
 
             case BOMB:
-                this.category = MasterPilot.BOMB;
+                this.category = MasterPilotWorld.BOMB;
                 break;
             case MEGABOMB:
-                this.category = MasterPilot.MEGABOMB;
+                this.category = MasterPilotWorld.MEGABOMB;
                 break;
             default:
 
                 throw new UnsupportedOperationException();
         }
 
-        this.maskBit = MasterPilot.PLANET | MasterPilot.ENEMY|MasterPilot.HERO;
+        this.maskBit = MasterPilotWorld.PLANET | MasterPilotWorld.ENEMY| MasterPilotWorld.HERO;
         this.bombType = bombType;
 
     }
@@ -104,8 +102,8 @@ public class GenericBomb implements Bomb {
                  * hero take bomb
                  */
 
-                if ((fix2.getFilterData().categoryBits == MasterPilot.HERO
-                        || fix2.getFilterData().categoryBits == MasterPilot.SHIELD) && state == 0) {
+                if ((fix2.getFilterData().categoryBits == MasterPilotWorld.HERO
+                        || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD) && state == 0) {
                     addable = true;
                     hide = true;
                     state++;
@@ -121,8 +119,8 @@ public class GenericBomb implements Bomb {
                          * can collide if is not hero or shield
                          */
 
-                        if (fix2.getFilterData().categoryBits != MasterPilot.HERO
-                                && fix2.getFilterData().categoryBits != MasterPilot.SHIELD) {
+                        if (fix2.getFilterData().categoryBits != MasterPilotWorld.HERO
+                                && fix2.getFilterData().categoryBits != MasterPilotWorld.SHIELD) {
                             boum();
                             destroyed = true;
 
@@ -133,8 +131,8 @@ public class GenericBomb implements Bomb {
                          * only after bomb has been lauch
                          * not inside the launcher
                          */
-                        else if ((fix2.getFilterData().categoryBits == MasterPilot.HERO
-                                || fix2.getFilterData().categoryBits == MasterPilot.SHIELD) && state >= 2) {
+                        else if ((fix2.getFilterData().categoryBits == MasterPilotWorld.HERO
+                                || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD) && state >= 2) {
                             boum();
                             destroyed = true;
 
@@ -144,8 +142,8 @@ public class GenericBomb implements Bomb {
                          * if is hero or shield do not explode
                          * when launching
                          */
-                        else if ((fix2.getFilterData().categoryBits == MasterPilot.HERO
-                                || fix2.getFilterData().categoryBits == MasterPilot.SHIELD)) {
+                        else if ((fix2.getFilterData().categoryBits == MasterPilotWorld.HERO
+                                || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD)) {
                             state++;
                             hide = false;
 
