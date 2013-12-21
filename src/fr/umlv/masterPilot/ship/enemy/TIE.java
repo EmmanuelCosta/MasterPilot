@@ -45,7 +45,8 @@ public class TIE implements SpaceShip {
                 | MasterPilotWorld.SHIELD
                 | MasterPilotWorld.SHOOT
                 | MasterPilotWorld.BOMB
-                | MasterPilotWorld.MEGABOMB;
+                | MasterPilotWorld.MEGABOMB
+                | MasterPilotWorld.HERO;
     }
 
     public void create() {
@@ -86,35 +87,8 @@ public class TIE implements SpaceShip {
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
 
-        fd.userData = new UserSpec() {
-
-            private boolean destroy = false;
-
-            @Override
-            public void onCollide(Fixture fix2, boolean flag) {
-
-                if (flag == false) {
-                    if (fix2.getFilterData().categoryBits == (MasterPilotWorld.SHOOT)
-                            || fix2.getFilterData().categoryBits == (MasterPilotWorld.SHIELD)) {
-
-                        this.destroy = true;
-
-                    }
-                }
-            }
-
-            @Override
-            public boolean isDestroyable() {
-                return destroy;
-            }
-
-            @Override
-            public Color getColor() {
-                return Color.BLUE;
-            }
-        };
-
-        /**
+        fd.userData = new EnemyBehaviour(this,Color.BLUE);
+     /**
          * Integrate the body in the world.
          */
         Body body = this.world.createBody(bd);

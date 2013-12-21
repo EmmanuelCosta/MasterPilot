@@ -2,6 +2,7 @@ package fr.umlv.masterPilot.ship;
 
 import org.jbox2d.dynamics.Body;
 
+
 public interface SpaceShip extends Move {
 
     public void fire();
