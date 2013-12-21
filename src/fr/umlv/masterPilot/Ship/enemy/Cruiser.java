@@ -1,8 +1,7 @@
 package fr.umlv.masterPilot.Ship.enemy;
 
-import fr.umlv.masterPilot.Ship.SpaceShip;
 import fr.umlv.masterPilot.Ship.RayFire;
-import fr.umlv.masterPilot.common.UserSpec;
+import fr.umlv.masterPilot.Ship.SpaceShip;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -35,16 +34,21 @@ public class Cruiser implements SpaceShip {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
-        this.shoot1 = new Vec2( - 15,  - 15);
-        this.shoot2 = new Vec2( + 15,  - 15);
-        this.shoot3 = new Vec2( - 5,  - 15);
-        this.shoot4 = new Vec2( + 5,  - 15);
+        this.shoot1 = new Vec2(-15, -15);
+        this.shoot2 = new Vec2(+15, -15);
+        this.shoot3 = new Vec2(-5, -15);
+        this.shoot4 = new Vec2(+5, -15);
 
         /**
          * Interactions with the other bodies.
          */
         this.category = MasterPilotWorld.ENEMY;
-        this.maskBit = MasterPilotWorld.PLANET | MasterPilotWorld.HERO;
+        this.maskBit = MasterPilotWorld.PLANET
+                | MasterPilotWorld.SHIELD
+                | MasterPilotWorld.SHOOT
+                | MasterPilotWorld.BOMB
+                | MasterPilotWorld.MEGABOMB
+                | MasterPilotWorld.HERO;
     }
 
     public void create() {
@@ -83,33 +87,7 @@ public class Cruiser implements SpaceShip {
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
 //        Color.cyan
-        fd.userData = new UserSpec() {
-
-            private boolean destroy = false;
-
-            @Override
-            public void onCollide(Fixture fix2, boolean flag) {
-
-                if (flag == false) {
-                    if (fix2.getFilterData().categoryBits == (MasterPilotWorld.SHOOT)
-                            || fix2.getFilterData().categoryBits == (MasterPilotWorld.SHIELD)) {
-
-                        this.destroy = true;
-
-                    }
-                }
-            }
-
-            @Override
-            public boolean isDestroyedSet() {
-                return destroy;
-            }
-
-            @Override
-            public Color getColor() {
-                return Color.CYAN;
-            }
-        };
+        fd.userData = new EnemyBehaviour(this, Color.CYAN);
 
         /**
          * Integrate the body in the world.

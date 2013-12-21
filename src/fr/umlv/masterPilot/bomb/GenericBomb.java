@@ -89,94 +89,94 @@ public class GenericBomb implements Bomb {
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-
-        fd.userData = new UserSpec() {
-            private boolean hide = false;
-            private boolean addable = false;
-            private boolean destroyed = false;
-            private int state = 0;
-
-            @Override
-            public void onCollide(Fixture fix2, boolean flag) {
-                /**
-                 * hero take bomb
-                 */
-
-                if ((fix2.getFilterData().categoryBits == MasterPilotWorld.HERO
-                        || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD) && state == 0) {
-                    addable = true;
-                    hide = true;
-                    state++;
-
-
-
-                } else if (bombstate != BombState.NOT_ARMED) {
-                    hide = false;
-                }
-                if (flag == true) {
-                    if (bombstate == BombState.ARMED) {
-                        /**
-                         * can collide if is not hero or shield
-                         */
-
-                        if (fix2.getFilterData().categoryBits != MasterPilotWorld.HERO
-                                && fix2.getFilterData().categoryBits != MasterPilotWorld.SHIELD) {
-                            boum();
-                            destroyed = true;
-
-
-                        }
-                        /**
-                         * collide with hero or shield
-                         * only after bomb has been lauch
-                         * not inside the launcher
-                         */
-                        else if ((fix2.getFilterData().categoryBits == MasterPilotWorld.HERO
-                                || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD) && state >= 2) {
-                            boum();
-                            destroyed = true;
-
-
-                        }
-                        /**
-                         * if is hero or shield do not explode
-                         * when launching
-                         */
-                        else if ((fix2.getFilterData().categoryBits == MasterPilotWorld.HERO
-                                || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD)) {
-                            state++;
-                            hide = false;
-
-
-                        }
-
-                    }
-
-                }
-            }
-
-            @Override
-            public boolean isDestroyedSet() {
-                //hide =true;
-                return destroyed;
-            }
-
-            @Override
-            public boolean isAddableBomb() {
-
-                return addable;
-            }
-
-            @Override
-            public Color getColor() {
-                return Color.LIGHT_GRAY;
-            }
-
-            @Override
-            public boolean getSensor() {
-                return hide;
-            }
-        };
+        fd.userData = new BombBehaviour(this);
+//        fd.userData = new UserSpec() {
+//            private boolean hide = false;
+//            private boolean addable = false;
+//            private boolean destroyed = false;
+//            private int state = 0;
+//
+//            @Override
+//            public void onCollide(Fixture fix2, boolean flag) {
+//                /**
+//                 * hero take bomb
+//                 */
+//
+//                if ((fix2.getFilterData().categoryBits == MasterPilotWorld.HERO
+//                        || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD) && state == 0) {
+//                    addable = true;
+//                    hide = true;
+//                    state++;
+//
+//
+//
+//                } else if (bombstate != BombState.NOT_ARMED) {
+//                    hide = false;
+//                }
+//                if (flag == true) {
+//                    if (bombstate == BombState.ARMED) {
+//                        /**
+//                         * can collide if is not hero or shield
+//                         */
+//
+//                        if (fix2.getFilterData().categoryBits != MasterPilotWorld.HERO
+//                                && fix2.getFilterData().categoryBits != MasterPilotWorld.SHIELD) {
+//                            boum();
+//                            destroyed = true;
+//
+//
+//                        }
+//                        /**
+//                         * collide with hero or shield
+//                         * only after bomb has been lauch
+//                         * not inside the launcher
+//                         */
+//                        else if ((fix2.getFilterData().categoryBits == MasterPilotWorld.HERO
+//                                || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD) && state >= 2) {
+//                            boum();
+//                            destroyed = true;
+//
+//
+//                        }
+//                        /**
+//                         * if is hero or shield do not explode
+//                         * when launching
+//                         */
+//                        else if ((fix2.getFilterData().categoryBits == MasterPilotWorld.HERO
+//                                || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD)) {
+//                            state++;
+//                            hide = false;
+//
+//
+//                        }
+//
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public boolean isDestroyedSet() {
+//                //hide =true;
+//                return destroyed;
+//            }
+//
+//            @Override
+//            public boolean isAddableBomb() {
+//
+//                return addable;
+//            }
+//
+//            @Override
+//            public Color getColor() {
+//                return Color.LIGHT_GRAY;
+//            }
+//
+//            @Override
+//            public boolean getSensor() {
+//                return hide;
+//            }
+//        };
 
 
         // body
@@ -241,7 +241,7 @@ public class GenericBomb implements Bomb {
 
     @Override
     public BombState getBombeState() {
-        return null;
+        return this.bombstate;
     }
 
     @Override
