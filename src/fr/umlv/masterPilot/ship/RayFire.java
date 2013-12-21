@@ -1,4 +1,4 @@
-package fr.umlv.masterPilot.Ship;
+package fr.umlv.masterPilot.ship;
 
 import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
@@ -106,7 +106,7 @@ public class RayFire {
             }
 
             @Override
-            public boolean isDestroyedSet() {
+            public boolean isDestroyable() {
                 return destroy;
             }
 

@@ -4,14 +4,15 @@ package fr.umlv.masterPilot;
 import fr.umlv.masterPilot.bomb.Bomb;
 import fr.umlv.masterPilot.world.KeyMotionObservable;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
-import fr.umlv.masterPilot.Ship.SpaceShip;
 import fr.umlv.masterPilot.bomb.GenericBomb;
-import fr.umlv.masterPilot.Ship.hero.Hero;
+import fr.umlv.masterPilot.ship.SpaceShip;
+import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.star.Star;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import fr.umlv.masterPilot.world.SpaceshipFactory;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
+
 import org.jbox2d.dynamics.Body;
 
 import java.awt.*;
@@ -79,22 +80,22 @@ public class MasterPilotMotor implements KeyMotionObservable {
         this.addObserver(h);
 
         SpaceshipFactory factory = new SpaceshipFactory(masterPilotWorld);
-        factory.createEnemy("TIE", 350, 50, h);
+//        factory.createEnemy("TIE", 350, 50, h);
+//
+//        factory.createEnemy("TIE", 350, -50, h);
+//
+//
+//        factory.createEnemy("TIE", 150, 50, h);
 
-        factory.createEnemy("TIE", 350, -50, h);
+        factory.createEnemy("CRUISER", -350, 50, h);
 
-
-        factory.createEnemy("TIE", 150, 50, h);
-
-        factory.createEnemy("CRUISER", 350, 50, h);
-
-        factory.createEnemy("TIE", -20, 90, h);
-
-
-        factory.createEnemy("TIE", 200, 90, h);
-
-
-        factory.createEnemy("TIE", 50, 90, h);
+//        factory.createEnemy("TIE", -20, 90, h);
+//
+//
+//        factory.createEnemy("TIE", 200, 90, h);
+//
+//
+//        factory.createEnemy("TIE", 50, 90, h);
 
 //
         GenericBomb empBomb = new GenericBomb(masterPilotWorld.getWorld(), 70, -35, Bomb.BombType.BOMB);
@@ -176,7 +177,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
             });
 
-
+            proccessManager(masterPilotWorld.getEnemyList(), masterPilotWorld.getHero());
             afterTime = System.nanoTime();
 
             timeDiff = afterTime - beforeTime;
@@ -237,7 +238,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
      *
      * @param spaceShips
      * @param hero
-     * @see #doEnemyLogic(fr.umlv.masterPilot.Ship.SpaceShip, fr.umlv.masterPilot.Ship.hero.Hero)
+     * @see #doEnemyLogic(fr.umlv.masterPilot.ship.SpaceShip, fr.umlv.masterPilot.ship.hero.Hero)
      */
     private void proccessManager(List<SpaceShip> spaceShips, Hero hero) {
         for (SpaceShip space : spaceShips) {
@@ -249,11 +250,33 @@ public class MasterPilotMotor implements KeyMotionObservable {
      * this will contains the logic of enemy spaceship for move and fire
      * according to the hero
      *
-     * @param space : the enemy spaceship
+     * @param enemy : the enemy spaceship
      * @param hero  : the spaceship hero
      */
-    private void doEnemyLogic(SpaceShip space, Hero hero) {
-
+    private void doEnemyLogic(SpaceShip enemy, Hero hero) {
+        int x_distance = enemy.getX_axis() - hero.getX_axis();
+        int y_distance = enemy.getY_axis() - hero.getY_axis();
+        double distance = Math.sqrt(Math.pow(x_distance, 2) + Math.pow(y_distance, 2));
+        
+        /* Horizontal movement */
+        if (x_distance > 0) {
+            enemy.left();
+        } else if (x_distance < 0) {
+            enemy.right();
+        }
+        
+        /* Vertical movement */
+        if (y_distance > 0) {
+            enemy.down();
+        } else if (y_distance < 0) {
+            enemy.up();
+        }
+        
+        /* Actions */
+        if (distance <= 290) {
+            enemy.fire();
+        }
+        
     }
 
     public void run2(MasterPilotWorld masterPilotWorld, ApplicationContext context) {

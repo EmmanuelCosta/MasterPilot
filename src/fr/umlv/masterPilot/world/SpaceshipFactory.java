@@ -1,9 +1,9 @@
 package fr.umlv.masterPilot.world;
 
-import fr.umlv.masterPilot.Ship.SpaceShip;
-import fr.umlv.masterPilot.Ship.enemy.Cruiser;
-import fr.umlv.masterPilot.Ship.enemy.TIE;
-import fr.umlv.masterPilot.Ship.hero.Hero;
+import fr.umlv.masterPilot.ship.SpaceShip;
+import fr.umlv.masterPilot.ship.enemy.Cruiser;
+import fr.umlv.masterPilot.ship.enemy.TIE;
+import fr.umlv.masterPilot.ship.hero.Hero;
 
 /**
  * Created by emmanuel on 19/12/13.

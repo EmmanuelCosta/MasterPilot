@@ -1,6 +1,7 @@
-package fr.umlv.masterPilot.Ship.enemy;
+package fr.umlv.masterPilot.ship.enemy;
 
-import fr.umlv.masterPilot.Ship.SpaceShip;
+import fr.umlv.masterPilot.ship.SpaceShip;
+
 import org.jbox2d.dynamics.Body;
 
 public class Squadron implements SpaceShip{
@@ -55,6 +56,18 @@ public class Squadron implements SpaceShip{
     @Override
     public Body getBody() {
         return null;
+    }
+
+    @Override
+    public int getX_axis() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getY_axis() {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
 }

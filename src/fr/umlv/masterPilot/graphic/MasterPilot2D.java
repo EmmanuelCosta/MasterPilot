@@ -1,4 +1,4 @@
-package fr.umlv.masterPilot.Graphic;
+package fr.umlv.masterPilot.graphic;
 
 import org.jbox2d.common.IViewportTransform;
 import org.jbox2d.common.OBBViewportTransform;

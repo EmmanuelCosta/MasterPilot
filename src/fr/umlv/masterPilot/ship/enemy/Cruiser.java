@@ -1,43 +1,43 @@
-package fr.umlv.masterPilot.Ship.enemy;
+package fr.umlv.masterPilot.ship.enemy;
 
-import fr.umlv.masterPilot.Ship.RayFire;
-import fr.umlv.masterPilot.Ship.SpaceShip;
-import fr.umlv.masterPilot.world.MasterPilotWorld;
-import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
+
+
+import fr.umlv.masterPilot.ship.RayFire;
+import fr.umlv.masterPilot.ship.SpaceShip;
+import fr.umlv.masterPilot.world.MasterPilotWorld;
+
+import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.dynamics.*;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
 
 public class Cruiser implements SpaceShip {
-
-    private final int maskBit;
+ private final int maskBit;
     private final int category;
-    private World world;
-    private int x_axis;
-    private int y_axis;
+    private final World world;
+    private final int x_axis;
+    private final int y_axis;
     private Body body;
-    private Vec2 cruiserSpeed = new Vec2(0, -30f);
-    private Vec2 rayonForce = new Vec2(0f, -10f);
-    private Vec2 shoot1;
-    private Vec2 shoot2;
-    private Vec2 shoot3;
-    private Vec2 shoot4;
-    private Vec2 shoot5;
-    private Vec2 shoot6;
-    private Vec2 shoot7;
-    private Vec2 shoot8;
+    private final Vec2 cruiserSpeed = new Vec2(0, -50f);
+    private final Vec2 rayonForce = new Vec2(+ 0f, - 5f);
+    private final Vec2 forceLeft = new Vec2(- 5f, + 0f);
+    private final Vec2 forceRight = new Vec2(+ 5f, + 0f);
+    private final Vec2 forceUp = new Vec2(+ 0f, + 5f);
+    private final Vec2 forceDown = new Vec2(+ 0f, - 5f);
+    
+    private final Vec2 shoot1 = new Vec2(- 15f, - 15f);
+    private final Vec2 shoot2 = new Vec2(+ 15f, - 15f);
+    private final Vec2 shoot3 = new Vec2(- 5f,  - 15f);
+    private final Vec2 shoot4 = new Vec2(+ 5f, - 15f);
 
     public Cruiser(World world, int x_axis, int y_axis) {
         super();
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
-        this.shoot1 = new Vec2(-15, -15);
-        this.shoot2 = new Vec2(+15, -15);
-        this.shoot3 = new Vec2(-5, -15);
-        this.shoot4 = new Vec2(+5, -15);
 
         /**
          * Interactions with the other bodies.
@@ -62,10 +62,10 @@ public class Cruiser implements SpaceShip {
          * Number of vertices.
          */
         Vec2[] vertices = new Vec2[4];
-        vertices[0] = new Vec2(x_axis - 15, y_axis);
-        vertices[1] = new Vec2(x_axis - 15, y_axis - 10);
-        vertices[2] = new Vec2(x_axis + 15, y_axis - 10);
-        vertices[3] = new Vec2(x_axis + 15, y_axis);
+        vertices[0] = new Vec2(- 15, + 0);
+        vertices[1] = new Vec2(- 15, - 10);
+        vertices[2] = new Vec2(+ 15, - 10);
+        vertices[3] = new Vec2(+ 15, + 0);
         ps.set(vertices, 4);
 
         /**
@@ -86,7 +86,7 @@ public class Cruiser implements SpaceShip {
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-//        Color.cyan
+
         fd.userData = new EnemyBehaviour(this, Color.CYAN);
 
         /**
@@ -104,14 +104,14 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void right() {
-        Vec2 force = body.getWorldVector(new Vec2(+100f, 0));
+        Vec2 force = body.getWorldVector(forceRight);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
     }
 
     @Override
     public void left() {
-        Vec2 force = body.getWorldVector(new Vec2(-100f, 0));
+        Vec2 force = body.getWorldVector(forceLeft);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
 
@@ -119,14 +119,14 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void up() {
-        Vec2 force = body.getWorldVector(new Vec2(0, +5f));
+        Vec2 force = body.getWorldVector(forceUp);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
     }
 
     @Override
     public void down() {
-        Vec2 force = body.getWorldVector(new Vec2(0, -5f));
+        Vec2 force = body.getWorldVector(forceDown);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
     }
@@ -193,5 +193,15 @@ public class Cruiser implements SpaceShip {
     @Override
     public void shield() {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public int getX_axis() {
+        return this.x_axis;
+    }
+
+    @Override
+    public int getY_axis() {
+        return this.y_axis;
     }
 }

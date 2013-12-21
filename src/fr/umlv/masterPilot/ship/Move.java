@@ -1,4 +1,4 @@
-package fr.umlv.masterPilot.Ship;
+package fr.umlv.masterPilot.ship;
 
 public interface Move {
 	public void right();

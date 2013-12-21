@@ -89,6 +89,7 @@ public class GenericBomb implements Bomb {
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
+
         fd.userData = new BombBehaviour(this);
 //        fd.userData = new UserSpec() {
 //            private boolean hide = false;
@@ -177,6 +178,7 @@ public class GenericBomb implements Bomb {
 //                return hide;
 //            }
 //        };
+
 
 
         // body

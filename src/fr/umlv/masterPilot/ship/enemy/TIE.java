@@ -1,13 +1,15 @@
-package fr.umlv.masterPilot.Ship.enemy;
+package fr.umlv.masterPilot.ship.enemy;
 
-import fr.umlv.masterPilot.Ship.SpaceShip;
-import fr.umlv.masterPilot.Ship.RayFire;
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.Ship.hero.Hero;
+import fr.umlv.masterPilot.ship.RayFire;
+import fr.umlv.masterPilot.ship.SpaceShip;
+import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
+
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
@@ -45,6 +47,16 @@ public class TIE implements SpaceShip {
                 | MasterPilotWorld.BOMB
                 | MasterPilotWorld.MEGABOMB
                 | MasterPilotWorld.HERO;
+    }
+
+    @Override
+    public int getX_axis() {
+        return x_axis;
+    }
+
+    @Override
+    public int getY_axis() {
+        return y_axis;
     }
 
     public void create() {
@@ -86,8 +98,7 @@ public class TIE implements SpaceShip {
         fd.filter.maskBits = this.maskBit;
 
         fd.userData = new EnemyBehaviour(this,Color.BLUE);
-
-        /**
+     /**
          * Integrate the body in the world.
          */
         Body body = this.world.createBody(bd);

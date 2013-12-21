@@ -1,10 +1,11 @@
 package fr.umlv.masterPilot.world;
 
-import fr.umlv.masterPilot.Graphic.MasterPilot2D;
 import fr.umlv.masterPilot.bomb.Bomb;
-import fr.umlv.masterPilot.Ship.SpaceShip;
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.Ship.hero.Hero;
+import fr.umlv.masterPilot.graphic.MasterPilot2D;
+import fr.umlv.masterPilot.ship.SpaceShip;
+import fr.umlv.masterPilot.ship.hero.Hero;
+
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -63,7 +64,10 @@ public class MasterPilotWorld implements ContactListener {
      */
     private Hero hero;
 
-
+    public Hero getHero() {
+        return this.hero;
+    }
+    
     public MasterPilotWorld(Graphics2D masterPilot2D) {
         this.world = new World(new Vec2(0, 0f));
 
@@ -289,14 +293,14 @@ public class MasterPilotWorld implements ContactListener {
         userData2.onCollide(fixtureA, true);
         fixtureB.m_isSensor = userData2.getSensor();
 
-        if (userData.isAddableBomb()) {
+        if (userData.isItem()) {
             Body b = fixtureA.getBody();
 
             Bomb bomb = this.bombManager.get(b);
 
             this.hero.setBomb(bomb);
         }
-        if (userData2.isAddableBomb()) {
+        if (userData2.isItem()) {
             Bomb bomb = this.bombManager.get(fixtureB.getBody());
             this.hero.setBomb(bomb);
         }
@@ -317,13 +321,13 @@ public class MasterPilotWorld implements ContactListener {
         userData.onCollide(fixtureB, false);
         fixtureA.m_isSensor = userData.getSensor();
 
-        if (userData.isDestroyedSet()) {
+        if (userData.isDestroyable()) {
             destroyBody.add(fixtureA.getBody());
         }
         UserSpec userData2 = (UserSpec) fixtureB.getUserData();
         userData2.onCollide(fixtureA, false);
         fixtureB.m_isSensor = userData2.getSensor();
-        if (userData2.isDestroyedSet()) {
+        if (userData2.isDestroyable()) {
             destroyBody.add(fixtureB.getBody());
         }
 

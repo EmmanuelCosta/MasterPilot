@@ -1,4 +1,4 @@
-package fr.umlv.masterPilot.Ship.hero;
+package fr.umlv.masterPilot.ship.hero;
 
 import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
@@ -96,7 +96,7 @@ public class Bullet {
             }
 
             @Override
-            public boolean isDestroyedSet() {
+            public boolean isDestroyable() {
                 return true;
             }
 

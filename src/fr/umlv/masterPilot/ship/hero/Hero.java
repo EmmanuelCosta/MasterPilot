@@ -1,12 +1,13 @@
-package fr.umlv.masterPilot.Ship.hero;
+package fr.umlv.masterPilot.ship.hero;
 
 import fr.umlv.masterPilot.bomb.Bomb;
+import fr.umlv.masterPilot.ship.RayFire;
+import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
-import fr.umlv.masterPilot.Ship.SpaceShip;
-import fr.umlv.masterPilot.Ship.RayFire;
 import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import fr.umlv.zen3.KeyboardEvent;
+
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -254,6 +255,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
         cBomb.getBody().setTransform(worldPoint, body.getAngle());
         cBomb.getBody().applyForce(force, point);
+        
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -448,16 +450,15 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         throw new UnsupportedOperationException();
     }
 
-    public int getX() {
+    @Override
+    public int getX_axis() {
         return this.x_axis;
     }
 
-    public int getY() {
+    @Override
+    public int getY_axis() {
         return this.y_axis;
     }
-
-
-
 
 
     public void setBomb(Bomb bomb) {
