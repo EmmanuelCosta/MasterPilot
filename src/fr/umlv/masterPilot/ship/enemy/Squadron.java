@@ -58,16 +58,5 @@ public class Squadron implements SpaceShip{
         return null;
     }
 
-    @Override
-    public int getX_axis() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getY_axis() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 
 }
