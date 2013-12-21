@@ -93,12 +93,13 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         FixtureDef fd = new FixtureDef();
         fd.shape = poly1;
         fd.filter.categoryBits = MasterPilot.HERO;
-        fd.filter.maskBits = MasterPilot.ENEMY | MasterPilot.PLANET;
+        fd.filter.maskBits = MasterPilot.ENEMY | MasterPilot.PLANET | MasterPilot.MEGABOMB |MasterPilot.BOMB | MasterPilot.TRAIL;
         fd.density = 0.09f;
         fd.friction = 0.001f;
         fd.restitution = 1.5f;
 
         fd.userData = new UserSpec() {
+
             @Override
             public void onCollide(Fixture fix2, boolean flag) {
 
@@ -137,24 +138,32 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fs.filter.categoryBits = MasterPilot.SHIELD;
         fs.filter.maskBits = MasterPilot.ENEMY | MasterPilot.PLANET;
 
+//        public static int HERO = 0x0001;
+//        public static int ENEMY = 0x0002;
+//        public static int PLANET = 0x0004;
+//        public static int SHOOT = 0x0008;
+//        public static int BOMB = 0x00016;
+//        public static int MEGABOMB = 0x00032;
+//        public static int SHIELD = 0x00064;
+//        public static int TRAIL = 0x00128;
 
-        fs.userData = new
 
-                UserSpec() {
+
+        fs.userData = new UserSpec() {
                     private boolean collide = true;
 
                     @Override
                     public void onCollide(Fixture fix2, boolean flag) {
 
+                        if(fix2.getFilterData().categoryBits == MasterPilot.TRAIL)
+                            return;
 /**
  * i put the shield in the begining of collision
  * and i retreive it a the end
  */
                         if (flag == true) {
 
-                            if (fix2.getFilterData().categoryBits != MasterPilot.BOMB &&
-                                    fix2.getFilterData().categoryBits != MasterPilot.MEGABOMB
-                                    ) {
+                            if (fix2.getFilterData().categoryBits != (MasterPilot.BOMB |MasterPilot.MEGABOMB) ) {
 
 
                                 collide = false;
@@ -340,10 +349,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          * create the shoot
          */
 
-        // TODO refactor this part
-
-
-
 
 
         Vec2 force = body.getWorldVector(classicBombSpeed.mul(1000));
@@ -360,28 +365,28 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         this.cBomb.getBody().applyLinearImpulse(force, point);
 
 
+        this.bombType = Bomb.BombType.NONE;
 
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-
-                bombType = Bomb.BombType.NONE;
-
-            }
-        }, 500, 1);
-
-        worker.schedule(new Runnable() {
-            @Override
-            public void run() {
-
-                timer.cancel();
-                ;
-
-            }
-        }, 800, TimeUnit.MILLISECONDS);
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//
+//
+//                bombType = Bomb.BombType.NONE;
+//
+//            }
+//        }, 500, 1);
+//
+//        worker.schedule(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                timer.cancel();
+//                ;
+//
+//            }
+//        }, 800, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -459,42 +464,42 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         List<ClassicBomb> lBomb = new ArrayList<>();
 //LEFT
         ClassicBomb cBomb = new ClassicBomb(this.world, worldPoint.x, worldPoint.y,
-                MasterPilot.HERO, MasterPilot.ENEMY | MasterPilot.PLANET, Color.RED, 1);
+                MasterPilot.TRAIL,MasterPilot.HERO |MasterPilot.PLANET, Color.CYAN, 2);
         cBomb.create();
         lBomb.add(cBomb);
 //RIGHT
         cBomb = new ClassicBomb(this.world, worldPoint2.x, worldPoint2.y,
-                MasterPilot.HERO, MasterPilot.ENEMY | MasterPilot.PLANET, Color.RED, 1);
+                MasterPilot.TRAIL,  MasterPilot.HERO|MasterPilot.PLANET, Color.CYAN, 2);
         cBomb.create();
         lBomb.add(cBomb);
 //MIDDLE
-        cBomb = new ClassicBomb(this.world, worldPoint3.x, worldPoint3.y,
-                MasterPilot.HERO, MasterPilot.ENEMY | MasterPilot.PLANET, Color.RED, 1);
+         cBomb = new ClassicBomb(this.world, worldPoint3.x, worldPoint3.y,
+                MasterPilot.TRAIL,MasterPilot.HERO| MasterPilot.PLANET, Color.CYAN, 2);
         cBomb.create();
         lBomb.add(cBomb);
 
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-                for (ClassicBomb cBomb : lBomb) {
-                    world.destroyBody(cBomb.getBody());
-
-                }
-
-            }
-        }, 50, 1);
-
-        worker.schedule(new Runnable() {
-            @Override
-            public void run() {
-
-                timer.cancel();
-
-            }
-        }, 80, TimeUnit.MILLISECONDS);
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//
+//                for (ClassicBomb cBomb : lBomb) {
+//                    world.destroyBody(cBomb.getBody());
+//
+//                }
+//
+//            }
+//        }, 50, 1);
+//
+//        worker.schedule(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                timer.cancel();
+//
+//            }
+//        }, 80, TimeUnit.MILLISECONDS);
 
 
     }
@@ -512,19 +517,9 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         return this.y_axis;
     }
 
-    public Bomb.BombType getBombType() {
-        return bombType;
-    }
 
-    public void setBombType(Bomb.BombType bombType) {
-        this.bombType = bombType;
-    }
 
-    public void triggerExplosion() {
-        this.cBomb.boum();
 
-        // this.bombType= Bomb.BombType.NONE;
-    }
 
     public void setBomb(Bomb bomb) {
         if (!Objects.isNull(bomb) && bomb.getBombeState() != Bomb.BombState.ARMED) {

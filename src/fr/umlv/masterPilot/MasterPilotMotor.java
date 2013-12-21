@@ -36,8 +36,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         context.render(graphics -> {
             MasterPilot masterPilot = initPlateform(graphics);
-               gameTiming=Integer.valueOf("500");
-
+            gameTiming = Integer.valueOf("500");
 
 
             populatedWorld(masterPilot, context);
@@ -142,7 +141,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
                 gameTiming--;
 
             }
-        },1000,1000);
+        }, 1000, 1000);
 
         for (; ; ) {
 
@@ -177,7 +176,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
                 masterPilot.draw();
 
 
-                masterPilot.drawFrameworkClock(gameTiming/3600,(gameTiming%3600)/60,(gameTiming%3600)%60);
+                masterPilot.drawFrameworkClock(gameTiming / 3600, (gameTiming % 3600) / 60, (gameTiming % 3600) % 60);
 
 
                 Body hero = masterPilot.getBodyHero();
@@ -202,7 +201,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
             }
 
 
-            if(gameTiming < 0){
+            if (gameTiming < 0) {
                 return;
             }
             beforeTime = System.nanoTime();
@@ -260,6 +259,104 @@ public class MasterPilotMotor implements KeyMotionObservable {
      */
     private void doEnemyLogic(SpaceShip space, Hero hero) {
 
+    }
+
+    public void run2(MasterPilot masterPilot, ApplicationContext context) {
+        long lastLoopTime = System.nanoTime();
+        final int TARGET_FPS = 60;
+        final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
+        long lastFpsTime=0;
+        int fps=0;
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                gameTiming--;
+
+            }
+        }, 1000, 1000);
+
+        // keep looping round til the game ends
+        while (true) {
+            masterPilot.getWorld().step(timeStep, velocityIterations, positionIterations);
+            // work out how long its been since the last update, this
+            // will be used to calculate how far the entities should
+            // move this loop
+            long now = System.nanoTime();
+            long updateLength = now - lastLoopTime;
+            lastLoopTime = now;
+            double delta = updateLength / ((double) OPTIMAL_TIME);
+
+            // update the frame counter
+            lastFpsTime += updateLength;
+            fps++;
+
+            // update our FPS counter if a second has passed since
+            // we last recorded
+            if (lastFpsTime >= 1000000000) {
+                System.out.println("(FPS: " + fps + ")");
+                lastFpsTime = 0;
+                fps = 0;
+            }
+
+
+            List<Body> destroyBody = masterPilot.getDestroyBody();
+            Iterator<Body> iterator = destroyBody.iterator();
+            while (iterator.hasNext()) {
+                Body next = iterator.next();
+
+                iterator.remove();
+                masterPilot.getWorld().destroyBody(next);
+            }
+
+            KeyboardEvent keyEvent = context.pollKeyboard();
+
+            /**
+             * this for notify the hero
+             * that event have been find
+             */
+
+
+            if (keyEvent != null) {
+                this.notifyObserver(keyEvent);
+            }
+
+
+            context.render(graphics -> {
+                masterPilot.repaint(WIDTH, HEIGHT);
+                masterPilot.draw();
+
+
+                masterPilot.drawFrameworkClock(gameTiming / 3600, (gameTiming % 3600) / 60, (gameTiming % 3600) % 60);
+
+
+                Body hero = masterPilot.getBodyHero();
+
+                //TODO use this to center view place it in proper place
+                masterPilot.setCamera(hero.getPosition());
+
+            });
+            // we want each frame to take 10 milliseconds, to do this
+            // we've recorded when we started the frame. We add 10 milliseconds
+            // to this and then factor in the current time to give
+            // us our final value to wait for
+            // remember this is in ms, whereas our lastLoopTime etc. vars are in ns.
+            int sleep= (int)(lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
+            System.out.println(sleep);
+            if(sleep > 0){
+                try {
+                    Thread.sleep(sleep);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(gameTiming < 0){
+                return;
+            }
+        }
     }
 
 }

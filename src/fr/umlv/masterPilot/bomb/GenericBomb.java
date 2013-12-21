@@ -58,7 +58,7 @@ public class GenericBomb implements Bomb {
                 throw new UnsupportedOperationException();
         }
 
-        this.maskBit = MasterPilot.PLANET | MasterPilot.ENEMY;
+        this.maskBit = MasterPilot.PLANET | MasterPilot.ENEMY|MasterPilot.HERO;
         this.bombType = bombType;
 
     }
@@ -91,6 +91,7 @@ public class GenericBomb implements Bomb {
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
+
         fd.userData = new UserSpec() {
             private boolean hide = false;
             private boolean addable = false;
@@ -102,11 +103,13 @@ public class GenericBomb implements Bomb {
                 /**
                  * hero take bomb
                  */
+
                 if ((fix2.getFilterData().categoryBits == MasterPilot.HERO
                         || fix2.getFilterData().categoryBits == MasterPilot.SHIELD) && state == 0) {
                     addable = true;
                     hide = true;
                     state++;
+
 
 
                 } else if (bombstate != BombState.NOT_ARMED) {
@@ -123,6 +126,7 @@ public class GenericBomb implements Bomb {
                             boum();
                             destroyed = true;
 
+
                         }
                         /**
                          * collide with hero or shield
@@ -134,6 +138,7 @@ public class GenericBomb implements Bomb {
                             boum();
                             destroyed = true;
 
+
                         }
                         /**
                          * if is hero or shield do not explode
@@ -143,6 +148,7 @@ public class GenericBomb implements Bomb {
                                 || fix2.getFilterData().categoryBits == MasterPilot.SHIELD)) {
                             state++;
                             hide = false;
+
 
                         }
 
@@ -191,9 +197,9 @@ public class GenericBomb implements Bomb {
         float blastRadius = 100f;
         float powerBlast = 0;
         if (this.bombType == BombType.MEGABOMB) {
-            powerBlast = -5000000f;
+            powerBlast = -8000000f;
         } else {
-            powerBlast = 5000000f;
+            powerBlast = 8000000f;
         }
 
         CustomQueryCalledBack queryCallback = new CustomQueryCalledBack();

@@ -192,11 +192,11 @@ public class MasterPilot2D {
     public void drawFrameworkClock(int hour, int minute, int second) {
 
         this.graphic.setColor(Color.WHITE);
-//        this.graphic.fill3DRect(0, 0, 100, 30, true);
+        this.graphic.fill3DRect(0, 0, 100, 30, true);
 
 //           this.graphic.draw3DRect(0,0,100,30,false);
 
-//        this.graphic.setColor(Color.BLACK);
+        this.graphic.setColor(Color.BLACK);
 
         StringBuilder strb = new StringBuilder();
 

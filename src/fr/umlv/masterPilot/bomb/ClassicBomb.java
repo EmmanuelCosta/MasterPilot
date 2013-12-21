@@ -32,7 +32,7 @@ public class ClassicBomb {
 
 
         this.category = MasterPilot.ENEMY;
-        this.maskBit = MasterPilot.PLANET;
+        this.maskBit = MasterPilot.PLANET ;
 
         this.color = Color.WHITE;
 
@@ -73,24 +73,37 @@ public class ClassicBomb {
         // applique toi a cs
         fd.shape = cs;
         fd.density = 0.0f;
-        fd.friction = 0.1f;
-        fd.restitution = 0.5f;
+        fd.friction = 0.0f;
+        fd.restitution = 0.0f;
 
         fd.filter.categoryBits = this.category;
 
         fd.filter.maskBits = this.maskBit;
 
+        fd.isSensor =true;
         fd.userData = new UserSpec() {
 
 
             @Override
             public void onCollide(Fixture fix2, boolean flag) {
 
+
             }
 
             @Override
             public Color getColor() {
                 return color;
+            }
+
+            @Override
+            public boolean isDestroyedSet() {
+                return true;
+            }
+
+            @Override
+            public boolean getSensor() {
+
+                return false;
             }
         };
 
