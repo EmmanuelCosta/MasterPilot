@@ -80,22 +80,22 @@ public class MasterPilotMotor implements KeyMotionObservable {
         this.addObserver(h);
 
         SpaceshipFactory factory = new SpaceshipFactory(masterPilotWorld);
-        factory.createEnemy("TIE", 350, 50, h);
+//        factory.createEnemy("TIE", 350, 50, h);
+//
+//        factory.createEnemy("TIE", 350, -50, h);
+//
+//
+//        factory.createEnemy("TIE", 150, 50, h);
 
-        factory.createEnemy("TIE", 350, -50, h);
+        factory.createEnemy("CRUISER", -350, 50, h);
 
-
-        factory.createEnemy("TIE", 150, 50, h);
-
-        factory.createEnemy("CRUISER", 350, 50, h);
-
-        factory.createEnemy("TIE", -20, 90, h);
-
-
-        factory.createEnemy("TIE", 200, 90, h);
-
-
-        factory.createEnemy("TIE", 50, 90, h);
+//        factory.createEnemy("TIE", -20, 90, h);
+//
+//
+//        factory.createEnemy("TIE", 200, 90, h);
+//
+//
+//        factory.createEnemy("TIE", 50, 90, h);
 
 //
         GenericBomb empBomb = new GenericBomb(masterPilotWorld.getWorld(), 70, -35, Bomb.BombType.BOMB);
@@ -177,7 +177,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
             });
 
-
+            proccessManager(masterPilotWorld.getEnemyList(), masterPilotWorld.getHero());
             afterTime = System.nanoTime();
 
             timeDiff = afterTime - beforeTime;
@@ -253,9 +253,30 @@ public class MasterPilotMotor implements KeyMotionObservable {
      * @param space : the enemy spaceship
      * @param hero  : the spaceship hero
      */
-    private void doEnemyLogic(SpaceShip space, Hero hero) {
+    private void doEnemyLogic(SpaceShip enemy, Hero hero) {
+        int x_distance = enemy.getX_axis() - hero.getX_axis();
+        int y_distance = enemy.getY_axis() - hero.getY_axis();
+        double distance = Math.sqrt(Math.pow(x_distance, 2) + Math.pow(y_distance, 2));
         
-
+        /* Horizontal movement */
+        if (x_distance > 0) {
+            enemy.left();
+        } else if (x_distance < 0) {
+            enemy.right();
+        }
+        
+        /* Vertical movement */
+        if (y_distance > 0) {
+            enemy.down();
+        } else if (y_distance < 0) {
+            enemy.up();
+        }
+        
+        /* Actions */
+        if (distance <= 290) {
+            enemy.fire();
+        }
+        
     }
 
     public void run2(MasterPilotWorld masterPilotWorld, ApplicationContext context) {

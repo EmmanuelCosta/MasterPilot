@@ -64,7 +64,10 @@ public class MasterPilotWorld implements ContactListener {
      */
     private Hero hero;
 
-
+    public Hero getHero() {
+        return this.hero;
+    }
+    
     public MasterPilotWorld(Graphics2D masterPilot2D) {
         this.world = new World(new Vec2(0, 0f));
 
