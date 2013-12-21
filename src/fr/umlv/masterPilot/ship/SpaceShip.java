@@ -13,9 +13,4 @@ public interface SpaceShip extends Move {
     public void create();
 
     public Body getBody();
-    
-    public int getX_axis();
-    
-    public int getY_axis();
-
 }

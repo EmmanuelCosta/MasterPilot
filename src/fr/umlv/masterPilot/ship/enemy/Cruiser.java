@@ -34,7 +34,6 @@ public class Cruiser implements SpaceShip {
     private final Vec2 shoot4 = new Vec2(+ 5f, - 15f);
 
     public Cruiser(World world, int x_axis, int y_axis) {
-        super();
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
@@ -216,13 +215,4 @@ public class Cruiser implements SpaceShip {
         throw new NotImplementedException();
     }
 
-    @Override
-    public int getX_axis() {
-        return this.x_axis;
-    }
-
-    @Override
-    public int getY_axis() {
-        return this.y_axis;
-    }
 }

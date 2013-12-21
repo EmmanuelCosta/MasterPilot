@@ -488,16 +488,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public int getX_axis() {
-        return this.x_axis;
-    }
-
-    @Override
-    public int getY_axis() {
-        return this.y_axis;
-    }
-
 
     public void setBomb(Bomb bomb) {
         if (!Objects.isNull(bomb) && bomb.getBombeState() != Bomb.BombState.ARMED) {

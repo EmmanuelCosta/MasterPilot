@@ -37,7 +37,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         context.render(graphics -> {
             MasterPilotWorld masterPilotWorld = initPlateform(graphics);
-            gameTiming = Integer.valueOf("100");
+            gameTiming = Integer.valueOf("500");
 
 
             populatedWorld(masterPilotWorld, context);
@@ -254,12 +254,12 @@ public class MasterPilotMotor implements KeyMotionObservable {
      * @param hero  : the spaceship hero
      */
     private void doEnemyLogic(SpaceShip enemy, Hero hero) {
-        int x_distance = enemy.getX_axis() - hero.getX_axis();
-        int y_distance = enemy.getY_axis() - hero.getY_axis();
+        float x_distance = enemy.getBody().getPosition().x - hero.getBody().getPosition().x;
+        float y_distance = enemy.getBody().getPosition().y - hero.getBody().getPosition().y;
         double distance = Math.sqrt(Math.pow(x_distance, 2) + Math.pow(y_distance, 2));
         
         /* Horizontal movement */
-        if (x_distance > 0) {
+        if (x_distance > 0 ) {
             enemy.left();
         } else if (x_distance < 0) {
             enemy.right();
@@ -273,9 +273,10 @@ public class MasterPilotMotor implements KeyMotionObservable {
         }
         
         /* Actions */
-        if (distance <= 290) {
-            enemy.fire();
-        }
+        System.out.println("fire "+distance);
+//        if (distance <= 290) {
+//            enemy.fire();
+//        }
         
     }
 
