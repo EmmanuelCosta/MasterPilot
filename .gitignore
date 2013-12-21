@@ -1,6 +1,8 @@
 *.class
 
 # Package Files #
+*.log
+*.properties
 *.jar
 *.war
 *.ear
