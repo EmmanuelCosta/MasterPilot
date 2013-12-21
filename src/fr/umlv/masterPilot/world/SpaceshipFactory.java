@@ -1,26 +1,26 @@
 package fr.umlv.masterPilot.world;
 
-import fr.umlv.masterPilot.Interface.SpaceShip;
-import fr.umlv.masterPilot.enemy.Cruiser;
-import fr.umlv.masterPilot.enemy.TIE;
-import fr.umlv.masterPilot.hero.Hero;
+import fr.umlv.masterPilot.Ship.SpaceShip;
+import fr.umlv.masterPilot.Ship.enemy.Cruiser;
+import fr.umlv.masterPilot.Ship.enemy.TIE;
+import fr.umlv.masterPilot.Ship.hero.Hero;
 
 /**
  * Created by emmanuel on 19/12/13.
  */
 public class SpaceshipFactory {
 
-    private final MasterPilot masterPilot;
+    private final MasterPilotWorld masterPilotWorld;
 
-    public SpaceshipFactory(MasterPilot masterPilot) {
+    public SpaceshipFactory(MasterPilotWorld masterPilotWorld) {
 
-        this.masterPilot = masterPilot;
+        this.masterPilotWorld = masterPilotWorld;
     }
     public  Hero createHero(int x, int y){
-        Hero h = new Hero(masterPilot.getWorld(), 0, 0);
+        Hero h = new Hero(masterPilotWorld.getWorld(), 0, 0);
 
         h.create();
-        masterPilot.setHero(h);
+        masterPilotWorld.setHero(h);
 
         return h;
     }
@@ -39,13 +39,13 @@ public class SpaceshipFactory {
         SpaceShip space;
         switch (enemyType) {
             case "TIE":
-                space = new TIE(this.masterPilot.getWorld(), x, y, hero);
+                space = new TIE(this.masterPilotWorld.getWorld(), x, y, hero);
 
 
                 break;
 
             case "CRUISER":
-                space = new Cruiser(this.masterPilot.getWorld(), x, y);
+                space = new Cruiser(this.masterPilotWorld.getWorld(), x, y);
 
                 break;
 
@@ -57,7 +57,7 @@ public class SpaceshipFactory {
                 throw new UnsupportedOperationException();
         }
         space.create();
-        this.masterPilot.addToSpaceshipManager(space.getBody(), space);
+        this.masterPilotWorld.addToSpaceshipManager(space.getBody(), space);
         return space;
     }
 }

@@ -3,7 +3,7 @@ package fr.umlv.MasterPilote;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class MasterPilotTest {
+public class MasterPilotWorldTest {
 
 	@Test
 	public void test() {

@@ -1,4 +1,4 @@
-package fr.umlv.masterPilot.Interface;
+package fr.umlv.masterPilot.Ship;
 
 import org.jbox2d.dynamics.Body;
 

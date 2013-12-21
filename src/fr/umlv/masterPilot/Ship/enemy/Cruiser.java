@@ -1,9 +1,9 @@
-package fr.umlv.masterPilot.enemy;
+package fr.umlv.masterPilot.Ship.enemy;
 
-import fr.umlv.masterPilot.Interface.SpaceShip;
-import fr.umlv.masterPilot.bomb.RayBomb;
+import fr.umlv.masterPilot.Ship.SpaceShip;
+import fr.umlv.masterPilot.Ship.RayFire;
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.world.MasterPilot;
+import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
@@ -35,16 +35,16 @@ public class Cruiser implements SpaceShip {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
-        this.shoot1 = new Vec2(x_axis - 15, y_axis - 15);
-        this.shoot2 = new Vec2(x_axis + 15, y_axis - 15);
-        this.shoot3 = new Vec2(x_axis - 5, y_axis - 15);
-        this.shoot4 = new Vec2(x_axis + 5, y_axis - 15);
+        this.shoot1 = new Vec2( - 15,  - 15);
+        this.shoot2 = new Vec2( + 15,  - 15);
+        this.shoot3 = new Vec2( - 5,  - 15);
+        this.shoot4 = new Vec2( + 5,  - 15);
 
         /**
          * Interactions with the other bodies.
          */
-        this.category = MasterPilot.ENEMY;
-        this.maskBit = MasterPilot.PLANET | MasterPilot.HERO;
+        this.category = MasterPilotWorld.ENEMY;
+        this.maskBit = MasterPilotWorld.PLANET | MasterPilotWorld.HERO;
     }
 
     public void create() {
@@ -91,8 +91,8 @@ public class Cruiser implements SpaceShip {
             public void onCollide(Fixture fix2, boolean flag) {
 
                 if (flag == false) {
-                    if (fix2.getFilterData().categoryBits == (MasterPilot.SHOOT)
-                            || fix2.getFilterData().categoryBits == (MasterPilot.SHIELD)) {
+                    if (fix2.getFilterData().categoryBits == (MasterPilotWorld.SHOOT)
+                            || fix2.getFilterData().categoryBits == (MasterPilotWorld.SHIELD)) {
 
                         this.destroy = true;
 
@@ -170,13 +170,13 @@ public class Cruiser implements SpaceShip {
          */
 
         // Under part
-        RayBomb rayon1 = new RayBomb(this.world, worldPoint1.x, worldPoint1.y);
+        RayFire rayon1 = new RayFire(this.world, worldPoint1.x, worldPoint1.y);
         rayon1.create();
-        RayBomb rayon2 = new RayBomb(this.world, worldPoint2.x, worldPoint2.y);
+        RayFire rayon2 = new RayFire(this.world, worldPoint2.x, worldPoint2.y);
         rayon2.create();
-        RayBomb rayon3 = new RayBomb(this.world, worldPoint3.x, worldPoint3.y);
+        RayFire rayon3 = new RayFire(this.world, worldPoint3.x, worldPoint3.y);
         rayon3.create();
-        RayBomb rayon4 = new RayBomb(this.world, worldPoint4.x, worldPoint4.y);
+        RayFire rayon4 = new RayFire(this.world, worldPoint4.x, worldPoint4.y);
         rayon4.create();
 
         /**

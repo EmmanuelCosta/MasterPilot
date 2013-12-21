@@ -1,6 +1,6 @@
 package fr.umlv.masterPilot.world;
 
-import fr.umlv.masterPilot.Interface.Bomb;
+import fr.umlv.masterPilot.bomb.Bomb;
 import fr.umlv.masterPilot.bomb.GenericBomb;
 
 /**
@@ -8,17 +8,17 @@ import fr.umlv.masterPilot.bomb.GenericBomb;
  */
 public class BombFactory {
 
-    private final MasterPilot masterPilot;
+    private final MasterPilotWorld masterPilotWorld;
 
-    public BombFactory(MasterPilot masterPilot) {
+    public BombFactory(MasterPilotWorld masterPilotWorld) {
 
-        this.masterPilot = masterPilot;
+        this.masterPilotWorld = masterPilotWorld;
     }
 
     public Bomb createBomb(int x, int y, Bomb.BombType type) {
-        GenericBomb gBomb = new GenericBomb(this.masterPilot.getWorld(), x, y, type);
+        GenericBomb gBomb = new GenericBomb(this.masterPilotWorld.getWorld(), x, y, type);
 
-        this.masterPilot.addToBombManager(gBomb.getBody(), gBomb);
+        this.masterPilotWorld.addToBombManager(gBomb.getBody(), gBomb);
 
         return gBomb;
     }

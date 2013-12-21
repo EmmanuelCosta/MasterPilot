@@ -7,9 +7,10 @@ import org.jbox2d.pooling.arrays.IntArray;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
- * This is graphical part of MasterPilot Game
+ * This is graphical part of MasterPilotWorld Game
  * It use the viewportTransform class of jbox2d
  * which contains some interesting methods
  * for translation calculation
@@ -210,6 +211,30 @@ public class MasterPilot2D {
         this.graphic.setFont(new Font(null, Font.PLAIN, 28));
         this.graphic.drawString(strb.toString(), 7, 23);
         this.graphic.setFont(font);
+
+
+    }
+
+
+    public void drawFrameworkEnd(boolean win,int x,int y) {
+
+      if(win){
+          this.graphic.setColor(Color.WHITE);
+          //this.graphic.fill3DRect(0, 0, 100, 30, true);
+          Font font = this.graphic.getFont();
+          this.graphic.setFont(new Font(null, Font.PLAIN, 38));
+          this.graphic.drawString(" WINNER ", x/2,y/2);
+          this.graphic.setFont(font);
+
+      }else{
+          this.graphic.setColor(Color.GRAY);
+
+          Font font = this.graphic.getFont();
+          this.graphic.setFont(new Font(null, Font.PLAIN, 38));
+          this.graphic.drawString(" GAME OVER ", x/2,y/2);
+          this.graphic.drawString(" YOU LOSE ", x,y);
+          this.graphic.setFont(font);
+      }
 
 
     }

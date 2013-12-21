@@ -1,7 +1,6 @@
-package fr.umlv.masterPilot.enemy;
+package fr.umlv.masterPilot.Ship.enemy;
 
-import fr.umlv.masterPilot.Interface.Bomb;
-import fr.umlv.masterPilot.Interface.SpaceShip;
+import fr.umlv.masterPilot.Ship.SpaceShip;
 import org.jbox2d.dynamics.Body;
 
 public class Squadron implements SpaceShip{

@@ -1,7 +1,7 @@
-package fr.umlv.masterPilot.bomb;
+package fr.umlv.masterPilot.Ship;
 
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.world.MasterPilot;
+import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
@@ -15,7 +15,7 @@ import java.awt.*;
  * <p>
  * created By Babala Costa Emmanuel
  */
-public class RayBomb {
+public class RayFire {
 
     private final int maskBit;
     private final int category;
@@ -35,13 +35,13 @@ public class RayBomb {
      *               and his mask is PLANET and ENNEMY so it means
      *               it can collide with them
      */
-    public RayBomb(World world, float x_axis, float y_axis) {
+    public RayFire(World world, float x_axis, float y_axis) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
 
-        this.category = MasterPilot.SHOOT;
-        this.maskBit = MasterPilot.PLANET | MasterPilot.ENEMY;
+        this.category = MasterPilotWorld.SHOOT;
+        this.maskBit = MasterPilotWorld.PLANET | MasterPilotWorld.ENEMY;
 
         this.color = Color.WHITE;
 
@@ -56,7 +56,7 @@ public class RayBomb {
      * @param maskBit  help to set with which category he can collide
      * @param color
      */
-    public RayBomb(World world, float x_axis, float y_axis, int category, int maskBit, Color color) {
+    public RayFire(World world, float x_axis, float y_axis, int category, int maskBit, Color color) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;

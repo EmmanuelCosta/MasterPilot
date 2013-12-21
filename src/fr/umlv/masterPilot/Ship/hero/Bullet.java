@@ -1,7 +1,7 @@
-package fr.umlv.masterPilot.bomb;
+package fr.umlv.masterPilot.Ship.hero;
 
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.world.MasterPilot;
+import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.*;
 
@@ -14,7 +14,7 @@ import java.awt.*;
  * <p>
  * created By Babala Costa Emmanuel
  */
-public class ClassicBomb {
+public class Bullet {
 
     private final int maskBit;
     private final int category;
@@ -25,14 +25,14 @@ public class ClassicBomb {
     private int radius = 2;
     private Body body;
 
-    public ClassicBomb(World world, float x_axis, float y_axis) {
+    public Bullet(World world, float x_axis, float y_axis) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
 
 
-        this.category = MasterPilot.ENEMY;
-        this.maskBit = MasterPilot.PLANET ;
+        this.category = MasterPilotWorld.ENEMY;
+        this.maskBit = MasterPilotWorld.PLANET ;
 
         this.color = Color.WHITE;
 
@@ -40,7 +40,7 @@ public class ClassicBomb {
     }
 
 
-    public ClassicBomb(World world, float x_axis, float y_axis, int category, int maskBit, Color color, int radius) {
+    public Bullet(World world, float x_axis, float y_axis, int category, int maskBit, Color color, int radius) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;

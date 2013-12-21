@@ -1,11 +1,10 @@
-package fr.umlv.masterPilot.enemy;
+package fr.umlv.masterPilot.Ship.enemy;
 
-import fr.umlv.masterPilot.Interface.Bomb;
-import fr.umlv.masterPilot.Interface.SpaceShip;
-import fr.umlv.masterPilot.bomb.RayBomb;
+import fr.umlv.masterPilot.Ship.SpaceShip;
+import fr.umlv.masterPilot.Ship.RayFire;
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.hero.Hero;
-import fr.umlv.masterPilot.world.MasterPilot;
+import fr.umlv.masterPilot.Ship.hero.Hero;
+import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
@@ -13,7 +12,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class TIE implements SpaceShip {
 
@@ -40,12 +38,12 @@ public class TIE implements SpaceShip {
         /**
          *  Interactions with the other bodies.
          */
-        this.category = MasterPilot.ENEMY;
-        this.maskBit = MasterPilot.PLANET
-                | MasterPilot.SHIELD
-                | MasterPilot.SHOOT
-                | MasterPilot.BOMB
-                | MasterPilot.MEGABOMB;
+        this.category = MasterPilotWorld.ENEMY;
+        this.maskBit = MasterPilotWorld.PLANET
+                | MasterPilotWorld.SHIELD
+                | MasterPilotWorld.SHOOT
+                | MasterPilotWorld.BOMB
+                | MasterPilotWorld.MEGABOMB;
     }
 
     public void create() {
@@ -94,8 +92,8 @@ public class TIE implements SpaceShip {
             public void onCollide(Fixture fix2, boolean flag) {
 
                 if (flag == false) {
-                    if (fix2.getFilterData().categoryBits == (MasterPilot.SHOOT)
-                            || fix2.getFilterData().categoryBits == (MasterPilot.SHIELD)) {
+                    if (fix2.getFilterData().categoryBits == (MasterPilotWorld.SHOOT)
+                            || fix2.getFilterData().categoryBits == (MasterPilotWorld.SHIELD)) {
 
                         this.destroy = true;
 
@@ -162,11 +160,11 @@ public class TIE implements SpaceShip {
         /**
          * create the shoot
          */
-        int maskBit = MasterPilot.SHIELD | MasterPilot.PLANET;
-        int category = MasterPilot.SHOOT;
-        RayBomb rayon1 = new RayBomb(this.world, worldPoint1.x, worldPoint1.y, category, maskBit, Color.orange);
+        int maskBit = MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET;
+        int category = MasterPilotWorld.SHOOT;
+        RayFire rayon1 = new RayFire(this.world, worldPoint1.x, worldPoint1.y, category, maskBit, Color.orange);
         rayon1.create();
-        RayBomb rayon2 = new RayBomb(this.world, worldPoint2.x, worldPoint2.y, category, maskBit, Color.orange);
+        RayFire rayon2 = new RayFire(this.world, worldPoint2.x, worldPoint2.y, category, maskBit, Color.orange);
         rayon2.create();
 
         /**

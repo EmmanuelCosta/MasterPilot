@@ -1,4 +1,4 @@
-package fr.umlv.masterPilot.common;
+package fr.umlv.masterPilot.bomb;
 
 /**
  * Created by emmanuel on 17/12/13.

@@ -1,4 +1,4 @@
-package fr.umlv.masterPilot.Interface;
+package fr.umlv.masterPilot.world;
 
 import fr.umlv.zen3.KeyboardEvent;
 

@@ -1,13 +1,11 @@
-package fr.umlv.masterPilot.hero;
+package fr.umlv.masterPilot.Ship.hero;
 
-import fr.umlv.masterPilot.Interface.Bomb;
-import fr.umlv.masterPilot.Interface.KeyMotionObserver;
-import fr.umlv.masterPilot.Interface.SpaceShip;
-import fr.umlv.masterPilot.bomb.ClassicBomb;
-import fr.umlv.masterPilot.bomb.GenericBomb;
-import fr.umlv.masterPilot.bomb.RayBomb;
+import fr.umlv.masterPilot.bomb.Bomb;
+import fr.umlv.masterPilot.world.KeyMotionObserver;
+import fr.umlv.masterPilot.Ship.SpaceShip;
+import fr.umlv.masterPilot.Ship.RayFire;
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.world.MasterPilot;
+import fr.umlv.masterPilot.world.MasterPilotWorld;
 import fr.umlv.zen3.KeyboardEvent;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -92,8 +90,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
         FixtureDef fd = new FixtureDef();
         fd.shape = poly1;
-        fd.filter.categoryBits = MasterPilot.HERO;
-        fd.filter.maskBits = MasterPilot.ENEMY | MasterPilot.PLANET | MasterPilot.MEGABOMB |MasterPilot.BOMB | MasterPilot.TRAIL;
+        fd.filter.categoryBits = MasterPilotWorld.HERO;
+        fd.filter.maskBits = MasterPilotWorld.ENEMY | MasterPilotWorld.PLANET | MasterPilotWorld.MEGABOMB | MasterPilotWorld.BOMB | MasterPilotWorld.TRAIL;
         fd.density = 0.09f;
         fd.friction = 0.001f;
         fd.restitution = 1.5f;
@@ -135,8 +133,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fs.friction = 0.3f;
         fs.restitution = 0.5f;
 
-        fs.filter.categoryBits = MasterPilot.SHIELD;
-        fs.filter.maskBits = MasterPilot.ENEMY | MasterPilot.PLANET;
+        fs.filter.categoryBits = MasterPilotWorld.SHIELD;
+        fs.filter.maskBits = MasterPilotWorld.ENEMY | MasterPilotWorld.PLANET;
 
 //        public static int HERO = 0x0001;
 //        public static int ENEMY = 0x0002;
@@ -155,7 +153,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
                     @Override
                     public void onCollide(Fixture fix2, boolean flag) {
 
-                        if(fix2.getFilterData().categoryBits == MasterPilot.TRAIL)
+                        if(fix2.getFilterData().categoryBits == MasterPilotWorld.TRAIL)
                             return;
 /**
  * i put the shield in the begining of collision
@@ -163,7 +161,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
  */
                         if (flag == true) {
 
-                            if (fix2.getFilterData().categoryBits != (MasterPilot.BOMB |MasterPilot.MEGABOMB) ) {
+                            if (fix2.getFilterData().categoryBits != (MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB) ) {
 
 
                                 collide = false;
@@ -280,7 +278,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         /**
          * create the shoot
          */
-        RayBomb cBomb = new RayBomb(this.world, worldPoint.x, worldPoint.y);
+        RayFire cBomb = new RayFire(this.world, worldPoint.x, worldPoint.y);
 
 
         cBomb.create();
@@ -461,45 +459,24 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          * create the trail
          */
 
-        List<ClassicBomb> lBomb = new ArrayList<>();
+        List<Bullet> lBomb = new ArrayList<>();
 //LEFT
-        ClassicBomb cBomb = new ClassicBomb(this.world, worldPoint.x, worldPoint.y,
-                MasterPilot.TRAIL,MasterPilot.HERO |MasterPilot.PLANET, Color.CYAN, 2);
+        Bullet cBomb = new Bullet(this.world, worldPoint.x, worldPoint.y,
+                MasterPilotWorld.TRAIL, MasterPilotWorld.HERO | MasterPilotWorld.PLANET, Color.CYAN, 2);
         cBomb.create();
         lBomb.add(cBomb);
 //RIGHT
-        cBomb = new ClassicBomb(this.world, worldPoint2.x, worldPoint2.y,
-                MasterPilot.TRAIL,  MasterPilot.HERO|MasterPilot.PLANET, Color.CYAN, 2);
+        cBomb = new Bullet(this.world, worldPoint2.x, worldPoint2.y,
+                MasterPilotWorld.TRAIL,  MasterPilotWorld.HERO| MasterPilotWorld.PLANET, Color.CYAN, 2);
         cBomb.create();
         lBomb.add(cBomb);
 //MIDDLE
-         cBomb = new ClassicBomb(this.world, worldPoint3.x, worldPoint3.y,
-                MasterPilot.TRAIL,MasterPilot.HERO| MasterPilot.PLANET, Color.CYAN, 2);
+         cBomb = new Bullet(this.world, worldPoint3.x, worldPoint3.y,
+                MasterPilotWorld.TRAIL, MasterPilotWorld.HERO| MasterPilotWorld.PLANET, Color.CYAN, 2);
         cBomb.create();
         lBomb.add(cBomb);
 
 
-//        Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//
-//                for (ClassicBomb cBomb : lBomb) {
-//                    world.destroyBody(cBomb.getBody());
-//
-//                }
-//
-//            }
-//        }, 50, 1);
-//
-//        worker.schedule(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                timer.cancel();
-//
-//            }
-//        }, 80, TimeUnit.MILLISECONDS);
 
 
     }
