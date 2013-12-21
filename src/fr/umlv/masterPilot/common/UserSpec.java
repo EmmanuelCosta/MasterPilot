@@ -36,7 +36,7 @@ public interface UserSpec {
      *
      * @return
      */
-    public default boolean isDestroyedSet() {
+    public default boolean isDestroyable() {
         return false;
     }
 
@@ -48,7 +48,12 @@ public interface UserSpec {
         return Color.LIGHT_GRAY;
     }
 
-    public default boolean isAddableBomb() {
+    /**
+     * If the hero get a bomb, verify if the specific bomb can be added as an item.
+     * if the specific bomb is an item, the hero can use it.
+     * @return
+     */
+    public default boolean isItem() {
         return false;
     }
 }

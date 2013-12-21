@@ -297,14 +297,14 @@ public class MasterPilot implements ContactListener {
         userData2.onCollide(fixtureA, true);
         fixtureB.m_isSensor = userData2.getSensor();
 
-        if (userData.isAddableBomb()) {
+        if (userData.isItem()) {
             Body b = fixtureA.getBody();
 
             Bomb bomb = this.bombManager.get(b);
 
             this.hero.setBomb(bomb);
         }
-        if (userData2.isAddableBomb()) {
+        if (userData2.isItem()) {
             Bomb bomb = this.bombManager.get(fixtureB.getBody());
             this.hero.setBomb(bomb);
         }
@@ -381,13 +381,13 @@ public class MasterPilot implements ContactListener {
         userData.onCollide(fixtureB, false);
         fixtureA.m_isSensor = userData.getSensor();
 
-        if (userData.isDestroyedSet()) {
+        if (userData.isDestroyable()) {
             destroyBody.add(fixtureA.getBody());
         }
         UserSpec userData2 = (UserSpec) fixtureB.getUserData();
         userData2.onCollide(fixtureA, false);
         fixtureB.m_isSensor = userData2.getSensor();
-        if (userData2.isDestroyedSet()) {
+        if (userData2.isDestroyable()) {
             destroyBody.add(fixtureB.getBody());
         }
 

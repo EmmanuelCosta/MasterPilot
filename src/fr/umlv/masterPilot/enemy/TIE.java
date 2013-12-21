@@ -104,7 +104,7 @@ public class TIE implements SpaceShip {
             }
 
             @Override
-            public boolean isDestroyedSet() {
+            public boolean isDestroyable() {
                 return destroy;
             }
 

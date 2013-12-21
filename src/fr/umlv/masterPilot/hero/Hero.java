@@ -294,6 +294,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
         cBomb.getBody().setTransform(worldPoint, body.getAngle());
         cBomb.getBody().applyForce(force, point);
+        
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override

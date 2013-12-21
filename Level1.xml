@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Level>
 	<!-- Start level 1-->
+	<Timer id = "300">
+	</Timer>
 	<Bomb>
 		<TotalBombPercentage id="5"></TotalBombPercentage>
 	</Bomb>

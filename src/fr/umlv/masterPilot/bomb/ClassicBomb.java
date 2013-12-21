@@ -96,7 +96,7 @@ public class ClassicBomb {
             }
 
             @Override
-            public boolean isDestroyedSet() {
+            public boolean isDestroyable() {
                 return true;
             }
 

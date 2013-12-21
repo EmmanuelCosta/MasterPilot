@@ -158,13 +158,13 @@ public class GenericBomb implements Bomb {
             }
 
             @Override
-            public boolean isDestroyedSet() {
+            public boolean isDestroyable() {
                 //hide =true;
                 return destroyed;
             }
 
             @Override
-            public boolean isAddableBomb() {
+            public boolean isItem() {
 
                 return addable;
             }

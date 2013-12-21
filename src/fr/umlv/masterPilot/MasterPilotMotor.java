@@ -258,6 +258,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
      * @param hero  : the spaceship hero
      */
     private void doEnemyLogic(SpaceShip space, Hero hero) {
+        
 
     }
 
