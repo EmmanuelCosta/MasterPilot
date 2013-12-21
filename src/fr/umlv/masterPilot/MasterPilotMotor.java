@@ -79,7 +79,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         this.addObserver(h);
 
         SpaceshipFactory factory = new SpaceshipFactory(masterPilot);
-        factory.createEnemy("TIE", 350, 50, h);
+        factory.createEnemy("TIE", 0, 300, h);
 
 
 //        TIE tie1 = new TIE(masterPilot.getWorld(), 150, 50, h);

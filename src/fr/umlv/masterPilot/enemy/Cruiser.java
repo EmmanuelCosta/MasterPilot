@@ -35,10 +35,10 @@ public class Cruiser implements SpaceShip {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
-        this.shoot1 = new Vec2(x_axis - 15, y_axis - 15);
-        this.shoot2 = new Vec2(x_axis + 15, y_axis - 15);
-        this.shoot3 = new Vec2(x_axis - 5, y_axis - 15);
-        this.shoot4 = new Vec2(x_axis + 5, y_axis - 15);
+        this.shoot1 = new Vec2(- 15, - 15);
+        this.shoot2 = new Vec2(+ 15, - 15);
+        this.shoot3 = new Vec2(- 5,  - 15);
+        this.shoot4 = new Vec2(+ 5, - 15);
 
         /**
          * Interactions with the other bodies.
@@ -58,10 +58,10 @@ public class Cruiser implements SpaceShip {
          * Number of vertices.
          */
         Vec2[] vertices = new Vec2[4];
-        vertices[0] = new Vec2(x_axis - 15, y_axis);
-        vertices[1] = new Vec2(x_axis - 15, y_axis - 10);
-        vertices[2] = new Vec2(x_axis + 15, y_axis - 10);
-        vertices[3] = new Vec2(x_axis + 15, y_axis);
+        vertices[0] = new Vec2(- 15, + 0);
+        vertices[1] = new Vec2(- 15, - 10);
+        vertices[2] = new Vec2(+ 15, - 10);
+        vertices[3] = new Vec2(+ 15, + 0);
         ps.set(vertices, 4);
 
         /**

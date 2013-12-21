@@ -48,6 +48,14 @@ public class TIE implements SpaceShip {
                 | MasterPilot.MEGABOMB;
     }
 
+    public int getX_axis() {
+        return x_axis;
+    }
+
+    public int getY_axis() {
+        return y_axis;
+    }
+
     public void create() {
 
         /**
