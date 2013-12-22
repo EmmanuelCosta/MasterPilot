@@ -1,6 +1,5 @@
 package fr.umlv.masterPilot.ship.enemy;
 
-import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -12,7 +11,6 @@ import org.jbox2d.dynamics.joints.WeldJointDef;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class Squadron implements SpaceShip {
     private final int maskBit;
@@ -76,34 +74,44 @@ public class Squadron implements SpaceShip {
         fd.filter.maskBits = this.maskBit;
 
 
-        fd.userData = new UserSpec() {
-            private boolean collide = false;
-
-            @Override
-            public void onCollide(Fixture fix2, boolean flag) {
-
-                if (fix2.getFilterData().categoryBits == MasterPilotWorld.SHOOT) {
-
-                        collide = true;
-
-                }
-            }
-
-            @Override
-            public boolean isDestroyable() {
-                return collide;
-            }
-
-            @Override
-            public List<Body> getJointBody() {
-                return bodyJointList;
-            }
-
-            @Override
-            public boolean hasJointBody() {
-                return true;
-            }
-        };
+        fd.userData = new SquadronBehaviour(this,Color.GREEN,this.bodyJointList);
+//                new UserSpec() {
+//                    private boolean destroy = false;
+//
+//                    @Override
+//                    public void onCollide(Fixture fix2, boolean flag) {
+//
+//                        if (flag == false) {
+//                            if (fix2.getFilterData().categoryBits == (MasterPilotWorld.SHOOT)
+//                                    || fix2.getFilterData().categoryBits == (MasterPilotWorld.SHIELD)) {
+//
+//                                this.destroy = true;
+//
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public boolean isDestroyable() {
+//                        return destroy;
+//                    }
+//
+//
+//                    @Override
+//                    public List<Body> getJointBody() {
+//                        return bodyJointList;
+//                    }
+//
+//                    @Override
+//                    public boolean getSensor() {
+//                        return false;
+//                    }
+//
+//                    @Override
+//                    public boolean hasJointBody() {
+//                        return true;
+//                    }
+//                };
 
         /**
          * Integrate the body in the world.
@@ -137,7 +145,7 @@ public class Squadron implements SpaceShip {
             ft.friction = 0.2f;
             ft.filter.maskBits = maskBit;
             ft.filter.categoryBits = category;
-            //ft.userData = new TriangleBehaviour(this, Color.BLUE);
+            ft.userData = new TriangleBehaviour(this, Color.BLUE);
 
             BodyDef bg = new BodyDef();
             bg.position.set(x_axis, y_axis);
@@ -153,7 +161,7 @@ public class Squadron implements SpaceShip {
 
             RevoluteJointDef jd = new RevoluteJointDef();
             jd.collideConnected = false;
-            jd.enableLimit = true;
+         //   jd.enableLimit = true;
 
 
             WeldJointDef weldJointDef = new WeldJointDef();

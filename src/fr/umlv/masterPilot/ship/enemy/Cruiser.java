@@ -1,15 +1,16 @@
 package fr.umlv.masterPilot.ship.enemy;
 
+
 import org.jbox2d.common.Vec2;
+
 
 import fr.umlv.masterPilot.ship.RayFire;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
-
+import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
 import java.util.Timer;
@@ -19,26 +20,23 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Cruiser implements SpaceShip {
- private final int maskBit;
+    private final int maskBit;
     private final int category;
     private final World world;
     private final int x_axis;
     private final int y_axis;
-    private Body body;
     private final Vec2 cruiserSpeed = new Vec2(0, -50f);
-    private final Vec2 rayonForce = new Vec2(+ 0f, - 5f);
-    private final Vec2 forceLeft = new Vec2(- 5f, + 0f);
-    private final Vec2 forceRight = new Vec2(+ 5f, + 0f);
-    private final Vec2 forceUp = new Vec2(+ 0f, + 5f);
-    private final Vec2 forceDown = new Vec2(+ 0f, - 5f);
-    
-    private final Vec2 shoot1 = new Vec2(- 15f, - 15f);
-    private final Vec2 shoot2 = new Vec2(+ 15f, - 15f);
-    private final Vec2 shoot3 = new Vec2(- 5f,  - 15f);
-    private final Vec2 shoot4 = new Vec2(+ 5f, - 15f);
-    
-    private final ScheduledExecutorService worker =
-            Executors.newSingleThreadScheduledExecutor();
+    private final Vec2 rayonForce = new Vec2(+0f, -5f);
+    private final Vec2 forceLeft = new Vec2(-5f, +0f);
+    private final Vec2 forceRight = new Vec2(+5f, +0f);
+    private final Vec2 forceUp = new Vec2(+0f, +5f);
+    private final Vec2 forceDown = new Vec2(+0f, -5f);
+    private final Vec2 shoot1 = new Vec2(-15f, -15f);
+    private final Vec2 shoot2 = new Vec2(+15f, -15f);
+    private final Vec2 shoot3 = new Vec2(-5f, -15f);
+    private final Vec2 shoot4 = new Vec2(+5f, -15f);
+    private Body body;
+
 
     public Cruiser(World world, int x_axis, int y_axis) {
         this.world = world;
@@ -68,10 +66,10 @@ public class Cruiser implements SpaceShip {
          * Number of vertices.
          */
         Vec2[] vertices = new Vec2[4];
-        vertices[0] = new Vec2(- 15, + 0);
-        vertices[1] = new Vec2(- 15, - 10);
-        vertices[2] = new Vec2(+ 15, - 10);
-        vertices[3] = new Vec2(+ 15, + 0);
+        vertices[0] = new Vec2(-15, +0);
+        vertices[1] = new Vec2(-15, -10);
+        vertices[2] = new Vec2(+15, -10);
+        vertices[3] = new Vec2(+15, +0);
         ps.set(vertices, 4);
 
         /**
@@ -87,19 +85,39 @@ public class Cruiser implements SpaceShip {
          */
         FixtureDef fd = new FixtureDef();
         fd.shape = ps;
-        fd.density = 0.5f;
-        fd.friction = 0f;
-        fd.restitution = 0.5f;
+        fd.density = 5.5f;
+        fd.friction = 105f;
+        fd.restitution = 95f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
 
         fd.userData = new EnemyBehaviour(this, Color.CYAN);
+
+        /*********************************************************/
+
+        CircleShape cs = new CircleShape();
+        cs.setRadius(25);
+        FixtureDef fs = new FixtureDef();
+        fs.shape = cs;
+
+        fs.isSensor = true;
+        fs.density = 0.0f;
+        fs.friction = 0.3f;
+        fs.restitution = 0.5f;
+
+        fs.filter.categoryBits = MasterPilotWorld.ENEMY;
+        fs.filter.maskBits = MasterPilotWorld.SHOOT | MasterPilotWorld.PLANET
+                | MasterPilotWorld.SHIELD | MasterPilotWorld.HERO;
+        fs.userData = new EnemyShieldBehaviour(3);
+
+        /**********************************************************/
 
         /**
          * Integrate the body in the world.
          */
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
+        body.createFixture(fs);
         this.body = body;
     }
 
@@ -188,39 +206,17 @@ public class Cruiser implements SpaceShip {
         rayon4.getBody().setTransform(worldPoint4, body.getAngle());
         rayon4.getBody().applyForce(force, point4);
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-//                world.destroyBody(rayon1.getBody());
-//                world.destroyBody(rayon2.getBody());
-//                world.destroyBody(rayon3.getBody());
-//                world.destroyBody(rayon4.getBody());
-
-            }
-        }, 3000, 1);
-
-
-        worker.schedule(new Runnable() {
-            @Override
-            public void run() {
-
-                timer.cancel();
-
-            }
-        }, 7000, TimeUnit.MILLISECONDS);
 
     }
 
     @Override
     public void fireBomb() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void shield() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
 }

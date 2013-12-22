@@ -18,6 +18,9 @@ public interface UserSpec {
      * add the basic behaviuor  of your
      * object while collision is detect
      *
+     * true flag  tag the begining of contact
+     * false the end
+     *
      * @param
      */
     public void onCollide(Fixture fix2, boolean flag);

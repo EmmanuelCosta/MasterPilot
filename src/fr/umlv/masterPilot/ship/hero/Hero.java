@@ -123,7 +123,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         bd.angle = 3.14f;
         bd.allowSleep = false;
 /**************************SHIELD ************************************************************************/
-//Create chield protection
+
         CircleShape cs = new CircleShape();
         cs.setRadius(23);
         FixtureDef fs = new FixtureDef();
@@ -317,26 +317,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
         this.bombType = Bomb.BombType.NONE;
 
-//        Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//
-//
-//                bombType = Bomb.BombType.NONE;
-//
-//            }
-//        }, 500, 1);
-//
-//        worker.schedule(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                timer.cancel();
-//                ;
-//
-//            }
-//        }, 800, TimeUnit.MILLISECONDS);
+
     }
 
     /**
