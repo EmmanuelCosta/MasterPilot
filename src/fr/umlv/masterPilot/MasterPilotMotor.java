@@ -86,9 +86,9 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //
 //
         factory.createEnemy("TIE", 150, 50, h);
-
+//
         factory.createEnemy("CRUISER", -350, 50, h);
-
+//
         factory.createEnemy("SQUADRON", -20, 90, h);
 //
 //
@@ -273,7 +273,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         }
         
         /* Actions */
-
+//        System.out.println("fire "+distance);
 //        if (distance <= 290) {
 //            enemy.fire();
 //        }
