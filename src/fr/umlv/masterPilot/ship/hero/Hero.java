@@ -136,18 +136,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
         fs.filter.categoryBits = MasterPilotWorld.SHIELD;
         fs.filter.maskBits = MasterPilotWorld.ENEMY | MasterPilotWorld.PLANET;
-
-//        public static int HERO = 0x0001;
-//        public static int ENEMY = 0x0002;
-//        public static int PLANET = 0x0004;
-//        public static int SHOOT = 0x0008;
-//        public static int BOMB = 0x00016;
-//        public static int MEGABOMB = 0x00032;
-//        public static int SHIELD = 0x00064;
-//        public static int TRAIL = 0x00128;
-
-
-
         fs.userData = new HeroShieldBehaviour();
 /*************************************************************************************************************/
         Body body = this.world.createBody(bd);
