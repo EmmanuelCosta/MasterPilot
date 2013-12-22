@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Level>
 	<!-- Start level 1-->
-	<Timer id = "300">
-	</Timer>
+	<Timer id="300"></Timer>
 	<Bomb>
 		<TotalBombPercentage id="5"></TotalBombPercentage>
 	</Bomb>
 	<MegaBomb>
-		<TotalMegabombPercentage id="3"></TotalMegaBombPercentage>	
+		<TotalMegabombPercentage id="3"></TotalMegabombPercentage>	
 	</MegaBomb>
 	<Wave>
 		<TotalWaveNumber id="2"></TotalWaveNumber>
@@ -15,11 +14,11 @@
 	<Enemy>
 		<TotalEnemyPercentage id="25"></TotalEnemyPercentage>
 		<TiePercentage id="3"></TiePercentage>
-		<CruiserPercentage id="5"></CruiserPercentage>
+		<CruiserPercentage id="3"></CruiserPercentage>
 		<SquadronPercentage id="5"></SquadronPercentage>
 	</Enemy>	
 	<Planet> 
-		<TotalPlanetPercentage id="20"></TotalPlanetPercentage>
+		<TotalPlanetPercentage id ="20"></TotalPlanetPercentage>
 		<RadiusMin id="10"></RadiusMin>
 		<RadiusMax id="100"></RadiusMax>
 		<DensityMin id="1500"></DensityMin>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Level>
 	<!-- Start level 3-->
-	<Timer id = "120">
-	</Timer>
+	<Timer>120</Timer>
 	<Bomb>
 		<TotalPercentage>7</TotalPercentage>
 	</Bomb>
