@@ -1,15 +1,12 @@
 package fr.umlv.masterPilot.ship.enemy;
 
-import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.ship.RayFire;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
-
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
@@ -20,14 +17,14 @@ public class TIE implements SpaceShip {
     private final int maskBit;
     private final int category;
     private final Timer timer = new Timer();
-    private World world;
     private final int x_axis;
-    private  final int y_axis;
+    private final int y_axis;
+    private final Hero hero;
+    private World world;
     private Body body;
     private Vec2 rayonForce = new Vec2(0f, -10f);
     private Vec2 shoot1;
     private Vec2 shoot2;
-    private final Hero hero;
 
     public TIE(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
@@ -87,8 +84,8 @@ public class TIE implements SpaceShip {
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
 
-        fd.userData = new EnemyBehaviour(this,Color.BLUE);
-     /**
+        fd.userData = new EnemyBehaviour(this, Color.BLUE);
+        /**
          * Integrate the body in the world.
          */
         Body body = this.world.createBody(bd);
@@ -159,10 +156,6 @@ public class TIE implements SpaceShip {
         rayon2.getBody().setTransform(worldPoint2, body.getAngle());
 
         rayon2.getBody().applyForce(force, point2);
-
-
-
-
 
 
     }
