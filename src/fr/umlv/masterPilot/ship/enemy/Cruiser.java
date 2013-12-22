@@ -2,7 +2,6 @@ package fr.umlv.masterPilot.ship.enemy;
 
 import org.jbox2d.common.Vec2;
 
-
 import fr.umlv.masterPilot.ship.RayFire;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
@@ -13,6 +12,11 @@ import org.jbox2d.dynamics.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Cruiser implements SpaceShip {
  private final int maskBit;
@@ -32,6 +36,9 @@ public class Cruiser implements SpaceShip {
     private final Vec2 shoot2 = new Vec2(+ 15f, - 15f);
     private final Vec2 shoot3 = new Vec2(- 5f,  - 15f);
     private final Vec2 shoot4 = new Vec2(+ 5f, - 15f);
+    
+    private final ScheduledExecutorService worker =
+            Executors.newSingleThreadScheduledExecutor();
 
     public Cruiser(World world, int x_axis, int y_axis) {
         this.world = world;
@@ -147,13 +154,13 @@ public class Cruiser implements SpaceShip {
          */
 
         // Under part
-        RayFire rayon1 = new RayFire(this.world, worldPoint1.x, worldPoint1.y);
+        RayFire rayon1 = new RayFire(this.world, worldPoint1.x, worldPoint1.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET, Color.yellow);
         rayon1.create();
-        RayFire rayon2 = new RayFire(this.world, worldPoint2.x, worldPoint2.y);
+        RayFire rayon2 = new RayFire(this.world, worldPoint2.x, worldPoint2.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET, Color.yellow);
         rayon2.create();
-        RayFire rayon3 = new RayFire(this.world, worldPoint3.x, worldPoint3.y);
+        RayFire rayon3 = new RayFire(this.world, worldPoint3.x, worldPoint3.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET, Color.yellow);
         rayon3.create();
-        RayFire rayon4 = new RayFire(this.world, worldPoint4.x, worldPoint4.y);
+        RayFire rayon4 = new RayFire(this.world, worldPoint4.x, worldPoint4.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET, Color.yellow);
         rayon4.create();
 
         /**
@@ -181,6 +188,28 @@ public class Cruiser implements SpaceShip {
         rayon4.getBody().setTransform(worldPoint4, body.getAngle());
         rayon4.getBody().applyForce(force, point4);
 
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+//                world.destroyBody(rayon1.getBody());
+//                world.destroyBody(rayon2.getBody());
+//                world.destroyBody(rayon3.getBody());
+//                world.destroyBody(rayon4.getBody());
+
+            }
+        }, 3000, 1);
+
+
+        worker.schedule(new Runnable() {
+            @Override
+            public void run() {
+
+                timer.cancel();
+
+            }
+        }, 7000, TimeUnit.MILLISECONDS);
 
     }
 

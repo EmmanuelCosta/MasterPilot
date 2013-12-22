@@ -274,9 +274,9 @@ public class MasterPilotMotor implements KeyMotionObservable {
         
         /* Actions */
         System.out.println("fire "+distance);
-//        if (distance <= 290) {
-//            enemy.fire();
-//        }
+        if (distance <= 290) {
+            enemy.fire();
+        }
         
     }
 
