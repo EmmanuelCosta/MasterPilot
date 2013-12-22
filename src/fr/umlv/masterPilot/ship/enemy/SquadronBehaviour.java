@@ -4,7 +4,6 @@ import fr.umlv.masterPilot.ship.SpaceShip;
 import org.jbox2d.dynamics.Body;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
 
 /**

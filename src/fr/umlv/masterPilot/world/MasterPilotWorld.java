@@ -9,6 +9,7 @@ import fr.umlv.masterPilot.ship.hero.Hero;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
+import org.jbox2d.collision.shapes.ChainShape;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -236,9 +237,28 @@ public class MasterPilotWorld implements ContactListener {
                 EdgeShape edge = (EdgeShape) fixture.getShape();
                 Transform.mulToOutUnsafe(xf, edge.m_vertex1, v1);
                 Transform.mulToOutUnsafe(xf, edge.m_vertex2, v2);
-                masterPilot2D.drawSegment(v1, v2, color);
+
+                masterPilot2D.drawSegment(v1,v2, color);
             }
             break;
+
+            case CHAIN: {
+                ChainShape chain = (ChainShape) fixture.getShape();
+                int count = chain.m_count;
+                Vec2[] vertices = chain.m_vertices;
+                Vec2 v1 = new Vec2();
+                Vec2 v2 = new Vec2();
+
+                Transform.mulToOutUnsafe(xf, vertices[0], v1);
+                for (int i = 1; i < count; ++i) {
+                    Transform.mulToOutUnsafe(xf, vertices[i], v2);
+                    masterPilot2D.drawSegment(v1, v2, color);
+//                    masterPilot2D.drawCircle(v1, 0.05f);
+                    v1.set(v2);
+                }
+            }
+            break;
+
 
 
             default:
