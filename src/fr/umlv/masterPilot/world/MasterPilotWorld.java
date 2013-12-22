@@ -324,11 +324,30 @@ public class MasterPilotWorld implements ContactListener {
         if (userData.isDestroyable()) {
             destroyBody.add(fixtureA.getBody());
         }
+
+        if(userData.hasJointBody()){
+            List<Body> jointBody = userData.getJointBody();
+            for (Body b = world.getBodyList(); b != null; b = b.getNext()){
+               if(jointBody.contains(b)){
+                   destroyBody.add(b);
+               }
+
+            }
+        }
         UserSpec userData2 = (UserSpec) fixtureB.getUserData();
         userData2.onCollide(fixtureA, false);
         fixtureB.m_isSensor = userData2.getSensor();
         if (userData2.isDestroyable()) {
             destroyBody.add(fixtureB.getBody());
+        }
+        if(userData2.hasJointBody()){
+            List<Body> jointBody = userData2.getJointBody();
+            for (Body b = world.getBodyList(); b != null; b = b.getNext()){
+                if(jointBody.contains(b)){
+                    destroyBody.add(b);
+                }
+
+            }
         }
 
 

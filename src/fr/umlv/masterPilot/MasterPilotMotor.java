@@ -89,7 +89,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         factory.createEnemy("CRUISER", -350, 50, h);
 
-//        factory.createEnemy("TIE", -20, 90, h);
+        factory.createEnemy("SQUADRON", -20, 90, h);
 //
 //
 //        factory.createEnemy("TIE", 200, 90, h);
@@ -177,7 +177,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
             });
 
-            proccessManager(masterPilotWorld.getEnemyList(), masterPilotWorld.getHero());
+//            proccessManager(masterPilotWorld.getEnemyList(), masterPilotWorld.getHero());
             afterTime = System.nanoTime();
 
             timeDiff = afterTime - beforeTime;
@@ -273,10 +273,10 @@ public class MasterPilotMotor implements KeyMotionObservable {
         }
         
         /* Actions */
-        System.out.println("fire "+distance);
-        if (distance <= 290) {
-            enemy.fire();
-        }
+//        System.out.println("fire "+distance);
+//        if (distance <= 290) {
+//            enemy.fire();
+//        }
         
     }
 

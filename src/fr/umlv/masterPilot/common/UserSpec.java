@@ -1,8 +1,10 @@
 package fr.umlv.masterPilot.common;
 
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 
 import java.awt.*;
+import java.util.*;
 
 /**
  * This class contains the caracteristic
@@ -54,6 +56,18 @@ public interface UserSpec {
      * @return
      */
     public default boolean isItem() {
+        return false;
+    }
+
+    /**
+     * retreive all the body joint to the main body
+     * @return
+     */
+    public default java.util.List<Body> getJointBody(){
+        return null;
+    }
+
+    public   default boolean hasJointBody(){
         return false;
     }
 }
