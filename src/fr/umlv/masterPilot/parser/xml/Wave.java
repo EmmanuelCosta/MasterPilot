@@ -14,6 +14,7 @@ public class Wave {
         public String toString(){
             return new StringBuffer("Number of enemy's wave : ")
                 .append(waveEnemyNumber)
+                .append("\n")
                 .toString();
         }
 }

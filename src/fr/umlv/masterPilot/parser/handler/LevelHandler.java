@@ -37,8 +37,8 @@ public class LevelHandler extends DefaultHandler {
             inTimer;
     private boolean inMegaBombPercentage, inBombPercentage;
     private boolean inWaveNumber;
-    private boolean inEnemyPercentage, inTiePercentage, inCruiserPercentage,
-            inSquadronPercentage;
+    private boolean inEnemyNumber, inTieNumber, inCruiserNumber,
+            inSquadronNumber;
     private boolean inDensityMax, inDensityMin, inRadiusMax, inRadiusMin,
             inPlanetPercentage;
 
@@ -75,37 +75,37 @@ public class LevelHandler extends DefaultHandler {
         switch (localName) {
         case "Level":
             inLevel = true;
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "Bomb":
             bomb = new Bomb();
             inBomb = true;
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "MegaBomb":
             megaBomb = new Megabomb();
             inMegaBomb = true;
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "Wave":
             wave = new Wave();
             inWave = true;
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "Enemy":
             enemy = new Enemy();
             inEnemy = true;
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "Planet":
             planet = new Planet();
             inPlanet = true;
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
             
         case "Timer":
@@ -117,7 +117,7 @@ public class LevelHandler extends DefaultHandler {
                 throw new SAXException(e);
             }
             inTimer = true;
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "TotalBombPercentage":
@@ -128,7 +128,7 @@ public class LevelHandler extends DefaultHandler {
                 throw new SAXException(e);
             }
             inBombPercentage = true;
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "TotalMegabombPercentage":
@@ -139,7 +139,7 @@ public class LevelHandler extends DefaultHandler {
                 throw new SAXException(e);
             }
             inMegaBombPercentage = true;
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "TotalWaveNumber":
@@ -149,47 +149,47 @@ public class LevelHandler extends DefaultHandler {
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
-        case "TotalEnemyPercentage":
+        case "TotalEnemyNumber":
             try {
                 short percentage = Short.parseShort(attributes.getValue("id"));
-                bomb.setBombPercentage(percentage);
+                enemy.setTotalEnemyNumber(percentage);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
-        case "TiePercentage":
+        case "TieNumber":
             try {
                 short tiePercentage = Short.parseShort(attributes.getValue("id"));
-                enemy.setTiePercentage(tiePercentage);
+                enemy.setTieNumber(tiePercentage);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
-        case "CruiserPercentage":
+        case "CruiserNumber":
             try {
                 short cruiserPercentage = Short.parseShort(attributes.getValue("id"));
-                enemy.setCruiserPercentage(cruiserPercentage);
+                enemy.setCruiserNumber(cruiserPercentage);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
-        case "SquadronPercentage":
+        case "SquadronNumber":
             try {
                 short squadronPercentage = Short.parseShort(attributes.getValue("id"));
-                enemy.setSquadronPercentage(squadronPercentage);
+                enemy.setSquadronNumber(squadronPercentage);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
             
         case "TotalPlanetPercentage":
@@ -199,7 +199,7 @@ public class LevelHandler extends DefaultHandler {
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "RadiusMin":
@@ -209,38 +209,38 @@ public class LevelHandler extends DefaultHandler {
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
             
         case "RadiusMax":
             try {
                 short radiusmax = Short.parseShort(attributes.getValue("id"));
-                planet.setRadiusMin(radiusmax);
+                planet.setRadiusMax(radiusmax);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "DensityMin":
             try {
-                short densitymin = Short.parseShort(attributes.getValue("id"));
-                planet.setRadiusMin(densitymin);
+                int densitymin = Short.parseShort(attributes.getValue("id"));
+                planet.setDensityMin(densitymin);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "DensityMax":
             try {
-                short densitymax = Short.parseShort(attributes.getValue("id"));
-                planet.setRadiusMin(densitymax);
+                int densitymax = Integer.parseInt(attributes.getValue("id"));
+                planet.setDensityMax(densitymax);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            System.out.println("Start: "+localName + " " + attributes.getValue("id"));
-            break;
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
+            break; 
             
         default:
             throw new SAXException();
@@ -255,103 +255,103 @@ public class LevelHandler extends DefaultHandler {
         switch (localName) {
         case "Level":
             inLevel = false;
-            System.out.println("End: "+localName);
+            System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "Bomb":
             //bomb = null;
             inBomb = false;
-            System.out.println("End: "+localName);
+            System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "MegaBomb":
             //megaBomb = null;
             inMegaBomb = false;
-            System.out.println("End: "+localName);
+            System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "Wave":
             //wave = null;
             inWave = false;
-            System.out.println("End: "+localName);
+            System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "Enemy":
             //enemy = null;
             inEnemy = false;
-            System.out.println("End: "+localName);
+            System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "Planet":
             //planet = null;
             inPlanet = false;
-            System.out.println("End: "+localName);
+            System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "Timer":
             //time = null;
             inTimer = false;
-            System.out.println("End: "+localName);
+            System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "TotalBombPercentage":
             inBombPercentage = false;
-            System.out.println("End: "+localName);
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "TotalMegabombPercentage":
             inMegaBombPercentage = false;
-            System.out.println("End: "+localName);
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "TotalWaveNumber":
             inWaveNumber = false;
-            System.out.println("End: "+localName);
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
-        case "TotalEnemyPercentage":
-            inEnemyPercentage = false;
-            System.out.println("End: "+localName);
+        case "TotalEnemyNumber":
+            inEnemyNumber = false;
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
-        case "TiePercentage":
-            inTiePercentage = false;
-            System.out.println("End: "+localName);
+        case "TieNumber":
+            inTieNumber = false;
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
-        case "CruiserPercentage":
-            inCruiserPercentage = false;
-            System.out.println("End: "+localName);
+        case "CruiserNumber":
+            inCruiserNumber = false;
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
-        case "SquadronPercentage":
-            inSquadronPercentage = false;
-            System.out.println("End: "+localName);
+        case "SquadronNumber":
+            inSquadronNumber = false;
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "TotalPlanetPercentage":
             inPlanetPercentage = false;
-            System.out.println("End: "+localName);
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "RadiusMin":
             inRadiusMin = false;
-            System.out.println("End: "+localName);
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "RadiusMax":
             inRadiusMax = false;
-            System.out.println("End: "+localName);
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "DensityMin":
             inDensityMin = false;
-            System.out.println("End: "+localName);
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "DensityMax":
             inDensityMax = false;
-            System.out.println("End: "+localName);
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         default:
@@ -377,4 +377,53 @@ public class LevelHandler extends DefaultHandler {
         System.out.println(planet.toString());
         System.out.println(time.toString());
     }
+
+    public Bomb getBomb() {
+        return bomb;
+    }
+
+    public void setBomb(Bomb bomb) {
+        this.bomb = bomb;
+    }
+
+    public Megabomb getMegaBomb() {
+        return megaBomb;
+    }
+
+    public void setMegaBomb(Megabomb megaBomb) {
+        this.megaBomb = megaBomb;
+    }
+
+    public Enemy getEnemy() {
+        return enemy;
+    }
+
+    public void setEnemy(Enemy enemy) {
+        this.enemy = enemy;
+    }
+
+    public Wave getWave() {
+        return wave;
+    }
+
+    public void setWave(Wave wave) {
+        this.wave = wave;
+    }
+
+    public Planet getPlanet() {
+        return planet;
+    }
+
+    public void setPlanet(Planet planet) {
+        this.planet = planet;
+    }
+
+    public Timer getTime() {
+        return time;
+    }
+
+    public void setTime(Timer time) {
+        this.time = time;
+    }    
 }
+

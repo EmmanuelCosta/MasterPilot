@@ -4,8 +4,8 @@ public class Planet {
     private short totalPercentage;
     private short radiusMin;
     private short radiusMax;
-    private short densityMin;
-    private short densityMax;
+    private int densityMin;
+    private int densityMax;
     
 /*------------------------------------------------------------------------------------------------*/
     
@@ -21,11 +21,11 @@ public class Planet {
         return radiusMax;
     }
     
-    public short getDensityMin() {
+    public int getDensityMin() {
         return densityMin;
     }
     
-    public short getDensityMax() {
+    public int getDensityMax() {
         return densityMax;
     }
     
@@ -43,22 +43,22 @@ public class Planet {
         this.radiusMax = radiusMax;
     }
     
-    public void setDensityMin(short densityMin) { 
+    public void setDensityMin(int densityMin) { 
         this.densityMin = densityMin;
     }
     
-    public void setDensityMax(short densityMax) { 
+    public void setDensityMax(int densityMax) { 
         this.densityMax = densityMax;
     }
 
 /*------------------------------------------------------------------------------------------------*/
     
     public String toString(){
-        return new StringBuffer("Total enemy's percentage").append(totalPercentage).append(", ")
-            .append("Radius minimum : ").append(radiusMin).append(", ")
-            .append("Radius maximum : ").append(radiusMax).append(", ")
-            .append("Density minimum : ").append(densityMin).append(", ")
-            .append("Density maximum : ").append(densityMax).append(", ")
+        return new StringBuffer("Total planeet percentage: ").append(totalPercentage).append("\n")
+            .append("Radius minimum : ").append(radiusMin).append("\n")
+            .append("Radius maximum : ").append(radiusMax).append("\n")
+            .append("Density minimum : ").append(densityMin).append("\n")
+            .append("Density maximum : ").append(densityMax).append("\n")
             .toString();
     }
 }

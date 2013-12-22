@@ -14,6 +14,7 @@ public class Megabomb {
     public String toString(){
         return new StringBuffer("Percentage's megabomb : ")
             .append(megaBombPercentage)
+            .append("\n")
             .toString();
     }
 }

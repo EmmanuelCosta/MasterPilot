@@ -14,6 +14,7 @@ public class Bomb {
     public String toString(){
         return new StringBuffer("Percentage's bomb : ")
             .append(bombPercentage)
+            .append("\n")
             .toString();
     }
 }

@@ -1,54 +1,54 @@
 package fr.umlv.masterPilot.parser.xml;
 
 public class Enemy {
-    private short totalPercentage;
-    private short tiePercentage;
-    private short cruiserPercentage;
-    private short squadronPercentage;
+    private short totalEnemyNumber;
+    private short tieNumber;
+    private short cruiserNumber;
+    private short squadronNumber;
     
 /*------------------------------------------------------------------------------------------------*/
     
-    public short getTotalPercentage() {
-        return totalPercentage;
+    public short getTotalEnemyNumber() {
+        return totalEnemyNumber;
     }
     
-    public short getTiePercentage() {
-        return tiePercentage;
+    public short getTieNumber() {
+        return tieNumber;
     }
     
-    public short getcruiserPercentage() {
-        return cruiserPercentage;
+    public short getcruiserNumber() {
+        return cruiserNumber;
     }
     
-    public short getSquadronPercentage() {
-        return squadronPercentage;
+    public short getSquadronNumber() {
+        return squadronNumber;
     }
     
 /*------------------------------------------------------------------------------------------------*/
         
-    public void setTotalPercentage(short totalPercentage) { 
-        this.totalPercentage = totalPercentage;
+    public void setTotalEnemyNumber(short totalPercentage) { 
+        this.totalEnemyNumber = totalPercentage;
     }
     
-    public void setTiePercentage(short tiePercentage) { 
-        this.tiePercentage = tiePercentage;
+    public void setTieNumber(short tiePercentage) { 
+        this.tieNumber = tiePercentage;
     }
     
-    public void setCruiserPercentage(short cruiserPercentage) { 
-        this.cruiserPercentage = cruiserPercentage;
+    public void setCruiserNumber(short cruiserPercentage) { 
+        this.cruiserNumber = cruiserPercentage;
     }
     
-    public void setSquadronPercentage(short squadronPercentage) { 
-        this.squadronPercentage = squadronPercentage;
+    public void setSquadronNumber(short squadronPercentage) { 
+        this.squadronNumber = squadronPercentage;
     }
 
 /*------------------------------------------------------------------------------------------------*/
     
     public String toString(){
-        return new StringBuffer("Total enemy's percentage").append(totalPercentage).append(", ")
-            .append("TIE's Percentage : ").append(tiePercentage).append(", ")
-            .append("Cruiser's Percentage : ").append(cruiserPercentage).append(", ")
-            .append("Squadron's Percentage : ").append(squadronPercentage).append(", ")
+        return new StringBuffer("Total enemy's percentage: ").append(totalEnemyNumber).append("\n")
+            .append("TIE's Percentage : ").append(tieNumber).append("\n")
+            .append("Cruiser's Percentage : ").append(cruiserNumber).append("\n")
+            .append("Squadron's Percentage : ").append(squadronNumber).append("\n")
             .toString();
     }
 }

@@ -14,6 +14,7 @@ public class Timer {
         public String toString(){
             return new StringBuffer("Timer : ")
                 .append(time)
+                .append("\n")
                 .toString();
         }
 }

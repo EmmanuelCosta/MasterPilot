@@ -16,11 +16,12 @@ import org.xml.sax.helpers.DefaultHandler;
 public class Main {
 
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+        LevelHandler gestionnaire = null;
         try {
 
             // lecture d'un fichier XML avec un DefaultHandler
             InputStream fichier = new FileInputStream(new File("/home/sybille/java/MasterPilot/MasterPilot/Level1.xml"));
-            LevelHandler gestionnaire = new LevelHandler();
+            gestionnaire = new LevelHandler();
             gestionnaire.parse(fichier);
 
         } catch (ParserConfigurationException pce) {
@@ -35,6 +36,15 @@ public class Main {
             System.out.println("Erreur d'entrée/sortie");
             System.out.println("Lors de l'appel à parse()");
         }
-
+        
+        /**
+         * Here is an example of how you can get the values in the xml document.
+         */
+        int time = gestionnaire.getTime().getTimer();
+        short bombPercentage = gestionnaire.getBomb().getBombPercentage();
+        short megaBombPercentage = gestionnaire.getMegaBomb().getMegaBombPercentage();
+        short waveNumber = gestionnaire.getWave().getWaveEnemyNumber();
+        // this is the same for Enemy and planet.
+        System.out.println(time + " " + bombPercentage + " " + megaBombPercentage + " " + waveNumber);
     }
 }
