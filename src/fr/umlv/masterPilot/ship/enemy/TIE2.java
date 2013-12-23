@@ -24,10 +24,10 @@ public class TIE2 implements SpaceShip {
     private final int x_axis;
     private final int y_axis;
     private final Hero hero;
-    private final Vec2 forceLeft = new Vec2(-100f, -5f);
-    private final Vec2 forceRight = new Vec2(+100f, -5f);
-    private final Vec2 forceUp = new Vec2(-5f, +100f);
-    private final Vec2 forceDown = new Vec2(-5f, -100f);
+    private final Vec2 forceLeft = new Vec2(-150f, -5f);
+    private final Vec2 forceRight = new Vec2(+150f, -5f);
+    private final Vec2 forceUp = new Vec2(-5f, +150f);
+    private final Vec2 forceDown = new Vec2(-5f, -150f);
     private final World world;
     private final Vec2 fireUp = new Vec2(0f, -10000f);
     private final Vec2 fireDown = new Vec2(0f, 10000f);
