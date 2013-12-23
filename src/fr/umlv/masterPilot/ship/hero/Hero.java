@@ -123,7 +123,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         bd.angle = 3.14f;
         bd.allowSleep = false;
 /**************************SHIELD ************************************************************************/
-
+//Create chield protection
         CircleShape cs = new CircleShape();
         cs.setRadius(23);
         FixtureDef fs = new FixtureDef();
@@ -136,6 +136,18 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
         fs.filter.categoryBits = MasterPilotWorld.SHIELD;
         fs.filter.maskBits = MasterPilotWorld.ENEMY | MasterPilotWorld.PLANET;
+
+//        public static int HERO = 0x0001;
+//        public static int ENEMY = 0x0002;
+//        public static int PLANET = 0x0004;
+//        public static int SHOOT = 0x0008;
+//        public static int BOMB = 0x00016;
+//        public static int MEGABOMB = 0x00032;
+//        public static int SHIELD = 0x00064;
+//        public static int TRAIL = 0x00128;
+
+
+
         fs.userData = new HeroShieldBehaviour();
 /*************************************************************************************************************/
         Body body = this.world.createBody(bd);
@@ -317,7 +329,26 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
         this.bombType = Bomb.BombType.NONE;
 
-
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//
+//
+//                bombType = Bomb.BombType.NONE;
+//
+//            }
+//        }, 500, 1);
+//
+//        worker.schedule(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                timer.cancel();
+//                ;
+//
+//            }
+//        }, 800, TimeUnit.MILLISECONDS);
     }
 
     /**
