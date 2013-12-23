@@ -313,7 +313,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
 
 
-        Vec2 force = body.getWorldVector(classicBombSpeed.mul(1000));
+        Vec2 force = body.getWorldVector(classicBombSpeed.mul(10000));
         Vec2 point = body.getWorldPoint(this.cBomb.getBody().getWorldCenter());
 
         /**

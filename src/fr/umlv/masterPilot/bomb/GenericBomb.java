@@ -197,9 +197,9 @@ public class GenericBomb implements Bomb {
         float blastRadius = 100f;
         float powerBlast = 0;
         if (this.bombType == BombType.MEGABOMB) {
-            powerBlast = -8000000f;
+            powerBlast = -10000000f;
         } else {
-            powerBlast = 8000000f;
+            powerBlast = 10000000f;
         }
 
         CustomQueryCalledBack queryCallback = new CustomQueryCalledBack();

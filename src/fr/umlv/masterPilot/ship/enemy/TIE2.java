@@ -115,7 +115,7 @@ public class TIE2 implements SpaceShip {
         fs.restitution = 0.5f;
 
         fs.filter.categoryBits = MasterPilotWorld.ENEMY;
-        fs.filter.maskBits = MasterPilotWorld.HERO |  MasterPilotWorld.SHIELD;
+        fs.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.SHIELD;
 
 
         fs.userData = new EnemyBehaviour(this, Color.BLUE);
@@ -152,7 +152,7 @@ public class TIE2 implements SpaceShip {
         fr.restitution = 0.5f;
 
         fr.filter.categoryBits = MasterPilotWorld.ENEMY;
-        fr.filter.maskBits = MasterPilotWorld.HERO |  MasterPilotWorld.SHIELD;
+        fr.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.SHIELD;
 
         fr.userData = new EnemyBehaviour(this, Color.BLUE);
 
@@ -231,6 +231,11 @@ public class TIE2 implements SpaceShip {
         float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
         int limit = 100;
 
+//        if(x_distance > 800 || y_distance > 800){
+//            this.body.setTransform(new Vec2(this.hero.getBody().getPosition().x +200,
+//                    this.hero.getBody().getPosition().y+300),
+//                    this.getBody().getAngle());
+//        }
         if (x_distance > -30 && x_distance < 30 && fire == true) {
             fire();
             fire = false;
@@ -245,20 +250,15 @@ public class TIE2 implements SpaceShip {
 
                 right();
             }
-            if (y_distance < limit) {
-                down();
-            } else {
 
-                down();
-            }
+            down();
+
+
         } else if (x_distance <= 0 && y_distance <= 0) {
 
 
-            if (x_distance > -limit) {
-                right();
-            } else {
-                right();
-            }
+            right();
+
             if (y_distance > -limit) {
                 down();
             } else {
@@ -274,19 +274,13 @@ public class TIE2 implements SpaceShip {
             } else {
                 left();
             }
-            if (y_distance > -limit) {
-                up();
-            } else {
-                up();
-            }
+            up();
+
         } else if (x_distance >= 0 && y_distance >= 0) {
 
 
-            if (x_distance < limit) {
-                left();
-            } else {
-                left();
-            }
+            left();
+
             if (y_distance < limit) {
                 up();
             } else {

@@ -29,7 +29,6 @@ public class BombBehaviour implements UserSpec {
         /**
          * hero take bomb
          */
-
         if ((fix2.getFilterData().categoryBits == MasterPilotWorld.HERO
                 || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD) && state == 0) {
             addable = true;
