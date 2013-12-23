@@ -211,16 +211,17 @@ public class TIE2 implements SpaceShip {
     public void doMove() {
         float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
         float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
+        int limit = 80;
         if (x_distance <= 0 && y_distance >= 0) {
 
-            if (x_distance > -50) {
+            if (x_distance > -limit) {
                 left();
 
             } else {
 
                 right();
             }
-            if (y_distance < 50) {
+            if (y_distance < limit) {
                 down();
             } else {
 
@@ -228,12 +229,12 @@ public class TIE2 implements SpaceShip {
             }
         } else if (x_distance <= 0 && y_distance <= 0) {
 
-            if (x_distance > -50) {
+            if (x_distance > -limit) {
                 right();
             } else {
                 right();
             }
-            if (y_distance > -50) {
+            if (y_distance > -limit) {
                 down();
             } else {
                 up();
@@ -242,24 +243,24 @@ public class TIE2 implements SpaceShip {
 
         } else if (x_distance >= 0 && y_distance <= 0) {
 
-            if(x_distance <50){
+            if(x_distance <limit){
                 right();
             }else{
                 left();
             }
-            if(y_distance >- 50){
+            if(y_distance >- limit){
                 up();
             }else{
                 up();
             }
         } else if (x_distance >= 0 && y_distance >= 0) {
 
-            if(x_distance <50){
+            if(x_distance <limit){
                 left();
             }else{
                 left();
             }
-            if(y_distance <50){
+            if(y_distance <limit){
                 up();
             }else{
                 down();
