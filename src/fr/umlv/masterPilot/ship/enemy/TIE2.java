@@ -24,9 +24,13 @@ public class TIE2 implements SpaceShip {
     private final int x_axis;
     private final int y_axis;
     private final Hero hero;
+    private final Vec2 forceLeft = new Vec2(-100f, +0f);
+    private final Vec2 forceRight = new Vec2(+100f, +0f);
+    private final Vec2 forceUp = new Vec2(+0f, +100f);
+    private final Vec2 forceDown = new Vec2(+0f, -100f);
     private World world;
     private Body body;
-    private Vec2 rayonForce = new Vec2(0f, -10f);
+    private Vec2 rayonForce = new Vec2(0f, -10000f);
     private Vec2 shoot1;
     private Vec2 shoot2;
 
@@ -35,8 +39,7 @@ public class TIE2 implements SpaceShip {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.hero = hero;
-        this.shoot1 = new Vec2(-20, -5);
-        this.shoot2 = new Vec2(+20, -5);
+
 
         /**
          *  Interactions with the other bodies.
@@ -73,8 +76,8 @@ public class TIE2 implements SpaceShip {
          */
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;
-        fd.density = 0.5f;
-        fd.friction = 0f;
+        fd.density = 1.5f;
+        fd.friction = 8f;
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
@@ -97,6 +100,7 @@ public class TIE2 implements SpaceShip {
 
         vertices[2] = new Vec2(-5, -10);
 
+        this.shoot1 = vertices[1];
 
         chs.createChain(vertices, 3);
 
@@ -110,7 +114,7 @@ public class TIE2 implements SpaceShip {
         fs.restitution = 0.5f;
 
         fs.filter.categoryBits = MasterPilotWorld.ENEMY;
-        fs.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.PLANET | MasterPilotWorld.SHIELD ;
+        fs.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.PLANET | MasterPilotWorld.SHIELD;
 
 
         fs.userData = new EnemyBehaviour(this, Color.BLUE);
@@ -130,6 +134,7 @@ public class TIE2 implements SpaceShip {
 
         rVertices[2] = new Vec2(5, -10);
 
+        this.shoot2 = rVertices[1];
 
         chr.createChain(rVertices, 3);
 
@@ -152,41 +157,117 @@ public class TIE2 implements SpaceShip {
 
 
 /*****************************************************/
-
+        bd.angularDamping = 2.0f;
+        bd.linearDamping = 0.1f;
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
         body.createFixture(fs);
         body.createFixture(fr);
+
 
         this.body = body;
     }
 
     @Override
     public void right() {
-        throw new NotImplementedException();
+        Vec2 force = body.getWorldVector(forceRight);
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+
+
+        this.body.applyForceToCenter(force);
+
     }
 
     @Override
     public void left() {
-        throw new NotImplementedException();
+        Vec2 force = body.getWorldVector(forceLeft);
+
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+
+        this.body.applyForceToCenter(force);
+
+
     }
 
     @Override
     public void up() {
-        throw new NotImplementedException();
+        Vec2 force = body.getWorldVector(forceUp);
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+
+        this.body.applyForceToCenter(force);
+
     }
 
     @Override
     public void down() {
-        throw new NotImplementedException();
+        Vec2 force = body.getWorldVector(forceDown);
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+
+        this.body.applyForceToCenter(force);
+
     }
 
-    public void move() {
-        Vec2 force = body.getWorldVector(new Vec2(0, +10f));
-        this.body.setTransform(body.getPosition(), -(hero.getBody().getAngle()));
-        //this.body.applyForceToCenter(force);
-        this.body.applyAngularImpulse(0.05f);
-        this.body.applyForceToCenter(force);
+    @Override
+    public void doMove() {
+        float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
+        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
+        if (x_distance <= 0 && y_distance >= 0) {
+
+            if (x_distance > -50) {
+                left();
+
+            } else {
+
+                right();
+            }
+            if (y_distance < 50) {
+                down();
+            } else {
+
+                down();
+            }
+        } else if (x_distance <= 0 && y_distance <= 0) {
+
+            if (x_distance > -50) {
+                right();
+            } else {
+                right();
+            }
+            if (y_distance > -50) {
+                down();
+            } else {
+                up();
+            }
+
+
+        } else if (x_distance >= 0 && y_distance <= 0) {
+
+            if(x_distance <50){
+                right();
+            }else{
+                left();
+            }
+            if(y_distance >- 50){
+                up();
+            }else{
+                up();
+            }
+        } else if (x_distance >= 0 && y_distance >= 0) {
+
+            if(x_distance <50){
+                left();
+            }else{
+                left();
+            }
+            if(y_distance <50){
+                up();
+            }else{
+                down();
+            }
+
+
+        }
+
     }
 
     @Override
@@ -201,8 +282,8 @@ public class TIE2 implements SpaceShip {
         /**
          * create the shoot
          */
-        int maskBit = MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET;
-        int category = MasterPilotWorld.SHOOT;
+        int maskBit = MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET | MasterPilotWorld.HERO;
+        int category = MasterPilotWorld.ENEMY;
         RayFire rayon1 = new RayFire(this.world, worldPoint1.x, worldPoint1.y, category, maskBit, Color.orange);
         rayon1.create();
         RayFire rayon2 = new RayFire(this.world, worldPoint2.x, worldPoint2.y, category, maskBit, Color.orange);
@@ -219,9 +300,9 @@ public class TIE2 implements SpaceShip {
          * need to do transform to position the shoot
          * in good direction
          */
-        rayon1.getBody().setTransform(worldPoint1, body.getAngle());
+        rayon1.getBody().setTransform(worldPoint1, hero.getBody().getAngle());
         rayon1.getBody().applyForce(force, point1);
-        rayon2.getBody().setTransform(worldPoint2, body.getAngle());
+        rayon2.getBody().setTransform(worldPoint2,  hero.getBody().getAngle());
 
         rayon2.getBody().applyForce(force, point2);
 

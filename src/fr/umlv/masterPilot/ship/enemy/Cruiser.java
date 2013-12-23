@@ -85,9 +85,9 @@ public class Cruiser implements SpaceShip {
          */
         FixtureDef fd = new FixtureDef();
         fd.shape = ps;
-        fd.density = 5.5f;
+        fd.density = 50.5f;
         fd.friction = 105f;
-        fd.restitution = 95f;
+        fd.restitution = 0.05f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
 
@@ -129,6 +129,7 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void right() {
+
         Vec2 force = body.getWorldVector(forceRight);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
@@ -147,6 +148,7 @@ public class Cruiser implements SpaceShip {
         Vec2 force = body.getWorldVector(forceUp);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
+
     }
 
     @Override

@@ -8,4 +8,8 @@ public interface Move {
 	public void up();
 
 	public void down();
+
+    public  default void doMove(){
+        throw new UnsupportedOperationException();
+    }
 }

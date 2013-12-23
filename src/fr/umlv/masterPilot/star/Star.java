@@ -12,7 +12,7 @@ import java.awt.*;
  * Created by emmanuel
  */
 public class Star {
-    private final int radius = 100;
+    private final int radius = 50;
     private final int maskBit;
     private final int category;
     private final World world;
@@ -82,9 +82,9 @@ public class Star {
         FixtureDef fd = new FixtureDef();
         // applique toi a cs
         fd.shape = cs;
-        fd.density = 1500f;
+        fd.density = 150f;
         fd.friction = 50f;
-        fd.restitution = 100f;
+        fd.restitution = 0.5f;
 
 
         /**
