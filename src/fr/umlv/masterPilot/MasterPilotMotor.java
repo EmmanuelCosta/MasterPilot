@@ -266,7 +266,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
      */
     private void proccessManager(List<SpaceShip> spaceShips, Hero hero) {
         for (SpaceShip space : spaceShips) {
-            doEnemyLogic(space, hero);
+           space.doMove();
         }
     }
 
@@ -278,52 +278,10 @@ public class MasterPilotMotor implements KeyMotionObservable {
      * @param hero  : the spaceship hero
      */
     private void doEnemyLogic(SpaceShip enemy, Hero hero) {
-        float x_distance = enemy.getBody().getPosition().x - hero.getBody().getPosition().x;
-        float y_distance = enemy.getBody().getPosition().y - hero.getBody().getPosition().y;
-        double distance = Math.sqrt(Math.pow(x_distance, 2) + Math.pow(y_distance, 2));
-        enemy.doMove();
+       
 
 
-//        if(x_distance <=0 && y_distance > 0){
-//            System.out.println("g b");
-//            enemy.left();
-//            enemy.down();
-//        }else if(x_distance < 0 && y_distance <=0){
-//            System.out.println("r b");
-//            enemy.right();
-//            enemy.down();
-//        }else if(x_distance == 0 && y_distance >= 0){
-//            System.out.println("r  h");
-//            enemy.right();
-//            enemy.up();
-//        }else if (x_distance >= 0 && y_distance >=0){
-//            System.out.println("l h");
-//            enemy.left();
-//            enemy.up();
-//        }
 
-//       enemy.doMove();
-//        /* Horizontal movement */
-//        if (x_distance > 0 ) {
-//            enemy.left();
-//        } else {
-//            enemy.right();
-//        }
-//
-//        /* Vertical movement */
-//        if (y_distance > 0) {
-//            enemy.down();
-//        } else  {
-//            enemy.up();
-//        }
-
-//        enemy.right();
-        
-        /* Actions */
-//        System.out.println("fire "+distance);
-//        if (distance <= 290) {
-//            enemy.fire();
-//        }
         
     }
 
