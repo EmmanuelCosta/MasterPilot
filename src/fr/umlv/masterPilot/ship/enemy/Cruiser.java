@@ -19,10 +19,10 @@ public class Cruiser implements SpaceShip {
     private final Hero hero;
     private final Vec2 cruiserSpeed = new Vec2(0, -50f);
     private final Vec2 rayonForce = new Vec2(+0f, -150f);
-    private final Vec2 forceLeft = new Vec2(-1500f, +0f);
-    private final Vec2 forceRight = new Vec2(+1500f, +0f);
-    private final Vec2 forceUp = new Vec2(+0f, +1500f);
-    private final Vec2 forceDown = new Vec2(+0f, -1500f);
+    private final Vec2 forceLeft = new Vec2(-150f, +0f);
+    private final Vec2 forceRight = new Vec2(+150f, +0f);
+    private final Vec2 forceUp = new Vec2(+0f, +150f);
+    private final Vec2 forceDown = new Vec2(+0f, -150f);
     private final Vec2 shoot1 = new Vec2(-15f, -15f);
     private final Vec2 shoot2 = new Vec2(+15f, -15f);
     private final Vec2 shoot3 = new Vec2(-5f, -15f);
@@ -233,10 +233,10 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void doMove() {
-        if (this.x_axis >= 0 && this.x_axis <= hero.getBody().getPosition().x + 200) {
+        if (this.getBody().getPosition().x > 0 && this.getBody().getPosition().x >= hero.getBody().getPosition().x + 100) {
             left();
         }
-        else if (this.x_axis <= 0 && this.x_axis <= hero.getBody().getPosition().x - 200) {
+        else if (this.getBody().getPosition().x < 0 && this.getBody().getPosition().x >= hero.getBody().getPosition().x - 100) {
             right();
         }
     }
