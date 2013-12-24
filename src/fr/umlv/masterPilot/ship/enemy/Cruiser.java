@@ -233,18 +233,25 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void doMove() {
+        float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
+        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
+        int limit = 100;
         
-        if (this.getBody().getPosition().x > hero.getBody().getPosition().x) {
+        if (this.getBody().getPosition().x > hero.getBody().getPosition().x && x_distance > limit) {
             left();
         }
-        if (this.getBody().getPosition().x < hero.getBody().getPosition().x) {
+        if (this.getBody().getPosition().x < hero.getBody().getPosition().x && x_distance < -limit) {
             right();
         }
-        if(this.getBody().getPosition().y > hero.getBody().getPosition().y && this.getBody().getPosition().y > 100) {
+        if(this.getBody().getPosition().y > hero.getBody().getPosition().y && y_distance > limit) {
             down();
         }
-        if(this.getBody().getPosition().y < hero.getBody().getPosition().y && this.getBody().getPosition().y > -100){
+        if(this.getBody().getPosition().y < hero.getBody().getPosition().y && y_distance < -limit){
             up();
+        }
+        if (x_distance > -30 && x_distance < 30 && fire == true) {
+            fire();
+            fire = false;
         }
     }
 }
