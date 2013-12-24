@@ -14,4 +14,6 @@ public interface SpaceShip extends Move {
     public void create();
 
     public Body getBody();
+    
+    public void doMove();
 }
