@@ -250,6 +250,7 @@ public class Cruiser implements SpaceShip {
             up();
         }
         if (x_distance > -30 && x_distance < 30 && fire == true) {
+            this.getBody().setTransform(this.getBody().getPosition(), hero.getBody().getAngle());
             fire();
             fire = false;
         }
