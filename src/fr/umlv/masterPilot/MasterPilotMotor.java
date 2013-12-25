@@ -91,7 +91,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //
         factory.createEnemy("TIE", 150, 50, h);
 
-        factory.createEnemy("TIE", 550, 50, h);
+        factory.createEnemy("SQUADRON", 350, 50, h);
 //
 //        factory.createEnemy("CRUISER", -350, 50, h);
 //
@@ -278,7 +278,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
      * @param hero  : the spaceship hero
      */
     private void doEnemyLogic(SpaceShip enemy, Hero hero) {
-       
+
 
 
 

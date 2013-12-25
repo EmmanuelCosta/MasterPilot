@@ -236,7 +236,9 @@ public class TIE2 implements SpaceShip {
 //                    this.hero.getBody().getPosition().y+300),
 //                    this.getBody().getAngle());
 //        }
+
         if (x_distance > -30 && x_distance < 30 && fire == true) {
+
             fire();
             fire = false;
         }
