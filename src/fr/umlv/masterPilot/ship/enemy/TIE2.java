@@ -174,7 +174,7 @@ public class TIE2 implements SpaceShip {
                 for (; ; ) {
                     fire = true;
                     try {
-                        Thread.sleep(300);
+                        Thread.sleep(800);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -237,7 +237,14 @@ public class TIE2 implements SpaceShip {
 //                    this.getBody().getAngle());
 //        }
 
-        if (x_distance > -30 && x_distance < 30 && fire == true) {
+//        if (x_distance > -30 && x_distance < 30 && fire == true) {
+//
+//            fire();
+//            fire = false;
+//        }
+
+        if ((x_distance >=-2*limit && x_distance <=2*limit) && (y_distance >=-2*limit && y_distance <=2*limit)
+                && fire == true) {
 
             fire();
             fire = false;
@@ -317,17 +324,18 @@ public class TIE2 implements SpaceShip {
          * Apply force to the specific point
          */
 
-        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
-        Vec2 force;
-        if (y_distance > 0) {
-            force = body.getWorldVector(fireUp);
-        } else {
-            force = body.getWorldVector(fireDown);
-            ;
-        }
-
-        Vec2 point1 = body.getWorldPoint(rayon1.getBody().getWorldCenter());
-        Vec2 point2 = body.getWorldPoint(rayon2.getBody().getWorldCenter());
+//        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
+//        Vec2 force;
+//        if (y_distance > 0) {
+//            force = body.getWorldVector(fireUp);
+//        } else {
+//            force = body.getWorldVector(fireDown);
+//            ;
+//        }
+//
+//
+//        Vec2 point1 = body.getWorldPoint(rayon1.getBody().getWorldCenter());
+//        Vec2 point2 = body.getWorldPoint(rayon2.getBody().getWorldCenter());
 
         /**
          * need to do transform to position the shoot
@@ -335,10 +343,20 @@ public class TIE2 implements SpaceShip {
          */
         rayon1.getBody().setTransform(worldPoint1, hero.getBody().getAngle());
 
-        rayon1.getBody().applyForce(force, point1);
+       // rayon1.getBody().applyForce(force, point1);
         rayon2.getBody().setTransform(worldPoint2, hero.getBody().getAngle());
 
-        rayon2.getBody().applyForce(force, point2);
+       // rayon2.getBody().applyForce(force, point2);
+
+
+
+        Vec2 worldCenter = rayon1.getBody().getWorldCenter();
+        Vec2 worldCenter2 = rayon2.getBody().getWorldCenter();
+        Vec2 blastDir = worldCenter.sub(hero.getBody().getPosition());
+
+        rayon1.getBody().applyLinearImpulse(blastDir.mul(-10000), worldCenter);
+        rayon2.getBody().applyLinearImpulse(blastDir.mul(-10000), worldCenter2);
+
 
 
     }
