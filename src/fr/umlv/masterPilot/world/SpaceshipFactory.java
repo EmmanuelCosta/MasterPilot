@@ -42,13 +42,10 @@ public class SpaceshipFactory {
         switch (enemyType) {
             case "TIE":
                 space = new TIE2(this.masterPilotWorld.getWorld(), x, y, hero);
-
-
                 break;
 
             case "CRUISER":
-                space = new Cruiser(this.masterPilotWorld.getWorld(), x, y);
-
+                space = new Cruiser(this.masterPilotWorld.getWorld(), x, y, hero);
                 break;
 
             case "SQUADRON":

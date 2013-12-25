@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Level>
-	<!-- Start level 2-->
-	<Timer>180</Timer>
+	<!-- Start level 1-->
+	<Timer id="180"></Timer>
 	<Bomb>
-		<TotalPercentage>5</TotalPercentage>
+		<TotalBombPercentage id="5"></TotalBombPercentage>
 	</Bomb>
 	<MegaBomb>
-		<TotalPercentage>5</TotalPercentage>	
+		<TotalMegabombPercentage id="5"></TotalMegabombPercentage>	
 	</MegaBomb>
 	<Wave>
-		<TotalNumber>4</TotalNumber>
+		<TotalWaveNumber id="4"></TotalWaveNumber>
 	</Wave>
 	<Enemy>
-		<TotalPercentage>30</TotalPercentage>
-		<TiePercentage>5</TiePercentage>
-		<CruiserPercentage>5</CruiserPercentage>
-		<SquadronPercentage>3</SquadronPercentage>
+		<TotalEnemyNumber id="30"></TotalEnemyNumber>
+		<TieNumber id="5"></TieNumber>
+		<CruiserNumber id="5"></CruiserNumber>
+		<SquadronNumber id="3"></SquadronNumber>
 	</Enemy>	
 	<Planet> 
-		<TotalPercentage>15</TotalPercentage>
-		<RadiusMin>10</RadiusMin>
-		<RadiusMax>100</RadiusMax>
-		<DensityMin>1500</DensityMin>
-		<DensityMax>2500</DensityMax>  
+		<TotalPlanetPercentage id ="15"></TotalPlanetPercentage>
+		<RadiusMin id="10"></RadiusMin>
+		<RadiusMax id="100"></RadiusMax>
+		<DensityMin id="1500"></DensityMin>
+		<DensityMax id="2500"></DensityMax>  
 	</Planet>
 </Level>
-

@@ -1,23 +1,14 @@
 package fr.umlv.masterPilot.ship.enemy;
 
-
 import org.jbox2d.common.Vec2;
-
-
 import fr.umlv.masterPilot.ship.RayFire;
 import fr.umlv.masterPilot.ship.SpaceShip;
+import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-
 import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Cruiser implements SpaceShip {
     private final int maskBit;
@@ -25,34 +16,33 @@ public class Cruiser implements SpaceShip {
     private final World world;
     private final int x_axis;
     private final int y_axis;
+    private final Hero hero;
     private final Vec2 cruiserSpeed = new Vec2(0, -50f);
-    private final Vec2 rayonForce = new Vec2(+0f, -5f);
-    private final Vec2 forceLeft = new Vec2(-5f, +0f);
-    private final Vec2 forceRight = new Vec2(+5f, +0f);
-    private final Vec2 forceUp = new Vec2(+0f, +5f);
-    private final Vec2 forceDown = new Vec2(+0f, -5f);
+    private final Vec2 rayonForce = new Vec2(+0f, -150f);
+    private final Vec2 forceLeft = new Vec2(-150f, +0f);
+    private final Vec2 forceRight = new Vec2(+150f, +0f);
+    private final Vec2 forceUp = new Vec2(+0f, +150f);
+    private final Vec2 forceDown = new Vec2(+0f, -150f);
     private final Vec2 shoot1 = new Vec2(-15f, -15f);
     private final Vec2 shoot2 = new Vec2(+15f, -15f);
     private final Vec2 shoot3 = new Vec2(-5f, -15f);
     private final Vec2 shoot4 = new Vec2(+5f, -15f);
+    private volatile boolean fire;
     private Body body;
 
-
-    public Cruiser(World world, int x_axis, int y_axis) {
+    public Cruiser(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
+        this.hero = hero;
 
         /**
          * Interactions with the other bodies.
          */
         this.category = MasterPilotWorld.ENEMY;
-        this.maskBit = MasterPilotWorld.PLANET
-                | MasterPilotWorld.SHIELD
-                | MasterPilotWorld.SHOOT
-                | MasterPilotWorld.BOMB
-                | MasterPilotWorld.MEGABOMB
-                | MasterPilotWorld.HERO;
+        this.maskBit = MasterPilotWorld.PLANET | MasterPilotWorld.SHIELD
+                | MasterPilotWorld.SHOOT | MasterPilotWorld.BOMB
+                | MasterPilotWorld.MEGABOMB | MasterPilotWorld.HERO;
     }
 
     public void create() {
@@ -85,12 +75,11 @@ public class Cruiser implements SpaceShip {
          */
         FixtureDef fd = new FixtureDef();
         fd.shape = ps;
-        fd.density = 50.5f;
-        fd.friction = 105f;
+        fd.density = 10.0f;
+        fd.friction = 10f;
         fd.restitution = 0.05f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-
 
         fd.userData = new EnemyBehaviour(this, Color.CYAN);
 
@@ -120,6 +109,21 @@ public class Cruiser implements SpaceShip {
         body.createFixture(fd);
         body.createFixture(fs);
         this.body = body;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (;;) {
+                    fire = true;
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -129,7 +133,6 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void right() {
-
         Vec2 force = body.getWorldVector(forceRight);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
@@ -163,8 +166,6 @@ public class Cruiser implements SpaceShip {
         /**
          * I get the actual tip coordinate in the world
          */
-
-        // under part
         Vec2 worldPoint1 = body.getWorldPoint(shoot1);
         Vec2 worldPoint2 = body.getWorldPoint(shoot2);
         Vec2 worldPoint3 = body.getWorldPoint(shoot3);
@@ -173,23 +174,35 @@ public class Cruiser implements SpaceShip {
         /**
          * create the shoot
          */
-
-        // Under part
-        RayFire rayon1 = new RayFire(this.world, worldPoint1.x, worldPoint1.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET, Color.yellow);
+        RayFire rayon1 = new RayFire(this.world, worldPoint1.x, worldPoint1.y,
+                MasterPilotWorld.ENEMY, MasterPilotWorld.HERO
+                        | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB
+                        | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET,
+                Color.yellow);
         rayon1.create();
-        RayFire rayon2 = new RayFire(this.world, worldPoint2.x, worldPoint2.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET, Color.yellow);
+        RayFire rayon2 = new RayFire(this.world, worldPoint2.x, worldPoint2.y,
+                MasterPilotWorld.ENEMY, MasterPilotWorld.HERO
+                        | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB
+                        | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET,
+                Color.yellow);
         rayon2.create();
-        RayFire rayon3 = new RayFire(this.world, worldPoint3.x, worldPoint3.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET, Color.yellow);
+        RayFire rayon3 = new RayFire(this.world, worldPoint3.x, worldPoint3.y,
+                MasterPilotWorld.ENEMY, MasterPilotWorld.HERO
+                        | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB
+                        | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET,
+                Color.yellow);
         rayon3.create();
-        RayFire rayon4 = new RayFire(this.world, worldPoint4.x, worldPoint4.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET, Color.yellow);
+        RayFire rayon4 = new RayFire(this.world, worldPoint4.x, worldPoint4.y,
+                MasterPilotWorld.ENEMY, MasterPilotWorld.HERO
+                        | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB
+                        | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET,
+                Color.yellow);
         rayon4.create();
 
         /**
          * Apply force to the specific point
          */
         Vec2 force = body.getWorldVector(rayonForce);
-
-        // Under part
         Vec2 point1 = body.getWorldPoint(rayon1.getBody().getWorldCenter());
         Vec2 point2 = body.getWorldPoint(rayon2.getBody().getWorldCenter());
         Vec2 point3 = body.getWorldPoint(rayon3.getBody().getWorldCenter());
@@ -198,8 +211,6 @@ public class Cruiser implements SpaceShip {
         /**
          * need to do transform to position the shoot in good direction
          */
-
-        // Under part
         rayon1.getBody().setTransform(worldPoint1, body.getAngle());
         rayon1.getBody().applyForce(force, point1);
         rayon2.getBody().setTransform(worldPoint2, body.getAngle());
@@ -208,8 +219,6 @@ public class Cruiser implements SpaceShip {
         rayon3.getBody().applyForce(force, point3);
         rayon4.getBody().setTransform(worldPoint4, body.getAngle());
         rayon4.getBody().applyForce(force, point4);
-
-
     }
 
     @Override
@@ -222,4 +231,28 @@ public class Cruiser implements SpaceShip {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public void doMove() {
+        float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
+        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
+        int limit = 100;
+        
+        if (this.getBody().getPosition().x > hero.getBody().getPosition().x && x_distance > limit) {
+            left();
+        }
+        if (this.getBody().getPosition().x < hero.getBody().getPosition().x && x_distance < -limit) {
+            right();
+        }
+        if(this.getBody().getPosition().y > hero.getBody().getPosition().y && y_distance > limit) {
+            down();
+        }
+        if(this.getBody().getPosition().y < hero.getBody().getPosition().y && y_distance < -limit){
+            up();
+        }
+        if (x_distance > -30 && x_distance < 30 && fire == true) {
+            this.getBody().setTransform(this.getBody().getPosition(), hero.getBody().getAngle());
+            fire();
+            fire = false;
+        }
+    }
 }

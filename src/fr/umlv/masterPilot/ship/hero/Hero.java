@@ -1,13 +1,12 @@
 package fr.umlv.masterPilot.ship.hero;
 
 import fr.umlv.masterPilot.bomb.Bomb;
+import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.ship.RayFire;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
-import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import fr.umlv.zen3.KeyboardEvent;
-
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -147,7 +146,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 //        public static int TRAIL = 0x00128;
 
 
-
         fs.userData = new HeroShieldBehaviour();
 /*************************************************************************************************************/
         Body body = this.world.createBody(bd);
@@ -164,6 +162,11 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     public Body getBody() {
         return body;
+    }
+
+    @Override
+    public void doMove() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -255,7 +258,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
         cBomb.getBody().setTransform(worldPoint, body.getAngle());
         cBomb.getBody().applyForce(force, point);
-        
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -310,7 +313,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         /**
          * create the shoot
          */
-
 
 
         Vec2 force = body.getWorldVector(classicBombSpeed.mul(10000));
@@ -431,16 +433,14 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         lBomb.add(cBomb);
 //RIGHT
         cBomb = new Bullet(this.world, worldPoint2.x, worldPoint2.y,
-                MasterPilotWorld.TRAIL,  MasterPilotWorld.HERO| MasterPilotWorld.PLANET, Color.CYAN, 2);
+                MasterPilotWorld.TRAIL, MasterPilotWorld.HERO | MasterPilotWorld.PLANET, Color.CYAN, 2);
         cBomb.create();
         lBomb.add(cBomb);
 //MIDDLE
-         cBomb = new Bullet(this.world, worldPoint3.x, worldPoint3.y,
-                MasterPilotWorld.TRAIL, MasterPilotWorld.HERO| MasterPilotWorld.PLANET, Color.CYAN, 2);
+        cBomb = new Bullet(this.world, worldPoint3.x, worldPoint3.y,
+                MasterPilotWorld.TRAIL, MasterPilotWorld.HERO | MasterPilotWorld.PLANET, Color.CYAN, 2);
         cBomb.create();
         lBomb.add(cBomb);
-
-
 
 
     }
@@ -449,7 +449,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     public void down() {
         throw new UnsupportedOperationException();
     }
-
 
     public void setBomb(Bomb bomb) {
         if (!Objects.isNull(bomb) && bomb.getBombeState() != Bomb.BombState.ARMED) {

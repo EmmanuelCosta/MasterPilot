@@ -82,18 +82,24 @@ public class MasterPilotMotor implements KeyMotionObservable {
         this.addObserver(h);
 
         SpaceshipFactory factory = new SpaceshipFactory(masterPilotWorld);
-        factory.createEnemy("TIE", 350, 150, h);
+//        factory.createEnemy("TIE", 350, 150, h);
+//
+//        factory.createEnemy("TIE", 850, 750, h);
+////
+//        factory.createEnemy("TIE", 250, -50, h);
+////
+////
+//        factory.createEnemy("TIE", 150, 50, h);
+//
 
-        factory.createEnemy("TIE", 850, 750, h);
-//
-        factory.createEnemy("TIE", 250, -50, h);
-//
-//
         factory.createEnemy("TIE", 150, 50, h);
 
         factory.createEnemy("SQUADRON", 350, 50, h);
-//
-//        factory.createEnemy("CRUISER", -350, 50, h);
+
+//        factory.createEnemy("TIE", 550, 50, h);
+////
+        factory.createEnemy("CRUISER", -350, 50, h);
+
 //
 //        factory.createEnemy("SQUADRON", -20, 90, h);
 //
@@ -225,10 +231,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
                 return;
             }
             beforeTime = System.nanoTime();
-
-
-
-
         }
     }
 
@@ -270,6 +272,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         }
     }
 
+
     /**
      * this will contains the logic of enemy spaceship for move and fire
      * according to the hero
@@ -284,6 +287,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         
     }
+
 
     public void run2(MasterPilotWorld masterPilotWorld, ApplicationContext context) {
         long lastLoopTime = System.nanoTime();

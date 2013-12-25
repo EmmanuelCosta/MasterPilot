@@ -159,7 +159,6 @@ public class MasterPilot2D {
      * @param position : the position af the camera
      */
     public void setCamera(Vec2 position) {
-
         viewportTransform.setCenter(position);
     }
 
@@ -235,9 +234,5 @@ public class MasterPilot2D {
           this.graphic.drawString(" YOU LOSE ", x,y);
           this.graphic.setFont(font);
       }
-
-
     }
-
-
 }
