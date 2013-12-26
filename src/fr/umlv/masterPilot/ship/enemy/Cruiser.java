@@ -18,15 +18,16 @@ public class Cruiser implements SpaceShip {
     private final int y_axis;
     private final Hero hero;
     private final Vec2 cruiserSpeed = new Vec2(0, -50f);
-    private final Vec2 rayonForce = new Vec2(+0f, -150f);
-    private final Vec2 forceLeft = new Vec2(-150f, +0f);
-    private final Vec2 forceRight = new Vec2(+150f, +0f);
-    private final Vec2 forceUp = new Vec2(+0f, +150f);
-    private final Vec2 forceDown = new Vec2(+0f, -150f);
-    private final Vec2 shoot1 = new Vec2(-15f, -15f);
-    private final Vec2 shoot2 = new Vec2(+15f, -15f);
-    private final Vec2 shoot3 = new Vec2(-5f, -15f);
-    private final Vec2 shoot4 = new Vec2(+5f, -15f);
+    private final Vec2 rayonForce = new Vec2(+0f, -70f);
+    private final Vec2 forceLeft = new Vec2(-70f, +0f);
+    private final Vec2 forceRight = new Vec2(+70f, +0f);
+    private final Vec2 forceUp = new Vec2(+0f, +70f);
+    private final Vec2 forceDown = new Vec2(+0f, -70f);
+    private Vec2 shoot1;
+    private Vec2 noShoot;
+    private final Vec2 shoot2 = new Vec2(+15f, -5f);
+    private final Vec2 shoot3 = new Vec2(-5f, -5f);
+    private final Vec2 shoot4 = new Vec2(+5f, -5f);
     private volatile boolean fire;
     private Body body;
 
@@ -62,6 +63,8 @@ public class Cruiser implements SpaceShip {
         vertices[3] = new Vec2(+15, +5);
         ps.set(vertices, 4);
 
+        this.shoot1 = vertices[1];
+        this.noShoot = vertices[0];
         /**
          * Body definition of the Cruiser
          */
@@ -77,7 +80,7 @@ public class Cruiser implements SpaceShip {
          */
         FixtureDef fd = new FixtureDef();
         fd.shape = ps;
-        fd.density = 10.0f;
+        fd.density = 10f;
         fd.friction = 10f;
         fd.restitution = 0.05f;
         fd.filter.categoryBits = this.category;
@@ -164,8 +167,8 @@ public class Cruiser implements SpaceShip {
     }
 
     @Override
-    public void fire() {   
-        
+    public void fire() {
+
         /**
          * I get the actual tip coordinate in the world
          */
@@ -240,36 +243,51 @@ public class Cruiser implements SpaceShip {
         float y_limitInf = hero.getBody().getPosition().y - 200f;
         float x_limitSup = hero.getBody().getPosition().x + 200f;
         float x_limitInf = hero.getBody().getPosition().x - 200f;
-        
+
+        // Si l'enemi est bien au dessus du hero
         if (this.body.getPosition().y > y_limitSup) {
             down();
         }
+        
+        // Si l'enemi est bien en dessous du hero
         if (this.body.getPosition().y < y_limitInf) {
             up();
         }
-        if (this.body.getPosition().x >= x_limitSup) {
-            left();
+        
+        // Si l'enemi est a bonne distance du hero
+        if (this.body.getPosition().y >= y_limitInf && this.body.getPosition().y <= y_limitSup) {
+            if (this.body.getPosition().x >= x_limitSup) {
+                left();
+            }
+            if (this.body.getPosition().x <= x_limitInf) {
+                right();
+            }
+            if (this.body.getPosition().x >= hero.getBody().getPosition().x - 30f
+                    && this.body.getPosition().x <= hero.getBody()
+                            .getPosition().x + 30f && fire == true) {
+
+                double distanceShootFace = Math.sqrt(Math.pow(this.getBody()
+                        .getWorldPoint(this.shoot1).x
+                        - hero.getBody().getPosition().x, 2)
+                        + Math.pow(this.getBody().getWorldPoint(this.shoot1).y
+                                - hero.getBody().getPosition().y, 2));
+                double distanceNoshootFace = Math.sqrt(Math.pow(this.getBody()
+                        .getWorldPoint(this.noShoot).x
+                        - hero.getBody().getPosition().x, 2)
+                        + Math.pow(this.getBody().getWorldPoint(this.noShoot).y
+                                - hero.getBody().getPosition().y, 2));
+
+                if (distanceNoshootFace < distanceShootFace) {
+                    this.body.applyTorque(1000f);
+                    fire();
+                    fire = false;
+                    this.body.applyTorque(-1000f);
+                } else {
+                    fire();
+                    fire = false;
+                }
+
+            }
         }
-        if (this.body.getPosition().x <= x_limitInf) {
-            right();
-        }
-        if (this.body.getPosition().x >= hero.getBody().getPosition().x -30f &&
-            this.body.getPosition().x <= hero.getBody().getPosition().x + 30f && 
-            fire == true) {
-            
-//            PolygonShape sha = (PolygonShape) this.body.getFixtureList().getShape();
-//            Vec2[] vertices = sha.getVertices();
-//            
-//            if (vertices[0].x < vertices[1].x && vertices[0].x > hero.getBody().getPosition().x) {
-//                this.body.applyTorque(1000f);
-//                fire();
-//                fire = false;
-//                this.body.applyTorque(-1000f);
-//            } else {
-                fire();
-                fire = false;
-//            }
-            
-        }        
     }
 }
