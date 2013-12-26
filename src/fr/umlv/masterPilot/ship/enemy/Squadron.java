@@ -1,16 +1,19 @@
 package fr.umlv.masterPilot.ship.enemy;
 
 import fr.umlv.masterPilot.ship.SpaceShip;
+import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Rot;
+import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-import org.jbox2d.dynamics.joints.PrismaticJointDef;
+import org.jbox2d.dynamics.joints.DistanceJointDef;
+import org.jbox2d.dynamics.joints.RevoluteJoint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
-import org.jbox2d.dynamics.joints.WeldJointDef;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 
 public class Squadron implements SpaceShip {
     private final int maskBit;
@@ -18,22 +21,27 @@ public class Squadron implements SpaceShip {
     private final World world;
     private final int x_axis;
     private final int y_axis;
-    private Body body;
+    private final Hero hero;
+    private final Vec2 forceLeft = new Vec2(-150f, -0f);
+    private final Vec2 forceRight = new Vec2(+150f, -0f);
+    private final Vec2 forceUp = new Vec2(-0f, +150f);
+    private final Vec2 forceDown = new Vec2(-0f, -150f);
     private final ArrayList<Body> bodyJointList;
+    private Body body;
 
-    public Squadron(World world, int x_axis, int y_axis) {
+    public Squadron(World world, int x_axis, int y_axis, Hero hero) {
 
 
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
 
+        this.hero = hero;
         /**
          * Interactions with the other bodies.
          */
         this.category = MasterPilotWorld.ENEMY;
-        this.maskBit = MasterPilotWorld.PLANET
-                | MasterPilotWorld.SHIELD
+        this.maskBit = MasterPilotWorld.SHIELD
                 | MasterPilotWorld.SHOOT
                 | MasterPilotWorld.BOMB
                 | MasterPilotWorld.MEGABOMB
@@ -74,48 +82,14 @@ public class Squadron implements SpaceShip {
         fd.filter.maskBits = this.maskBit;
 
 
-        fd.userData = new SquadronBehaviour(this,Color.GREEN,this.bodyJointList);
-//                new UserSpec() {
-//                    private boolean destroy = false;
-//
-//                    @Override
-//                    public void onCollide(Fixture fix2, boolean flag) {
-//
-//                        if (flag == false) {
-//                            if (fix2.getFilterData().categoryBits == (MasterPilotWorld.SHOOT)
-//                                    || fix2.getFilterData().categoryBits == (MasterPilotWorld.SHIELD)) {
-//
-//                                this.destroy = true;
-//
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public boolean isDestroyable() {
-//                        return destroy;
-//                    }
-//
-//
-//                    @Override
-//                    public List<Body> getJointBody() {
-//                        return bodyJointList;
-//                    }
-//
-//                    @Override
-//                    public boolean getSensor() {
-//                        return false;
-//                    }
-//
-//                    @Override
-//                    public boolean hasJointBody() {
-//                        return true;
-//                    }
-//                };
+        fd.userData = new SquadronBehaviour(this, Color.GREEN, this.bodyJointList);
+
 
         /**
          * Integrate the body in the world.
          */
+        bd.angularDamping = 2.0f;
+        bd.linearDamping = 0.0999f;
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
         this.body = body;
@@ -159,22 +133,17 @@ public class Squadron implements SpaceShip {
             bodyJointList.add(bodyTriangle);
             Vec2 anchor = new Vec2(x_axis, y_axis);
 
+
             RevoluteJointDef jd = new RevoluteJointDef();
             jd.collideConnected = false;
-         //   jd.enableLimit = true;
+            //   jd.enableLimit = true;
 
 
-            WeldJointDef weldJointDef = new WeldJointDef();
-            PrismaticJointDef pr = new PrismaticJointDef();
-
-            pr.initialize(body, bodyTriangle, anchor, new Vec2(x_axis, y_axis));
-
-            weldJointDef.initialize(body, bodyTriangle, body.getWorldCenter());
-            weldJointDef.collideConnected = false;
             jd.initialize(body, bodyTriangle, body.getWorldCenter());
 //            jd.enableLimit = true;
 //            jd.upperAngle = 15.5f;
             world.createJoint(jd);
+
 
             body.createFixture(ft);
         }
@@ -185,31 +154,113 @@ public class Squadron implements SpaceShip {
 
     @Override
     public void right() {
-        // TODO Auto-generated method stub
+        Vec2 force = body.getWorldVector(forceRight);
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+
+
+        this.body.applyForceToCenter(force);
 
     }
 
     @Override
     public void left() {
-        // TODO Auto-generated method stub
+        Vec2 force = body.getWorldVector(forceLeft);
+
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+
+        this.body.applyForceToCenter(force);
+
 
     }
 
     @Override
     public void up() {
-        // TODO Auto-generated method stub
+        Vec2 force = body.getWorldVector(forceUp);
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+
+        this.body.applyForceToCenter(force);
 
     }
 
     @Override
     public void down() {
-        // TODO Auto-generated method stub
+        Vec2 force = body.getWorldVector(forceDown);
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+
+        this.body.applyForceToCenter(force);
+
+    }
+
+    @Override
+    public void doMove() {
+        float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
+        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
+        int limit = 100;
+
+        fire();
+
+        if (x_distance <= 0 && y_distance >= 0) {
+
+            if (x_distance > -limit) {
+                left();
+
+            } else {
+
+                right();
+            }
+
+            down();
+
+
+        } else if (x_distance <= 0 && y_distance <= 0) {
+
+
+            right();
+
+            if (y_distance > -limit) {
+                down();
+            } else {
+                up();
+            }
+
+
+        } else if (x_distance >= 0 && y_distance <= 0) {
+
+
+            if (x_distance < limit) {
+                right();
+            } else {
+                left();
+            }
+            up();
+
+        } else if (x_distance >= 0 && y_distance >= 0) {
+
+
+            left();
+
+            if (y_distance < limit) {
+                up();
+            } else {
+                down();
+            }
+
+
+        }
 
     }
 
     @Override
     public void fire() {
-        // TODO Auto-generated method stub
+        float angle1 = this.hero.getBody().getAngle();
+        for (Body bd : bodyJointList) {
+           double angle2 = Math.atan2(bd.getPosition().y,bd.getPosition().x);
+
+            bd.setTransform(bd.getPosition(),bd.getAngle()-(float)angle2);
+
+
+        }
+
 
     }
 

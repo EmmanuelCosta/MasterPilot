@@ -173,4 +173,9 @@ public class TIE implements SpaceShip {
     public Body getBody() {
         return body;
     }
+
+    @Override
+    public void doMove() {
+
+    }
 }

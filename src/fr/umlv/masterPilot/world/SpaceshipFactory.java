@@ -49,7 +49,7 @@ public class SpaceshipFactory {
                 break;
 
             case "SQUADRON":
-                space = new Squadron(this.masterPilotWorld.getWorld(), x, y);
+                space = new Squadron(this.masterPilotWorld.getWorld(), x, y,hero);
                 break;
             default:
                 throw new UnsupportedOperationException();
