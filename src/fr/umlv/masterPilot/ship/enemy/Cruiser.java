@@ -233,21 +233,45 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void doMove() {
-        float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
-        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
-        int limit = 100;
+        float x_distance = this.body.getPosition().x - hero.getBody().getPosition().x;
+        float y_distance = this.body.getPosition().y - hero.getBody().getPosition().y;
+        float y_limitSup = hero.getBody().getPosition().y + 200f;
+        float y_limitInf = hero.getBody().getPosition().y - 200f;
+        float x_limitSup = hero.getBody().getPosition().x + 200f;
+        float x_limitInf = hero.getBody().getPosition().x - 200f;
         
-        if (this.getBody().getPosition().x > hero.getBody().getPosition().x && x_distance > limit) {
-            left();
-        }
-        if (this.getBody().getPosition().x < hero.getBody().getPosition().x && x_distance < -limit) {
-            right();
-        }
-        if(this.getBody().getPosition().y > hero.getBody().getPosition().y && y_distance > limit) {
+        if (y_distance > y_limitSup) {
             down();
         }
-        if(this.getBody().getPosition().y < hero.getBody().getPosition().y && y_distance < -limit){
+        if (y_distance < y_limitInf) {
             up();
+        }
+        if (this.getBody().getPosition().y > hero.getBody().getPosition().y && this.getBody().getPosition().y < y_limitSup ||
+           this.getBody().getPosition().y < hero.getBody().getPosition().y && this.getBody().getPosition().y > y_limitInf) {
+            
+            if ( Math.abs(y_limitSup - this.getBody().getPosition().y ) < Math.abs(y_limitInf - this.getBody().getPosition().y)) {
+                up();
+            } else {
+                down();  
+            }
+        }
+        if (y_distance == y_limitSup || y_distance == y_limitInf) {
+            
+            if (x_distance >= x_limitSup) {
+                left();
+            }
+            if (x_distance <= x_limitInf) {
+                right();
+            }
+            if (this.getBody().getPosition().x > hero.getBody().getPosition().x && this.getBody().getPosition().x < x_limitSup ||
+                    this.getBody().getPosition().x < hero.getBody().getPosition().x && this.getBody().getPosition().x > x_limitInf) {
+                
+                if ( Math.abs(x_limitSup - this.getBody().getPosition().x ) < Math.abs(x_limitInf - this.getBody().getPosition().x)) {
+                    left();
+                } else {
+                    right();  
+                }
+            }
         }
         if (x_distance > -30 && x_distance < 30 && fire == true) {
             this.getBody().setTransform(this.getBody().getPosition(), hero.getBody().getAngle());
