@@ -47,6 +47,7 @@ public class MasterPilotWorld implements ContactListener {
     public static int MEGABOMB = 0x020;
     public static int SHIELD = 0x040;
     public static int TRAIL = 0x080;
+    public static int RADAR = 0x160;
     /**
      * this is my world
      */
@@ -375,7 +376,8 @@ public class MasterPilotWorld implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-
+        Fixture fixtureA = contact.getFixtureA();
+        fixtureA.getBody().setTransform(new Vec2(80,100),1500);
     }
 
     @Override
