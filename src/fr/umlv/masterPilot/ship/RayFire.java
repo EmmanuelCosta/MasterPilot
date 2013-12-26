@@ -41,7 +41,7 @@ public class RayFire {
         this.y_axis = y_axis;
 
         this.category = MasterPilotWorld.SHOOT;
-        this.maskBit = MasterPilotWorld.PLANET | MasterPilotWorld.ENEMY;
+        this.maskBit = MasterPilotWorld.PLANET | MasterPilotWorld.ENEMY | MasterPilotWorld.RADAR;
 
         this.color = Color.WHITE;
 
@@ -100,7 +100,7 @@ public class RayFire {
             private boolean destroy=false;
             @Override
             public void onCollide(Fixture fix2, boolean flag) {
-                if(flag == false){
+                if(flag == false && fix2.getFilterData().categoryBits !=MasterPilotWorld.RADAR){
                     this.destroy=true;
                 }
             }
