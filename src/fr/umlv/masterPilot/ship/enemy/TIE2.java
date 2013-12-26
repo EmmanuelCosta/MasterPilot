@@ -71,6 +71,8 @@ public class TIE2 implements SpaceShip {
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.DYNAMIC;
         bd.userData = this.getClass();
+        bd.angularDamping = 2.0f;
+        bd.linearDamping = 0.0999f;
 
         /**
          * Body fixtures of the TIE
