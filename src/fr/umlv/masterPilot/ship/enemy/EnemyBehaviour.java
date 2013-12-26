@@ -23,7 +23,7 @@ public class EnemyBehaviour implements UserSpec {
 
     @Override
     public void onCollide(Fixture fix2, boolean flag) {
-       fix2.getBody().setTransform(new Vec2(50,100),100);
+       
 
         if (flag == false) {
             if (fix2.getFilterData().categoryBits == (MasterPilotWorld.SHOOT)
