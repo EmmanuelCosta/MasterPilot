@@ -56,10 +56,10 @@ public class Cruiser implements SpaceShip {
          * Number of vertices.
          */
         Vec2[] vertices = new Vec2[4];
-        vertices[0] = new Vec2(-15, +0);
-        vertices[1] = new Vec2(-15, -10);
-        vertices[2] = new Vec2(+15, -10);
-        vertices[3] = new Vec2(+15, +0);
+        vertices[0] = new Vec2(-15, +5);
+        vertices[1] = new Vec2(-15, -5);
+        vertices[2] = new Vec2(+15, -5);
+        vertices[3] = new Vec2(+15, +5);
         ps.set(vertices, 4);
 
         /**
@@ -164,7 +164,8 @@ public class Cruiser implements SpaceShip {
     }
 
     @Override
-    public void fire() {
+    public void fire() {   
+        
         /**
          * I get the actual tip coordinate in the world
          */
@@ -235,33 +236,40 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void doMove() {
-//        double distance = Math.sqrt(Math.pow(this.getBody().getPosition().x - hero.getBody().getPosition().x, 2) 
-//                                    + Math.pow(this.getBody().getPosition().y - hero.getBody().getPosition().y, 2)
-//                                    );
         float y_limitSup = hero.getBody().getPosition().y + 200f;
         float y_limitInf = hero.getBody().getPosition().y - 200f;
         float x_limitSup = hero.getBody().getPosition().x + 200f;
         float x_limitInf = hero.getBody().getPosition().x - 200f;
         
-        if (this.getBody().getPosition().y > y_limitSup) {
+        if (this.body.getPosition().y > y_limitSup) {
             down();
         }
-        if (this.getBody().getPosition().y < y_limitInf) {
+        if (this.body.getPosition().y < y_limitInf) {
             up();
         }
-        if (this.getBody().getPosition().x >= x_limitSup) {
+        if (this.body.getPosition().x >= x_limitSup) {
             left();
         }
-        if (this.getBody().getPosition().x <= x_limitInf) {
+        if (this.body.getPosition().x <= x_limitInf) {
             right();
         }
-        if (this.getBody().getPosition().x >= hero.getBody().getPosition().x -30f &&
-            this.getBody().getPosition().x <= hero.getBody().getPosition().x + 30f && 
+        if (this.body.getPosition().x >= hero.getBody().getPosition().x -30f &&
+            this.body.getPosition().x <= hero.getBody().getPosition().x + 30f && 
             fire == true) {
             
-                //this.getBody().setTransform(this.getBody().getPosition(), hero.getBody().getAngle()*this.getBody().getAngle());
+//            PolygonShape sha = (PolygonShape) this.body.getFixtureList().getShape();
+//            Vec2[] vertices = sha.getVertices();
+//            
+//            if (vertices[0].x < vertices[1].x && vertices[0].x > hero.getBody().getPosition().x) {
+//                this.body.applyTorque(1000f);
+//                fire();
+//                fire = false;
+//                this.body.applyTorque(-1000f);
+//            } else {
                 fire();
                 fire = false;
+//            }
+            
         }        
     }
 }
