@@ -47,7 +47,7 @@ public class MasterPilotWorld implements ContactListener {
     public static int MEGABOMB = 0x020;
     public static int SHIELD = 0x040;
     public static int TRAIL = 0x080;
-    public static int RADAR = 0x160;
+    public static int RADAR = 0x100;
     /**
      * this is my world
      */
@@ -196,7 +196,7 @@ public class MasterPilotWorld implements ContactListener {
                         masterPilot2D.drawCircle(center, radius, color, false);
 
                     }
-                } else {
+                } else if(fixture.getFilterData().categoryBits != MasterPilotWorld.RADAR) {
                     masterPilot2D.drawCircle(center, radius, color, true);
                 }
 
