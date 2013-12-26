@@ -51,7 +51,8 @@ public class TIE2 implements SpaceShip {
                 | MasterPilotWorld.SHOOT
                 | MasterPilotWorld.BOMB
                 | MasterPilotWorld.MEGABOMB
-                | MasterPilotWorld.HERO;
+                | MasterPilotWorld.HERO
+        |MasterPilotWorld.PLANET;
     }
 
     public void create() {
@@ -243,7 +244,7 @@ public class TIE2 implements SpaceShip {
 //            fire = false;
 //        }
 
-        if ((x_distance >=-2*limit && x_distance <=2*limit) && (y_distance >=-2*limit && y_distance <=2*limit)
+        if ((x_distance >=-50-limit && x_distance <=50+limit) && (y_distance >=-50-limit && y_distance <=50+limit)
                 && fire == true) {
 
             fire();
