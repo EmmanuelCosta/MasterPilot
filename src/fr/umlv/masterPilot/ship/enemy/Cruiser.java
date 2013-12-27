@@ -285,9 +285,7 @@ public class Cruiser implements SpaceShip {
         if (y_distance > 0) {
 
             if (((int) (worldPoint1.y - worldPoint2.y) != 0) || (worldPoint1.y - worldPoint3.y >= 0)) {
-                if ((int) (worldPoint1.y - worldPoint2.y) == 0) {
-                    System.out.println("double torquing 1");
-                }
+
                 this.body.setLinearVelocity(new Vec2());
 //                this.body.applyTorque(-1500);
                 this.body.setTransform(body.getPosition(),body.getAngle()-0.05f);
@@ -300,9 +298,7 @@ public class Cruiser implements SpaceShip {
 //                this.body.applyTorque(1500);
                 this.body.setTransform(body.getPosition(),body.getAngle()+0.05f);
                 this.beginTorquing = true;
-                if ((int) (worldPoint1.y - worldPoint2.y) == 0) {
-                    System.out.println("double torquing 2");
-                }
+
                 return;
             }
         }
@@ -345,10 +341,10 @@ public class Cruiser implements SpaceShip {
 
             if (this.direction) {
                 right();
-                System.out.println("R");
+
             } else {
                 left();
-                System.out.println("L");
+
             }
         } else {
             if (y_distance > limit) {
@@ -373,10 +369,8 @@ public class Cruiser implements SpaceShip {
 
             if (!this.direction) {
                 right();
-                System.out.println("R 2");
             } else {
                 left();
-                System.out.println("L 2");
             }
         }
 
