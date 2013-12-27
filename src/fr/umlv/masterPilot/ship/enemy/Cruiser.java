@@ -80,8 +80,8 @@ public class Cruiser implements SpaceShip {
          */
         FixtureDef fd = new FixtureDef();
         fd.shape = ps;
-        fd.density = 10f;
-        fd.friction = 10f;
+        fd.density = 0.09f;
+        fd.friction = 1f;
         fd.restitution = 0.05f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
@@ -239,55 +239,72 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void doMove() {
-        float y_limitSup = hero.getBody().getPosition().y + 200f;
-        float y_limitInf = hero.getBody().getPosition().y - 200f;
-        float x_limitSup = hero.getBody().getPosition().x + 200f;
-        float x_limitInf = hero.getBody().getPosition().x - 200f;
-
-        // Si l'enemi est bien au dessus du hero
-        if (this.body.getPosition().y > y_limitSup) {
+        
+        float x_distance = this.body.getPosition().x - hero.getBody().getPosition().x;
+        float y_distance  = this.body.getPosition().y - hero.getBody().getPosition().y;
+        
+        // Si l'enemi est au dessus du hero.
+        if (y_distance > 0 && y_distance > 100) {
             down();
         }
-        
-        // Si l'enemi est bien en dessous du hero
-        if (this.body.getPosition().y < y_limitInf) {
+        else if (y_distance < 0 && y_distance < -100) {
             up();
         }
         
-        // Si l'enemi est a bonne distance du hero
-        if (this.body.getPosition().y >= y_limitInf && this.body.getPosition().y <= y_limitSup) {
-            if (this.body.getPosition().x >= x_limitSup) {
-                left();
-            }
-            if (this.body.getPosition().x <= x_limitInf) {
-                right();
-            }
-            if (this.body.getPosition().x >= hero.getBody().getPosition().x - 30f
-                    && this.body.getPosition().x <= hero.getBody()
-                            .getPosition().x + 30f && fire == true) {
-
-                double distanceShootFace = Math.sqrt(Math.pow(this.getBody()
-                        .getWorldPoint(this.shoot1).x
-                        - hero.getBody().getPosition().x, 2)
-                        + Math.pow(this.getBody().getWorldPoint(this.shoot1).y
-                                - hero.getBody().getPosition().y, 2));
-                double distanceNoshootFace = Math.sqrt(Math.pow(this.getBody()
-                        .getWorldPoint(this.noShoot).x
-                        - hero.getBody().getPosition().x, 2)
-                        + Math.pow(this.getBody().getWorldPoint(this.noShoot).y
-                                - hero.getBody().getPosition().y, 2));
-
-                if (distanceNoshootFace < distanceShootFace) {
-                    this.body.applyTorque(1000f);
-                    fire();
-                    fire = false;
-                    this.body.applyTorque(-1000f);
-                } else {
-                    fire();
-                    fire = false;
-                }
-
-            }
-        }
+       
+//        float y_limitSup = hero.getBody().getPosition().y + 100f;
+//        float y_limitInf = hero.getBody().getPosition().y - 100f;
+//        float x_limitSup = hero.getBody().getPosition().x + 100f;
+//        float x_limitInf = hero.getBody().getPosition().x - 100f;
+//
+//        // Si l'enemi est bien au dessus du hero
+//        if (this.body.getPosition().y >= y_limitSup) {
+//            down();
+//        }
+//        
+//        // Si l'enemi est bien en dessous du hero
+//        else if (this.body.getPosition().y <= y_limitInf) {
+//            up();
+//        }
+//        
+//        // Si l'enemi est a bonne distance du hero
+//        else if (this.body.getPosition().y >= y_limitInf && this.body.getPosition().y <= y_limitSup) {
+//            if (this.body.getPosition().x >= x_limitSup) {
+//                left();
+//            }
+//            else if (this.body.getPosition().x <= x_limitInf) {
+//                right();
+//            }
+//            if (this.body.getPosition().x >= hero.getBody().getPosition().x - 30f &&
+//                this.body.getPosition().x <= hero.getBody().getPosition().x + 30f && 
+//                fire == true) {
+//
+//                // distance hero et face enemi qui tire.
+//                double distanceShootFace = Math.sqrt(Math.pow(this.getBody()
+//                        .getWorldPoint(this.shoot1).x
+//                        - hero.getBody().getPosition().x, 2)
+//                        + Math.pow(this.getBody().getWorldPoint(this.shoot1).y
+//                                - hero.getBody().getPosition().y, 2));
+//                
+//                // distance hero et face enemi qui ne tire pas.
+//                double distanceNoshootFace = Math.sqrt(Math.pow(this.getBody()
+//                        .getWorldPoint(this.noShoot).x
+//                        - hero.getBody().getPosition().x, 2)
+//                        + Math.pow(this.getBody().getWorldPoint(this.noShoot).y
+//                                - hero.getBody().getPosition().y, 2));
+//
+//                
+//                if (distanceNoshootFace < distanceShootFace) {
+//                    this.body.applyTorque(1000f);
+//                    fire();
+//                    fire = false;
+//                    this.body.applyTorque(-1000f);
+//                } else {
+//                    fire();
+//                    fire = false;
+//                }
+//
+//            }
+//        }
     }
 }

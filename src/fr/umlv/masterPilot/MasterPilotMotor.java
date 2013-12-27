@@ -1,10 +1,7 @@
 package fr.umlv.masterPilot;
 
-
-import fr.umlv.masterPilot.bomb.Bomb;
 import fr.umlv.masterPilot.world.KeyMotionObservable;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
-import fr.umlv.masterPilot.bomb.GenericBomb;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.star.Star;
@@ -102,7 +99,8 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //        factory.createEnemy("CRUISER", -350, 50, h);
 
 //
-        factory.createEnemy("SQUADRON", -20, 90, h);
+//          factory.createEnemy("SQUADRON", -20, 90, h);
+          factory.createEnemy("INVADER", -20, 90, h);
 //        factory.createEnemy("CRUISER", -350, 50, h);
         
 //        factory.createEnemy("SQUADRON", -20, 90, h);
