@@ -29,7 +29,7 @@ public class Squadron implements SpaceShip {
     private boolean rotationDir = true;
     private Body body;
     private RadarBehaviour radar;
-    private  Thread thread;
+    private Thread thread;
 
     public Squadron(World world, int x_axis, int y_axis, Hero hero) {
 
@@ -181,7 +181,7 @@ public class Squadron implements SpaceShip {
                         Thread.sleep(700);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
-                       break;
+                        break;
                     }
                 }
             }
@@ -269,7 +269,7 @@ public class Squadron implements SpaceShip {
         tryToProtectTheMotherShip();
 
         if (x_distance <= limit && x_distance >= -limit
-        && y_distance<= limit && y_distance>= -limit && fire == true) {
+                && y_distance <= limit && y_distance >= -limit && fire == true) {
 
             fire();
             fire = false;
@@ -277,30 +277,30 @@ public class Squadron implements SpaceShip {
         }
 
 
-        if (y_distance > 0 && y_distance < limit) {
+        if (y_distance >= 0 && y_distance <= limit) {
 
             up();
-        } else if (y_distance > limit) {
+        } else if (y_distance >= limit) {
 
             down();
-        } else if (y_distance <= 0 && y_distance > -limit) {
+        } else if (y_distance <= 0 && y_distance >= -limit) {
 
             down();
-        } else if (y_distance < -limit) {
+        } else if (y_distance <= -limit) {
 
             up();
         }
 
-        if (x_distance > 0 && x_distance < limit) {
+        if (x_distance >= 0 && x_distance <= limit) {
 
             right();
-        } else if (x_distance > limit) {
+        } else if (x_distance >= limit) {
 
             left();
         } else if (x_distance <= 0 && x_distance > -limit) {
 
             left();
-        } else if (x_distance < -limit) {
+        } else if (x_distance <= -limit) {
 
             right();
         }
@@ -308,6 +308,9 @@ public class Squadron implements SpaceShip {
 
     }
 
+    /**
+     * algo of protection of the mothership
+     */
     private void tryToProtectTheMotherShip() {
         Vec2 positionOfCollision = this.radar.getPositionOfCollision();
         if (!positionOfCollision.equals(new Vec2())) {
@@ -317,7 +320,7 @@ public class Squadron implements SpaceShip {
                 if (this.bodyJointList.contains(b)) {
                     Vec2 worldCenter = b.getWorldCenter();
                     Vec2 blastDir = worldCenter.sub(positionOfCollision);
-                    body.applyLinearImpulse(blastDir.mul(8), worldCenter);
+                    body.applyLinearImpulse(blastDir.mul(9), worldCenter);
                     b.applyLinearImpulse(blastDir.mul(-9), worldCenter);
 
 
