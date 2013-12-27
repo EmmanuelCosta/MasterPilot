@@ -35,6 +35,8 @@ public class TIE2 implements SpaceShip {
     private Vec2 shoot1;
     private Vec2 shoot2;
     private volatile boolean fire;
+    private Thread thread;
+
 
     public TIE2(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
@@ -52,7 +54,7 @@ public class TIE2 implements SpaceShip {
                 | MasterPilotWorld.BOMB
                 | MasterPilotWorld.MEGABOMB
                 | MasterPilotWorld.HERO
-        |MasterPilotWorld.PLANET;
+                | MasterPilotWorld.PLANET;
     }
 
     public void create() {
@@ -171,20 +173,22 @@ public class TIE2 implements SpaceShip {
 
         this.body = body;
 
-        Thread thread = new Thread(new Runnable() {
+        this.thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (; ; ) {
+                while (true) {
                     fire = true;
+
                     try {
                         Thread.sleep(800);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                        break;
                     }
                 }
             }
         });
-        thread.start();
+        this.thread.start();
 
 
     }
@@ -246,7 +250,7 @@ public class TIE2 implements SpaceShip {
 //            fire = false;
 //        }
 
-        if ((x_distance >=-50-limit && x_distance <=50+limit) && (y_distance >=-50-limit && y_distance <=50+limit)
+        if ((x_distance >= -50 - limit && x_distance <= 50 + limit) && (y_distance >= -50 - limit && y_distance <= 50 + limit)
                 && fire == true) {
 
             fire();
@@ -346,11 +350,10 @@ public class TIE2 implements SpaceShip {
          */
         rayon1.getBody().setTransform(worldPoint1, hero.getBody().getAngle());
 
-       // rayon1.getBody().applyForce(force, point1);
+        // rayon1.getBody().applyForce(force, point1);
         rayon2.getBody().setTransform(worldPoint2, hero.getBody().getAngle());
 
-       // rayon2.getBody().applyForce(force, point2);
-
+        // rayon2.getBody().applyForce(force, point2);
 
 
         Vec2 worldCenter = rayon1.getBody().getWorldCenter();
@@ -359,7 +362,6 @@ public class TIE2 implements SpaceShip {
 
         rayon1.getBody().applyLinearImpulse(blastDir.mul(-10000), worldCenter);
         rayon2.getBody().applyLinearImpulse(blastDir.mul(-10000), worldCenter2);
-
 
 
     }
@@ -376,5 +378,14 @@ public class TIE2 implements SpaceShip {
 
     public Body getBody() {
         return body;
+    }
+
+    @Override
+    public boolean destroySpaceShip() {
+        if (this.thread.isAlive()) {
+            thread.interrupt();
+            return true;
+        }
+        return false;
     }
 }

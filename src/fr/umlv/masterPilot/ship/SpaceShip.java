@@ -16,4 +16,8 @@ public interface SpaceShip extends Move {
     public Body getBody();
     
     public void doMove();
+
+    public default boolean destroySpaceShip(){
+        return false;
+    }
 }

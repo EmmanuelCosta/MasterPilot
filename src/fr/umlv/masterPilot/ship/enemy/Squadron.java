@@ -29,6 +29,7 @@ public class Squadron implements SpaceShip {
     private boolean rotationDir = true;
     private Body body;
     private RadarBehaviour radar;
+    private  Thread thread;
 
     public Squadron(World world, int x_axis, int y_axis, Hero hero) {
 
@@ -171,7 +172,7 @@ public class Squadron implements SpaceShip {
         //***********************
 
 
-        Thread thread = new Thread(new Runnable() {
+        this.thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 for (; ; ) {
@@ -179,12 +180,13 @@ public class Squadron implements SpaceShip {
                     try {
                         Thread.sleep(700);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                       break;
                     }
                 }
             }
         });
-        thread.start();
+        this.thread.start();
     }
 
     @Override
@@ -315,8 +317,8 @@ public class Squadron implements SpaceShip {
                 if (this.bodyJointList.contains(b)) {
                     Vec2 worldCenter = b.getWorldCenter();
                     Vec2 blastDir = worldCenter.sub(positionOfCollision);
-//                    body.applyLinearImpulse(blastDir.mul(2), worldCenter);
-                    b.applyLinearImpulse(blastDir.mul(-7), worldCenter);
+                    body.applyLinearImpulse(blastDir.mul(8), worldCenter);
+                    b.applyLinearImpulse(blastDir.mul(-9), worldCenter);
 
 
                 }
@@ -339,6 +341,15 @@ public class Squadron implements SpaceShip {
     @Override
     public Body getBody() {
         return this.body;
+    }
+
+    @Override
+    public boolean destroySpaceShip() {
+        if (this.thread.isAlive()) {
+            thread.interrupt();
+            return true;
+        }
+        return false;
     }
 
 

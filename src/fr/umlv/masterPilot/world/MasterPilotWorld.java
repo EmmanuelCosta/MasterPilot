@@ -5,7 +5,6 @@ import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.graphic.MasterPilot2D;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
-
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -59,17 +58,12 @@ public class MasterPilotWorld implements ContactListener {
     private final MasterPilot2D masterPilot2D;
     private final HashMap<Body, SpaceShip> enemyManager;
     private final HashMap<Body, Bomb> bombManager;
-
     private final ArrayList<Body> destroyBody;
     /**
      * keep reference o main character of the game
      */
     private Hero hero;
 
-    public Hero getHero() {
-        return this.hero;
-    }
-    
     public MasterPilotWorld(Graphics2D masterPilot2D) {
         this.world = new World(new Vec2(0, 0f));
 
@@ -82,6 +76,20 @@ public class MasterPilotWorld implements ContactListener {
         this.destroyBody = new ArrayList<>();
 
 
+    }
+
+    public Hero getHero() {
+        return this.hero;
+    }
+
+    /**
+     * set Hero to this class
+     *
+     * @param hero
+     */
+    public void setHero(Hero hero) {
+        Objects.requireNonNull(hero);
+        this.hero = hero;
     }
 
     /**
@@ -114,16 +122,6 @@ public class MasterPilotWorld implements ContactListener {
 
     public World getWorld() {
         return world;
-    }
-
-    /**
-     * set Hero to this class
-     *
-     * @param hero
-     */
-    public void setHero(Hero hero) {
-        Objects.requireNonNull(hero);
-        this.hero = hero;
     }
 
     /**
@@ -196,7 +194,7 @@ public class MasterPilotWorld implements ContactListener {
                         masterPilot2D.drawCircle(center, radius, color, false);
 
                     }
-                } else if(fixture.getFilterData().categoryBits != MasterPilotWorld.RADAR) {
+                } else if (fixture.getFilterData().categoryBits != MasterPilotWorld.RADAR) {
                     masterPilot2D.drawCircle(center, radius, color, true);
                 }
 
@@ -239,7 +237,7 @@ public class MasterPilotWorld implements ContactListener {
                 Transform.mulToOutUnsafe(xf, edge.m_vertex1, v1);
                 Transform.mulToOutUnsafe(xf, edge.m_vertex2, v2);
 
-                masterPilot2D.drawSegment(v1,v2, color);
+                masterPilot2D.drawSegment(v1, v2, color);
             }
             break;
 
@@ -259,7 +257,6 @@ public class MasterPilotWorld implements ContactListener {
                 }
             }
             break;
-
 
 
             default:
@@ -346,12 +343,12 @@ public class MasterPilotWorld implements ContactListener {
             destroyBody.add(fixtureA.getBody());
         }
 
-        if(userData.hasJointBody()){
+        if (userData.hasJointBody()) {
             List<Body> jointBody = userData.getJointBody();
-            for (Body b = world.getBodyList(); b != null; b = b.getNext()){
-               if(jointBody.contains(b)){
-                   destroyBody.add(b);
-               }
+            for (Body b = world.getBodyList(); b != null; b = b.getNext()) {
+                if (jointBody.contains(b)) {
+                    destroyBody.add(b);
+                }
 
             }
         }
@@ -361,10 +358,10 @@ public class MasterPilotWorld implements ContactListener {
         if (userData2.isDestroyable()) {
             destroyBody.add(fixtureB.getBody());
         }
-        if(userData2.hasJointBody()){
+        if (userData2.hasJointBody()) {
             List<Body> jointBody = userData2.getJointBody();
-            for (Body b = world.getBodyList(); b != null; b = b.getNext()){
-                if(jointBody.contains(b)){
+            for (Body b = world.getBodyList(); b != null; b = b.getNext()) {
+                if (jointBody.contains(b)) {
                     destroyBody.add(b);
                 }
 
@@ -377,7 +374,7 @@ public class MasterPilotWorld implements ContactListener {
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
         Fixture fixtureA = contact.getFixtureA();
-        fixtureA.getBody().setTransform(new Vec2(80,100),1500);
+        fixtureA.getBody().setTransform(new Vec2(80, 100), 1500);
     }
 
     @Override
@@ -398,7 +395,11 @@ public class MasterPilotWorld implements ContactListener {
          */
         for (Body bd : newList) {
 
-            this.removeToSpaceshipManager(bd);
+            SpaceShip spaceShip = this.removeToSpaceshipManager(bd);
+            // Do THIS in order to stop all living thread created in spaceship ennemy
+            if (Objects.nonNull(spaceShip)) {
+                spaceShip.destroySpaceShip();
+            }
 
         }
 
@@ -433,13 +434,11 @@ public class MasterPilotWorld implements ContactListener {
         }
     }
 
-
-    public void drawFrameworkClock(int hour,int minute,int second){
-        this.masterPilot2D.drawFrameworkClock(hour,minute,second);
+    public void drawFrameworkClock(int hour, int minute, int second) {
+        this.masterPilot2D.drawFrameworkClock(hour, minute, second);
     }
 
-
     public void drawFrameworkEnd(boolean iswin, int x, int y) {
-        this.masterPilot2D.drawFrameworkEnd(iswin,x,y);
+        this.masterPilot2D.drawFrameworkEnd(iswin, x, y);
     }
 }

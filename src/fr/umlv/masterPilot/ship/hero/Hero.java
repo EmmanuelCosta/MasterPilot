@@ -36,7 +36,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private final Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
     private final ScheduledExecutorService worker =
             Executors.newSingleThreadScheduledExecutor();
-    //    private final Timer timer = new Timer();
+
     private Body body;
     private Bomb.BombType bombType = Bomb.BombType.NONE;
     private Bomb cBomb;
