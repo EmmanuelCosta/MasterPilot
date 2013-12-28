@@ -13,7 +13,7 @@ import java.awt.*;
  * <p>
  * created By Babala Costa Emmanuel
  */
-public class Bullet {
+public class Trail {
 
     private final int maskBit;
     private final int category;
@@ -24,7 +24,7 @@ public class Bullet {
     private int radius = 2;
     private Body body;
 
-    public Bullet(World world, float x_axis, float y_axis) {
+    public Trail(World world, float x_axis, float y_axis) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
@@ -39,7 +39,7 @@ public class Bullet {
     }
 
 
-    public Bullet(World world, float x_axis, float y_axis, int category, int maskBit, Color color, int radius) {
+    public Trail(World world, float x_axis, float y_axis, int category, int maskBit, Color color, int radius) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;

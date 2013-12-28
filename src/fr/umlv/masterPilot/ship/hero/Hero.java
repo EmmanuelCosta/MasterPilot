@@ -1,7 +1,6 @@
 package fr.umlv.masterPilot.ship.hero;
 
 import fr.umlv.masterPilot.bomb.Bomb;
-import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.ship.RayFire;
 import fr.umlv.masterPilot.ship.RayFireManager;
 import fr.umlv.masterPilot.ship.SpaceShip;
@@ -14,8 +13,6 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -370,21 +367,21 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
 
 //LEFT
-        Bullet cBomb = new Bullet(this.world, worldPoint.x, worldPoint.y,
+        Trail cBomb = new Trail(this.world, worldPoint.x, worldPoint.y,
                 MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
                 | MasterPilotWorld.ENEMY
                 | MasterPilotWorld.RADAR, Color.CYAN, 2);
         cBomb.create();
 
 //RIGHT
-        cBomb = new Bullet(this.world, worldPoint2.x, worldPoint2.y,
+        cBomb = new Trail(this.world, worldPoint2.x, worldPoint2.y,
                 MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
                 | MasterPilotWorld.ENEMY
                 | MasterPilotWorld.RADAR, Color.CYAN, 2);
         cBomb.create();
 
 //MIDDLE
-        cBomb = new Bullet(this.world, worldPoint3.x, worldPoint3.y,
+        cBomb = new Trail(this.world, worldPoint3.x, worldPoint3.y,
                 MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
                 | MasterPilotWorld.ENEMY
                 | MasterPilotWorld.RADAR, Color.CYAN, 2);

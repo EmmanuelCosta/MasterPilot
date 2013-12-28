@@ -1,6 +1,5 @@
 package fr.umlv.masterPilot.ship.hero;
 
-import fr.umlv.masterPilot.ship.RayFire;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
@@ -18,20 +17,20 @@ public class TrailManager {
     /**
      * add all RayFire to the Manager
      * @param initPosition
-     * @param bullet
+     * @param trail
      */
-    public static void addTrail(Vec2 initPosition,Bullet bullet){
-        list.add(new DistanceTrail(initPosition,bullet,limitLive));
+    public static void addTrail(Vec2 initPosition,Trail trail){
+        list.add(new DistanceTrail(initPosition, trail,limitLive));
     }
 
     /**
      * see
      * @param initPosition
-     * @param bullet
+     * @param trail
      * @param live
      */
-    public static void addTrail(Vec2 initPosition,Bullet bullet,int live){
-        list.add(new DistanceTrail(initPosition,bullet,live));
+    public static void addTrail(Vec2 initPosition,Trail trail,int live){
+        list.add(new DistanceTrail(initPosition, trail,live));
     }
 
     public static void remove(Body body) {
@@ -54,23 +53,23 @@ public class TrailManager {
     public  static class DistanceTrail{
 
         private Vec2 initPosition;
-        private  Bullet bullet;
+        private Trail trail;
         private  final int live;
-        private DistanceTrail(Vec2 initPosition, Bullet bullet,int limitLive) {
+        private DistanceTrail(Vec2 initPosition, Trail trail,int limitLive) {
             this.initPosition = initPosition;
-            this.bullet = bullet;
+            this.trail = trail;
             this.live=limitLive;
         }
 
         public float getX_distance() {
-            return initPosition.x - bullet.getBody().getPosition().x;
+            return initPosition.x - trail.getBody().getPosition().x;
         }
         public float getY_distance() {
-            return initPosition.y - bullet.getBody().getPosition().y;
+            return initPosition.y - trail.getBody().getPosition().y;
         }
 
         public Body getBodyBullet() {
-            return bullet.getBody();
+            return trail.getBody();
         }
 
         public int getLive() {
