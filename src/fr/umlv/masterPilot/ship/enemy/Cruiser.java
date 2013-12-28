@@ -315,7 +315,7 @@ public class Cruiser implements SpaceShip {
 
 
                 down();
-        
+
 
             return;
         }
