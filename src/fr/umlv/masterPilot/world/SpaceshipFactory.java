@@ -2,6 +2,8 @@ package fr.umlv.masterPilot.world;
 
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.enemy.Cruiser;
+import fr.umlv.masterPilot.ship.enemy.Invader;
+import fr.umlv.masterPilot.ship.enemy.SpaceBall;
 import fr.umlv.masterPilot.ship.enemy.Squadron;
 import fr.umlv.masterPilot.ship.enemy.TIE;
 import fr.umlv.masterPilot.ship.enemy.TIE2;
@@ -51,6 +53,11 @@ public class SpaceshipFactory {
             case "SQUADRON":
                 space = new Squadron(this.masterPilotWorld.getWorld(), x, y,hero);
                 break;
+            case "INVADER":
+                space = new Invader(this.masterPilotWorld.getWorld(), x, y,hero);
+                break;
+            case "SPACEBALL":
+                space = new SpaceBall(this.masterPilotWorld.getWorld(), x, y,hero);
             default:
                 throw new UnsupportedOperationException();
         }

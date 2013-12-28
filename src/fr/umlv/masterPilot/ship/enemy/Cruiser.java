@@ -20,8 +20,8 @@ public class Cruiser implements SpaceShip {
     private final Hero hero;
     private final Vec2 cruiserSpeed = new Vec2(0, -50f);
     private final Vec2 rayonForce = new Vec2(+0f, -150f);
-    private final Vec2 forceLeft = new Vec2(-700f, +0f);
-    private final Vec2 forceRight = new Vec2(+700f, +0f);
+    private final Vec2 forceLeft = new Vec2(-400f, +0f);
+    private final Vec2 forceRight = new Vec2(+400f, +0f);
     private final Vec2 forceUp = new Vec2(+0f, +70000f);
     private final Vec2 forceDown = new Vec2(+0f, -70000f);
 //    private final Vec2 shoot1 = new Vec2(-15f, -15f);
@@ -33,6 +33,7 @@ public class Cruiser implements SpaceShip {
     private Vec2 shoot2;
     private Vec2 shoot3;
     private Vec2 shoot4;
+
     private volatile boolean fire;
     private Body body;
     private boolean direction = false;
@@ -80,6 +81,7 @@ public class Cruiser implements SpaceShip {
         this.reference = vertices[0];
         ps.set(vertices, 4);
 
+
         /**
          * Body definition of the Cruiser
          */
@@ -87,16 +89,17 @@ public class Cruiser implements SpaceShip {
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.DYNAMIC;
         bd.userData = this.getClass();
-        bd.angularDamping = 2f;
-        bd.linearDamping = 0.0f;
+        bd.angularDamping = 4f;
+        bd.linearDamping = 0.1f;
 
         /**
          * Body fixtures of the Cruiser
          */
         FixtureDef fd = new FixtureDef();
         fd.shape = ps;
-        fd.density = 0.5f;
+        fd.density = 2.5f;
         fd.friction = 10f;
+
         fd.restitution = 0.05f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
@@ -256,6 +259,7 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void doMove() {
+
         float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
         float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
         int limit = 200;
@@ -288,7 +292,7 @@ public class Cruiser implements SpaceShip {
 
                 this.body.setLinearVelocity(new Vec2());
 //                this.body.applyTorque(-1500);
-                this.body.setTransform(body.getPosition(),body.getAngle()-0.05f);
+                this.body.setTransform(body.getPosition(), body.getAngle() - 0.05f);
                 this.beginTorquing = true;
                 return;
             }
@@ -296,14 +300,14 @@ public class Cruiser implements SpaceShip {
             if (((int) (worldPoint1.y - worldPoint2.y) != 0) || (worldPoint1.y - worldPoint3.y <= 0)) {
                 this.body.setLinearVelocity(new Vec2());
 //                this.body.applyTorque(1500);
-                this.body.setTransform(body.getPosition(),body.getAngle()+0.05f);
+                this.body.setTransform(body.getPosition(), body.getAngle() + 0.05f);
                 this.beginTorquing = true;
 
                 return;
             }
         }
 
-        if ((x_distance >=  - 50 && x_distance <= 50) && (y_distance >= - limit && y_distance <=  limit)
+        if ((x_distance >= -50 && x_distance <= 50) && (y_distance >= -limit && y_distance <= limit)
                 && fire == true) {
 
             fire();
