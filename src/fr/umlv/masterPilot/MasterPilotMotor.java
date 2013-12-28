@@ -227,14 +227,14 @@ public class MasterPilotMotor implements KeyMotionObservable {
             }
 
 
-//            if (gameTiming < 0 ) {
-//                masterPilotWorld.drawFrameworkEnd(false,WIDTH/2,HEIGHT/2);
-//                return;
-//            }
-//            else if(masterPilotWorld.getEnemyList().isEmpty()){
-//                masterPilotWorld.drawFrameworkEnd(true,WIDTH/2,HEIGHT/2);
-//                return;
-//            }
+            if (gameTiming < 0 ) {
+                masterPilotWorld.drawFrameworkEnd(false,WIDTH/2,HEIGHT/2);
+                return;
+            }
+            else if(masterPilotWorld.getEnemyList().isEmpty()){
+                masterPilotWorld.drawFrameworkEnd(true,WIDTH/2,HEIGHT/2);
+                return;
+            }
             beforeTime = System.nanoTime();
         }
     }
@@ -264,13 +264,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         observerList.remove(observer);
     }
 
-    /**
-     * this will apply the spaceship logic for all ennemy
-     *
-     * @param spaceShips
-     * @param hero
-     * @see #doEnemyLogic(fr.umlv.masterPilot.ship.SpaceShip, fr.umlv.masterPilot.ship.hero.Hero)
-     */
+
     private void proccessManager(List<SpaceShip> spaceShips, Hero hero) {
         for (SpaceShip space : spaceShips) {
            space.doMove();

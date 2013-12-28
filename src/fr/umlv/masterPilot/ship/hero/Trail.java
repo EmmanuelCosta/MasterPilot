@@ -1,6 +1,5 @@
 package fr.umlv.masterPilot.ship.hero;
 
-import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.*;
@@ -14,7 +13,7 @@ import java.awt.*;
  * <p>
  * created By Babala Costa Emmanuel
  */
-public class Bullet {
+public class Trail {
 
     private final int maskBit;
     private final int category;
@@ -25,14 +24,14 @@ public class Bullet {
     private int radius = 2;
     private Body body;
 
-    public Bullet(World world, float x_axis, float y_axis) {
+    public Trail(World world, float x_axis, float y_axis) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
 
 
         this.category = MasterPilotWorld.ENEMY;
-        this.maskBit = MasterPilotWorld.PLANET ;
+        this.maskBit = MasterPilotWorld.PLANET;
 
         this.color = Color.WHITE;
 
@@ -40,7 +39,7 @@ public class Bullet {
     }
 
 
-    public Bullet(World world, float x_axis, float y_axis, int category, int maskBit, Color color, int radius) {
+    public Trail(World world, float x_axis, float y_axis, int category, int maskBit, Color color, int radius) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
@@ -80,32 +79,8 @@ public class Bullet {
 
         fd.filter.maskBits = this.maskBit;
 
-        fd.isSensor =true;
-        fd.userData = new UserSpec() {
-
-
-            @Override
-            public void onCollide(Fixture fix2, boolean flag) {
-
-
-            }
-
-            @Override
-            public Color getColor() {
-                return color;
-            }
-
-            @Override
-            public boolean isDestroyable() {
-                return true;
-            }
-
-            @Override
-            public boolean getSensor() {
-
-                return false;
-            }
-        };
+        fd.isSensor = true;
+        fd.userData = new TrailBehaviour(this.color);
 
         // body
         Body body = this.world.createBody(bd);

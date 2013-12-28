@@ -6,7 +6,6 @@ import fr.umlv.masterPilot.ship.enemy.Invader;
 import fr.umlv.masterPilot.ship.enemy.SpaceBall;
 import fr.umlv.masterPilot.ship.enemy.Squadron;
 import fr.umlv.masterPilot.ship.enemy.TIE;
-import fr.umlv.masterPilot.ship.enemy.TIE2;
 import fr.umlv.masterPilot.ship.hero.Hero;
 
 /**
@@ -43,7 +42,7 @@ public class SpaceshipFactory {
         SpaceShip space;
         switch (enemyType) {
             case "TIE":
-                space = new TIE2(this.masterPilotWorld.getWorld(), x, y, hero);
+                space = new TIE(this.masterPilotWorld.getWorld(), x, y, hero);
                 break;
             case "CRUISER":
                 space = new Cruiser(this.masterPilotWorld.getWorld(), x, y, hero);
