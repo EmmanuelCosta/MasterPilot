@@ -1,6 +1,7 @@
 package fr.umlv.masterPilot.ship.enemy;
 
 import fr.umlv.masterPilot.ship.RayFire;
+import fr.umlv.masterPilot.ship.RayFireManager;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
@@ -22,6 +23,8 @@ public class Cruiser implements SpaceShip {
     private final Vec2 forceRight = new Vec2(+400f, +0f);
     private final Vec2 forceUp = new Vec2(+0f, +70000f);
     private final Vec2 forceDown = new Vec2(+0f, -70000f);
+
+
     private Vec2 shoot1;
     private Vec2 shoot2;
     private Vec2 shoot3;
@@ -31,8 +34,8 @@ public class Cruiser implements SpaceShip {
     private Body body;
     private boolean direction = false;
     private Vec2 reference;
-    private int changeAxis = 0;
-    private boolean beginTorquing = false;
+    private Thread thread;
+
 
     public Cruiser(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
@@ -126,7 +129,7 @@ public class Cruiser implements SpaceShip {
         body.createFixture(fs);
         this.body = body;
 
-        Thread thread = new Thread(new Runnable() {
+        this.thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 for (; ; ) {
@@ -134,7 +137,8 @@ public class Cruiser implements SpaceShip {
                     try {
                         Thread.sleep(300);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                        break;
                     }
                 }
             }
@@ -149,14 +153,30 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void right() {
-        Vec2 force = body.getWorldVector(forceRight);
+        Vec2 worldPoint1 = body.getWorldPoint(shoot1);
+        Vec2 worldPoint2 = body.getWorldPoint(shoot2);
+        Vec2 worldPoint3 = body.getWorldPoint(reference);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceRight);
+        } else {
+            force = body.getWorldVector(forceLeft);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
     }
 
     @Override
     public void left() {
-        Vec2 force = body.getWorldVector(forceLeft);
+        Vec2 worldPoint1 = body.getWorldPoint(shoot1);
+        Vec2 worldPoint2 = body.getWorldPoint(shoot2);
+        Vec2 worldPoint3 = body.getWorldPoint(reference);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceLeft);
+        } else {
+            force = body.getWorldVector(forceRight);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
 
@@ -164,7 +184,15 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void up() {
-        Vec2 force = body.getWorldVector(forceUp);
+        Vec2 worldPoint1 = body.getWorldPoint(shoot1);
+        Vec2 worldPoint2 = body.getWorldPoint(shoot2);
+        Vec2 worldPoint3 = body.getWorldPoint(reference);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceUp);
+        } else {
+            force = body.getWorldVector(forceDown);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
 
@@ -174,7 +202,15 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void down() {
-        Vec2 force = body.getWorldVector(forceDown);
+        Vec2 worldPoint1 = body.getWorldPoint(shoot1);
+        Vec2 worldPoint2 = body.getWorldPoint(shoot2);
+        Vec2 worldPoint3 = body.getWorldPoint(reference);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceDown);
+        } else {
+            force = body.getWorldVector(forceUp);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
     }
@@ -238,6 +274,16 @@ public class Cruiser implements SpaceShip {
         rayon3.getBody().applyForce(force, point3);
         rayon4.getBody().setTransform(worldPoint4, body.getAngle());
         rayon4.getBody().applyForce(force, point4);
+
+
+/**
+ * add to manager in order to suppress it
+ */
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon1);
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon2);
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon3);
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon4);
+
     }
 
     @Override
@@ -262,21 +308,42 @@ public class Cruiser implements SpaceShip {
         Vec2 worldPoint2 = body.getWorldPoint(shoot2);
         Vec2 worldPoint3 = body.getWorldPoint(reference);
 
+
+        //MANAGE WITH RECUL WHEN COLLISION WITH HERO IS POSSIBLE
+        if ((y_distance < 50 && y_distance >= 0) && ((x_distance <= 0 && x_distance > -50)
+                || (x_distance >= 0 && x_distance < 50))) {
+
+
+            up();
+
+            return;
+        } else if ((y_distance > -50 && y_distance <= 0) && ((x_distance <= 0 && x_distance > -50)
+                || (x_distance >= 0 && x_distance < 50))) {
+
+
+            down();
+
+
+            return;
+        }
+
         //MANAGE TORQUING
         if (y_distance > 0) {
 
             if (((int) (worldPoint1.y - worldPoint2.y) != 0) || (worldPoint1.y - worldPoint3.y >= 0)) {
 
                 this.body.setLinearVelocity(new Vec2());
+//                this.body.applyTorque(-1500);
                 this.body.setTransform(body.getPosition(), body.getAngle() - 0.05f);
-                this.beginTorquing = true;
+
                 return;
             }
         } else if (y_distance < 0) {
             if (((int) (worldPoint1.y - worldPoint2.y) != 0) || (worldPoint1.y - worldPoint3.y <= 0)) {
                 this.body.setLinearVelocity(new Vec2());
+//                this.body.applyTorque(1500);
                 this.body.setTransform(body.getPosition(), body.getAngle() + 0.05f);
-                this.beginTorquing = true;
+
 
                 return;
             }
@@ -288,64 +355,47 @@ public class Cruiser implements SpaceShip {
             fire();
             fire = false;
         }
-        if (this.beginTorquing == true) {
-            if (changeAxis % 2 == 0) {
-                changeAxis = 0;
-            }
-            this.changeAxis += 1;
-            this.beginTorquing = false;
+//
+
+
+        if (y_distance > limit) {
+            down();
+            this.body.setLinearVelocity(new Vec2());
+        } else if (y_distance < -limit) {
+            up();
+            this.body.setLinearVelocity(new Vec2());
         }
 
-        if (this.changeAxis % 2 == 0) {
-            if (y_distance > limit) {
-                down();
-                this.body.setLinearVelocity(new Vec2());
-            } else if (y_distance < -limit) {
-                up();
-                this.body.setLinearVelocity(new Vec2());
-            }
-
-            if (x_distance < -limit && this.direction == false) {
-                this.direction = true;
-                this.body.setLinearVelocity(new Vec2());
+        if (x_distance < -limit && this.direction == false) {
+            this.direction = true;
+            this.body.setLinearVelocity(new Vec2());
 
 
-            } else if (x_distance > limit && this.direction) {
-                this.direction = false;
-                this.body.setLinearVelocity(new Vec2());
+        } else if (x_distance > limit && this.direction) {
+            this.direction = false;
+            this.body.setLinearVelocity(new Vec2());
 
-            }
-            if (this.direction) {
-                right();
+        }
 
-            } else {
-                left();
-            }
+
+        if (this.direction) {
+            right();
+
         } else {
-            if (y_distance > limit) {
-                up();
-                this.body.setLinearVelocity(new Vec2());
-            } else if (y_distance < -limit) {
-                down();
-                this.body.setLinearVelocity(new Vec2());
-            }
+            left();
 
-            if (x_distance < -limit && this.direction == false) {
-                this.direction = true;
-                this.body.setLinearVelocity(new Vec2());
-
-
-            } else if (x_distance > limit && this.direction) {
-                this.direction = false;
-                this.body.setLinearVelocity(new Vec2());
-
-            }
-            if (!this.direction) {
-                right();
-            } else {
-                left();
-            }
         }
 
     }
+
+
+    @Override
+    public boolean destroySpaceShip() {
+        if (this.thread.isAlive()) {
+            thread.interrupt();
+            return true;
+        }
+        return false;
+    }
 }
+

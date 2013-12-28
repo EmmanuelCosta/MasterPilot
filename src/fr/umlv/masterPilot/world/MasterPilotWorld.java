@@ -3,6 +3,7 @@ package fr.umlv.masterPilot.world;
 import fr.umlv.masterPilot.bomb.Bomb;
 import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.graphic.MasterPilot2D;
+import fr.umlv.masterPilot.ship.RayFireManager;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import org.jbox2d.callbacks.ContactImpulse;
@@ -22,10 +23,8 @@ import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.pooling.arrays.Vec2Array;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -207,7 +206,9 @@ public class MasterPilotWorld implements ContactListener {
 
                 PolygonShape poly = (PolygonShape) fixture.getShape();
                 int vertexCount = poly.m_count;
+                //BEcause Jbox doent allow a polygon with more than maxPolygonVertices
                 assert (vertexCount <= Settings.maxPolygonVertices);
+                //Create a vertices array of size given
                 Vec2[] vertices = tlvertices.get(Settings.maxPolygonVertices);
 
                 for (int i = 0; i < vertexCount; ++i) {
@@ -341,6 +342,9 @@ public class MasterPilotWorld implements ContactListener {
 
         if (userData.isDestroyable()) {
             destroyBody.add(fixtureA.getBody());
+
+            RayFireManager.remove(fixtureA.getBody());
+
         }
 
         if (userData.hasJointBody()) {
@@ -357,6 +361,10 @@ public class MasterPilotWorld implements ContactListener {
         fixtureB.m_isSensor = userData2.getSensor();
         if (userData2.isDestroyable()) {
             destroyBody.add(fixtureB.getBody());
+
+
+            RayFireManager.remove(fixtureB.getBody());
+
         }
         if (userData2.hasJointBody()) {
             List<Body> jointBody = userData2.getJointBody();
@@ -389,6 +397,19 @@ public class MasterPilotWorld implements ContactListener {
      * @return
      */
     public List<Body> getDestroyBody() {
+
+/**
+ * suppress all register fire if they have reached a certain distance
+ */
+        Iterator<RayFireManager.Distance> iterator = RayFireManager.getList().iterator();
+        while (iterator.hasNext()) {
+            RayFireManager.Distance distance = iterator.next();
+            if (Math.abs(distance.getX_distance()) > distance.getLive() || Math.abs(distance.getY_distance()) > distance.getLive()) {
+
+                destroyBody.add(distance.getBodyRayFire());
+                iterator.remove();
+            }
+        }
         List<Body> newList = new ArrayList<>(destroyBody);
         /**
          * retreive spaceship destroyed from manager

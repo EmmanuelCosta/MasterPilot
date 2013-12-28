@@ -1,6 +1,7 @@
 package fr.umlv.masterPilot.ship.enemy;
 
 import fr.umlv.masterPilot.ship.RayFire;
+import fr.umlv.masterPilot.ship.RayFireManager;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
@@ -26,7 +27,8 @@ public class Squadron implements SpaceShip {
     private final Vec2 forceDown = new Vec2(0f, -150f);
     private final ArrayList<Body> bodyJointList;
     private volatile boolean fire;
-    private boolean rotationDir = true;
+    private Vec2 referenceVertices1;
+    private Vec2 referenceVertices2;
     private Body body;
     private RadarBehaviour radar;
     private Thread thread;
@@ -47,6 +49,7 @@ public class Squadron implements SpaceShip {
                 | MasterPilotWorld.SHOOT
                 | MasterPilotWorld.BOMB
                 | MasterPilotWorld.MEGABOMB
+                | MasterPilotWorld.PLANET
                 | MasterPilotWorld.HERO;
 
         this.bodyJointList = new ArrayList<>();
@@ -56,15 +59,17 @@ public class Squadron implements SpaceShip {
     public void create() {
 
         Vec2[] vertices = new Vec2[4];
-        vertices[0] = new Vec2(-5, -5);
-        vertices[1] = new Vec2(-5, 5);
-        vertices[2] = new Vec2(5, 5);
-        vertices[3] = new Vec2(5, -5);
+        vertices[0] = new Vec2(-8, -8);
+        vertices[1] = new Vec2(-8, 8);
+        vertices[2] = new Vec2(8, 8);
+        vertices[3] = new Vec2(8, -8);
 
+        this.referenceVertices1=vertices[0];
+        this.referenceVertices2=vertices[3];
 
         PolygonShape ps = new PolygonShape();
-        //ps.set(vertices, 4);
-        ps.setAsBox(8, 8);
+        ps.set(vertices, 4);
+//        ps.setAsBox(8, 8);
 
 
         BodyDef bd = new BodyDef();
@@ -191,42 +196,65 @@ public class Squadron implements SpaceShip {
 
     @Override
     public void right() {
-        Vec2 force = body.getWorldVector(forceRight);
+        Vec2 worldPoint1 = body.getWorldPoint( this.referenceVertices1);
+        Vec2 worldPoint2 = body.getWorldPoint( this.referenceVertices2);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceRight);
+        } else {
+            force = body.getWorldVector(forceLeft);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-
-
         this.body.applyForceToCenter(force);
-
     }
 
     @Override
     public void left() {
-        Vec2 force = body.getWorldVector(forceLeft);
-
+        Vec2 worldPoint1 = body.getWorldPoint( this.referenceVertices1);
+        Vec2 worldPoint2 = body.getWorldPoint( this.referenceVertices2);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceLeft);
+        } else {
+            force = body.getWorldVector(forceRight);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-
         this.body.applyForceToCenter(force);
-
 
     }
 
     @Override
     public void up() {
-        Vec2 force = body.getWorldVector(forceUp);
+        Vec2 worldPoint1 = body.getWorldPoint( this.referenceVertices1);
+        Vec2 worldPoint2 = body.getWorldPoint( this.referenceVertices2);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceUp);
+        } else {
+            force = body.getWorldVector(forceDown);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-
         this.body.applyForceToCenter(force);
+
+//        this.body.applyForce(for);
 
     }
 
     @Override
     public void down() {
-        Vec2 force = body.getWorldVector(forceDown);
+
+        Vec2 worldPoint1 = body.getWorldPoint( this.referenceVertices1);
+        Vec2 worldPoint2 = body.getWorldPoint( this.referenceVertices2);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceDown);
+        } else {
+            force = body.getWorldVector(forceUp);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-
         this.body.applyForceToCenter(force);
-
     }
+
 
     @Override
     public void fire() {
@@ -254,6 +282,8 @@ public class Squadron implements SpaceShip {
 
             rayon1.getBody().applyLinearImpulse(blastDir.mul(-10000), worldCenter);
 
+            RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon1);
+
         }
 
 
@@ -268,15 +298,38 @@ public class Squadron implements SpaceShip {
 
         tryToProtectTheMotherShip();
 
-        if (x_distance <= limit && x_distance >= -limit
-                && y_distance <= limit && y_distance >= -limit && fire == true) {
+
+        //MANAGE WITH RECUL WHEN COLLISION WITH HERO IS POSSIBLE
+        if ((y_distance < 50 && y_distance >= 0) && ((x_distance <= 0 && x_distance > -150)
+                || (x_distance >= 0 && x_distance < 150))) {
+            System.out.println("up");
+
+            up();
+
+            return;
+        } else if ((y_distance > -150 && y_distance <= 0) && ((x_distance <= 0 && x_distance > -150)
+                || (x_distance >= 0 && x_distance < 150))) {
+
+            System.out.println("down");
+            down();
+
+
+            return;
+        }
+        /**
+         * fire in this area
+         */
+        if (x_distance <= limit+50 && x_distance >= -limit-50
+                && y_distance <= limit+50 && y_distance >= -limit-50 && fire == true) {
 
             fire();
             fire = false;
 
         }
 
-
+/**
+ * set a limit altitude
+ */
         if (y_distance >= 0 && y_distance <= limit) {
 
             up();
@@ -290,7 +343,9 @@ public class Squadron implements SpaceShip {
 
             up();
         }
-
+/**
+ * set a limit latitude
+ */
         if (x_distance >= 0 && x_distance <= limit) {
 
             right();

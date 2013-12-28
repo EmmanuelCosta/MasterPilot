@@ -3,6 +3,7 @@ package fr.umlv.masterPilot.ship.enemy;
 import java.awt.Color;
 import java.util.Timer;
 
+import fr.umlv.masterPilot.ship.RayFireManager;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -311,6 +312,13 @@ public class SpaceBall implements SpaceShip {
         Vec2 blastDirRight = pointUp.sub(hero.getBody().getPosition());
         rayonRight.getBody().applyLinearImpulse(blastDirRight.mul(-10000),
                 pointRight);
+
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayonRight);
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayonLeft);
+
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayonDown);
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayonUp);
+
     }
 
     @Override
