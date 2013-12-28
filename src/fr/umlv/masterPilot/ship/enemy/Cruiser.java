@@ -264,29 +264,12 @@ public class Cruiser implements SpaceShip {
         Vec2 worldPoint2 = body.getWorldPoint(shoot2);
         Vec2 worldPoint3 = body.getWorldPoint(reference);
 
-
-//        fire();
-//        System.out.println(worldPoint1.y - worldPoint2.y);
-
-
-//        if(x_distance < -limit && this.direction == false){
-//            this.direction=true;
-//            this.body.setLinearVelocity(new Vec2());
-//
-//
-//        }else if(x_distance > limit && this.direction){
-//            this.direction = false;
-//            this.body.setLinearVelocity(new Vec2());
-//
-//        }
-
         //MANAGE TORQUING
         if (y_distance > 0) {
 
             if (((int) (worldPoint1.y - worldPoint2.y) != 0) || (worldPoint1.y - worldPoint3.y >= 0)) {
 
                 this.body.setLinearVelocity(new Vec2());
-//                this.body.applyTorque(-1500);
                 this.body.setTransform(body.getPosition(), body.getAngle() - 0.05f);
                 this.beginTorquing = true;
                 return;
@@ -294,7 +277,6 @@ public class Cruiser implements SpaceShip {
         } else if (y_distance < 0) {
             if (((int) (worldPoint1.y - worldPoint2.y) != 0) || (worldPoint1.y - worldPoint3.y <= 0)) {
                 this.body.setLinearVelocity(new Vec2());
-//                this.body.applyTorque(1500);
                 this.body.setTransform(body.getPosition(), body.getAngle() + 0.05f);
                 this.beginTorquing = true;
 
@@ -308,7 +290,6 @@ public class Cruiser implements SpaceShip {
             fire();
             fire = false;
         }
-//
         if (this.beginTorquing == true) {
             if (changeAxis % 2 == 0) {
                 changeAxis = 0;
@@ -336,14 +317,11 @@ public class Cruiser implements SpaceShip {
                 this.body.setLinearVelocity(new Vec2());
 
             }
-
-
             if (this.direction) {
                 right();
 
             } else {
                 left();
-
             }
         } else {
             if (y_distance > limit) {
@@ -364,8 +342,6 @@ public class Cruiser implements SpaceShip {
                 this.body.setLinearVelocity(new Vec2());
 
             }
-
-
             if (!this.direction) {
                 right();
             } else {
