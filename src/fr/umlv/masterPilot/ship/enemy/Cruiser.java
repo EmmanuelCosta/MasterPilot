@@ -24,11 +24,6 @@ public class Cruiser implements SpaceShip {
     private final Vec2 forceRight = new Vec2(+400f, +0f);
     private final Vec2 forceUp = new Vec2(+0f, +70000f);
     private final Vec2 forceDown = new Vec2(+0f, -70000f);
-//    private final Vec2 shoot1 = new Vec2(-15f, -15f);
-//    private final Vec2 shoot2 = new Vec2(+15f, -15f);
-//    private final Vec2 shoot3 = new Vec2(-5f, -15f);
-//    private final Vec2 shoot4 = new Vec2(+5f, -15f);
-
     private Vec2 shoot1;
     private Vec2 shoot2;
     private Vec2 shoot3;

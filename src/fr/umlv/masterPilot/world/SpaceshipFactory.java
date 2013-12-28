@@ -58,6 +58,7 @@ public class SpaceshipFactory {
                 break;
             case "SPACEBALL":
                 space = new SpaceBall(this.masterPilotWorld.getWorld(), x, y,hero);
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
