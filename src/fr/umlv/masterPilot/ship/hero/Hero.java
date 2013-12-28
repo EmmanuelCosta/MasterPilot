@@ -94,15 +94,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fd.friction = 0.001f;
         fd.restitution = 1.5f;
 
-        fd.userData = new UserSpec() {
-
-            @Override
-            public void onCollide(Fixture fix2, boolean flag) {
-
-            }
-
-
-        };
+        fd.userData = new HeroBehaviuor();
         // fd garder une reference sur la classe
         //fd.isSensor=true;
         // si un contact verifier si il est du type shield
@@ -132,16 +124,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fs.restitution = 0.5f;
 
         fs.filter.categoryBits = MasterPilotWorld.SHIELD;
-        fs.filter.maskBits = MasterPilotWorld.ENEMY | MasterPilotWorld.PLANET;
-
-//        public static int HERO = 0x0001;
-//        public static int ENEMY = 0x0002;
-//        public static int PLANET = 0x0004;
-//        public static int SHOOT = 0x0008;
-//        public static int BOMB = 0x00016;
-//        public static int MEGABOMB = 0x00032;
-//        public static int SHIELD = 0x00064;
-//        public static int TRAIL = 0x00128;
 
 
         fs.userData = new HeroShieldBehaviour();
@@ -386,22 +368,31 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          * create the trail
          */
 
-        List<Bullet> lBomb = new ArrayList<>();
+
 //LEFT
         Bullet cBomb = new Bullet(this.world, worldPoint.x, worldPoint.y,
-                MasterPilotWorld.TRAIL, MasterPilotWorld.HERO | MasterPilotWorld.PLANET, Color.CYAN, 2);
+                MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
+                | MasterPilotWorld.ENEMY
+                | MasterPilotWorld.RADAR, Color.CYAN, 2);
         cBomb.create();
-        lBomb.add(cBomb);
+
 //RIGHT
         cBomb = new Bullet(this.world, worldPoint2.x, worldPoint2.y,
-                MasterPilotWorld.TRAIL, MasterPilotWorld.HERO | MasterPilotWorld.PLANET, Color.CYAN, 2);
+                MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
+                | MasterPilotWorld.ENEMY
+                | MasterPilotWorld.RADAR, Color.CYAN, 2);
         cBomb.create();
-        lBomb.add(cBomb);
+
 //MIDDLE
         cBomb = new Bullet(this.world, worldPoint3.x, worldPoint3.y,
-                MasterPilotWorld.TRAIL, MasterPilotWorld.HERO | MasterPilotWorld.PLANET, Color.CYAN, 2);
+                MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
+                | MasterPilotWorld.ENEMY
+                | MasterPilotWorld.RADAR, Color.CYAN, 2);
         cBomb.create();
-        lBomb.add(cBomb);
+
+        TrailManager.addTrail(new Vec2().set(worldPoint3), cBomb);
+
+
 
 
     }

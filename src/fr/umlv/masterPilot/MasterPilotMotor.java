@@ -227,14 +227,14 @@ public class MasterPilotMotor implements KeyMotionObservable {
             }
 
 
-//            if (gameTiming < 0 ) {
-//                masterPilotWorld.drawFrameworkEnd(false,WIDTH/2,HEIGHT/2);
-//                return;
-//            }
-//            else if(masterPilotWorld.getEnemyList().isEmpty()){
-//                masterPilotWorld.drawFrameworkEnd(true,WIDTH/2,HEIGHT/2);
-//                return;
-//            }
+            if (gameTiming < 0 ) {
+                masterPilotWorld.drawFrameworkEnd(false,WIDTH/2,HEIGHT/2);
+                return;
+            }
+            else if(masterPilotWorld.getEnemyList().isEmpty()){
+                masterPilotWorld.drawFrameworkEnd(true,WIDTH/2,HEIGHT/2);
+                return;
+            }
             beforeTime = System.nanoTime();
         }
     }

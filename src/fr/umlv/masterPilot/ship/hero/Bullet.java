@@ -1,6 +1,5 @@
 package fr.umlv.masterPilot.ship.hero;
 
-import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.*;
@@ -32,7 +31,7 @@ public class Bullet {
 
 
         this.category = MasterPilotWorld.ENEMY;
-        this.maskBit = MasterPilotWorld.PLANET ;
+        this.maskBit = MasterPilotWorld.PLANET;
 
         this.color = Color.WHITE;
 
@@ -80,32 +79,8 @@ public class Bullet {
 
         fd.filter.maskBits = this.maskBit;
 
-        fd.isSensor =true;
-        fd.userData = new UserSpec() {
-
-
-            @Override
-            public void onCollide(Fixture fix2, boolean flag) {
-
-
-            }
-
-            @Override
-            public Color getColor() {
-                return color;
-            }
-
-            @Override
-            public boolean isDestroyable() {
-                return true;
-            }
-
-            @Override
-            public boolean getSensor() {
-
-                return false;
-            }
-        };
+        fd.isSensor = true;
+        fd.userData = new TrailBehaviour(this.color);
 
         // body
         Body body = this.world.createBody(bd);
