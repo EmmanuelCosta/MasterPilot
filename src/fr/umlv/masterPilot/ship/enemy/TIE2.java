@@ -54,7 +54,7 @@ public class TIE2 implements SpaceShip {
                 | MasterPilotWorld.BOMB
                 | MasterPilotWorld.MEGABOMB
                 | MasterPilotWorld.HERO
-                | MasterPilotWorld.PLANET;
+                ;
     }
 
     public void create() {

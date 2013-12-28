@@ -156,14 +156,30 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void right() {
-        Vec2 force = body.getWorldVector(forceRight);
+        Vec2 worldPoint1 = body.getWorldPoint(shoot1);
+        Vec2 worldPoint2 = body.getWorldPoint(shoot2);
+        Vec2 worldPoint3 = body.getWorldPoint(reference);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceRight);
+        } else {
+            force = body.getWorldVector(forceLeft);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
     }
 
     @Override
     public void left() {
-        Vec2 force = body.getWorldVector(forceLeft);
+        Vec2 worldPoint1 = body.getWorldPoint(shoot1);
+        Vec2 worldPoint2 = body.getWorldPoint(shoot2);
+        Vec2 worldPoint3 = body.getWorldPoint(reference);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceLeft);
+        } else {
+            force = body.getWorldVector(forceRight);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
 
@@ -171,7 +187,15 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void up() {
-        Vec2 force = body.getWorldVector(forceUp);
+        Vec2 worldPoint1 = body.getWorldPoint(shoot1);
+        Vec2 worldPoint2 = body.getWorldPoint(shoot2);
+        Vec2 worldPoint3 = body.getWorldPoint(reference);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceUp);
+        } else {
+            force = body.getWorldVector(forceDown);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
 
@@ -181,7 +205,15 @@ public class Cruiser implements SpaceShip {
 
     @Override
     public void down() {
-        Vec2 force = body.getWorldVector(forceDown);
+        Vec2 worldPoint1 = body.getWorldPoint(shoot1);
+        Vec2 worldPoint2 = body.getWorldPoint(shoot2);
+        Vec2 worldPoint3 = body.getWorldPoint(reference);
+        Vec2 force;
+        if (worldPoint1.x < worldPoint2.x) {
+            force = body.getWorldVector(forceDown);
+        } else {
+            force = body.getWorldVector(forceUp);
+        }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
     }
@@ -270,19 +302,26 @@ public class Cruiser implements SpaceShip {
         Vec2 worldPoint3 = body.getWorldPoint(reference);
 
 
-//        fire();
-//        System.out.println(worldPoint1.y - worldPoint2.y);
-
-
-//        if(x_distance < -limit && this.direction == false){
-//            this.direction=true;
-//            this.body.setLinearVelocity(new Vec2());
+        //MANAGE WITH RECUL WHEN COLLISION WITH HERO IS POSSIBLE
+//        if ((y_distance < 50 && y_distance >= 0) && ((x_distance <= 0 && x_distance > -50)
+//                || (x_distance >= 0 && x_distance < 50))) {
 //
+//            if (this.direction) {
+//                up();
+//            } else {
+//                down();
+//            }
+//            return;
+//        } else if ((y_distance > -50 && y_distance <= 0) && ((x_distance <= 0 && x_distance > -50)
+//                || (x_distance >= 0 && x_distance < 50))) {
 //
-//        }else if(x_distance > limit && this.direction){
-//            this.direction = false;
-//            this.body.setLinearVelocity(new Vec2());
+//            if (this.direction) {
+//                down();
+//            } else {
+//                up();
+//            }
 //
+//            return;
 //        }
 
         //MANAGE TORQUING
@@ -314,69 +353,36 @@ public class Cruiser implements SpaceShip {
             fire = false;
         }
 //
-        if (this.beginTorquing == true) {
-            if (changeAxis % 2 == 0) {
-                changeAxis = 0;
-            }
-            this.changeAxis += 1;
-            this.beginTorquing = false;
+
+
+        if (y_distance > limit) {
+            down();
+            this.body.setLinearVelocity(new Vec2());
+        } else if (y_distance < -limit) {
+            up();
+            this.body.setLinearVelocity(new Vec2());
         }
 
-        if (this.changeAxis % 2 == 0) {
-            if (y_distance > limit) {
-                down();
-                this.body.setLinearVelocity(new Vec2());
-            } else if (y_distance < -limit) {
-                up();
-                this.body.setLinearVelocity(new Vec2());
-            }
-
-            if (x_distance < -limit && this.direction == false) {
-                this.direction = true;
-                this.body.setLinearVelocity(new Vec2());
+        if (x_distance < -limit && this.direction == false) {
+            this.direction = true;
+            this.body.setLinearVelocity(new Vec2());
 
 
-            } else if (x_distance > limit && this.direction) {
-                this.direction = false;
-                this.body.setLinearVelocity(new Vec2());
+        } else if (x_distance > limit && this.direction) {
+            this.direction = false;
+            this.body.setLinearVelocity(new Vec2());
 
-            }
+        }
 
 
-            if (this.direction) {
-                right();
+        if (this.direction) {
+            right();
 
-            } else {
-                left();
-
-            }
         } else {
-            if (y_distance > limit) {
-                up();
-                this.body.setLinearVelocity(new Vec2());
-            } else if (y_distance < -limit) {
-                down();
-                this.body.setLinearVelocity(new Vec2());
-            }
+            left();
 
-            if (x_distance < -limit && this.direction == false) {
-                this.direction = true;
-                this.body.setLinearVelocity(new Vec2());
-
-
-            } else if (x_distance > limit && this.direction) {
-                this.direction = false;
-                this.body.setLinearVelocity(new Vec2());
-
-            }
-
-
-            if (!this.direction) {
-                right();
-            } else {
-                left();
-            }
         }
 
     }
 }
+

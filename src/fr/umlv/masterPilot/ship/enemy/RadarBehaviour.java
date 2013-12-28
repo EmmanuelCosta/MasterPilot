@@ -26,7 +26,6 @@ public class RadarBehaviour implements UserSpec {
                     fix2.getFilterData().categoryBits == MasterPilotWorld.SHOOT
                     || fix2.getFilterData().categoryBits == MasterPilotWorld.BOMB
                     || fix2.getFilterData().categoryBits == MasterPilotWorld.MEGABOMB) {
-                System.out.println("collide detect at " + fix2.getBody().getPosition());
                 collidePosition.set(fix2.getBody().getPosition());
 
 
