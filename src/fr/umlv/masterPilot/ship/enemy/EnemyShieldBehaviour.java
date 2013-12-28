@@ -8,7 +8,7 @@ import org.jbox2d.dynamics.Fixture;
  * Created by emmanuel on 22/12/13.
  */
 public class EnemyShieldBehaviour implements UserSpec {
-    private  int nbShield;
+    private int nbShield;
     private boolean collide = true;
 
     public EnemyShieldBehaviour(int nbShield) {
@@ -23,19 +23,19 @@ public class EnemyShieldBehaviour implements UserSpec {
  * i put the shield in the begining of collision
  * and i retreive it a the end
  */
-        if (flag == true &&nbShield >0) {
-
-
-
+        if (fix2.getFilterData().categoryBits != MasterPilotWorld.ENEMY
+                || fix2.getFilterData().categoryBits != MasterPilotWorld.RADAR) {
+            if (flag == true && nbShield > 0) {
 
                 collide = false;
 
                 nbShield--;
 
-        } else if (flag == false) {
+            } else if (flag == false) {
 
-            collide = true;
+                collide = true;
 
+            }
         }
 
     }
@@ -43,6 +43,7 @@ public class EnemyShieldBehaviour implements UserSpec {
     /**
      * according to jbox sensor if is set to false
      * so collision must append
+     *
      * @return
      */
     @Override

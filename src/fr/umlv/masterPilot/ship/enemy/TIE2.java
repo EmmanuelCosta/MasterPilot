@@ -1,6 +1,7 @@
 package fr.umlv.masterPilot.ship.enemy;
 
 import fr.umlv.masterPilot.ship.RayFire;
+import fr.umlv.masterPilot.ship.RayFireManager;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
@@ -20,7 +21,7 @@ public class TIE2 implements SpaceShip {
 
     private final int maskBit;
     private final int category;
-    private final Timer timer = new Timer();
+
     private final int x_axis;
     private final int y_axis;
     private final Hero hero;
@@ -29,8 +30,7 @@ public class TIE2 implements SpaceShip {
     private final Vec2 forceUp = new Vec2(-5f, +150f);
     private final Vec2 forceDown = new Vec2(-5f, -150f);
     private final World world;
-    private final Vec2 fireUp = new Vec2(0f, -10000f);
-    private final Vec2 fireDown = new Vec2(0f, 10000f);
+
     private Body body;
     private Vec2 shoot1;
     private Vec2 shoot2;
@@ -362,6 +362,9 @@ public class TIE2 implements SpaceShip {
 
         rayon1.getBody().applyLinearImpulse(blastDir.mul(-10000), worldCenter);
         rayon2.getBody().applyLinearImpulse(blastDir.mul(-10000), worldCenter2);
+
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon1);
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon2);
 
 
     }

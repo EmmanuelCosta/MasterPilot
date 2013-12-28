@@ -1,6 +1,7 @@
 package fr.umlv.masterPilot.ship.enemy;
 
 import fr.umlv.masterPilot.ship.RayFire;
+import fr.umlv.masterPilot.ship.RayFireManager;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
@@ -48,6 +49,7 @@ public class Squadron implements SpaceShip {
                 | MasterPilotWorld.SHOOT
                 | MasterPilotWorld.BOMB
                 | MasterPilotWorld.MEGABOMB
+                | MasterPilotWorld.PLANET
                 | MasterPilotWorld.HERO;
 
         this.bodyJointList = new ArrayList<>();
@@ -280,6 +282,8 @@ public class Squadron implements SpaceShip {
 
             rayon1.getBody().applyLinearImpulse(blastDir.mul(-10000), worldCenter);
 
+            RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon1);
+
         }
 
 
@@ -315,8 +319,8 @@ public class Squadron implements SpaceShip {
         /**
          * fire in this area
          */
-        if (x_distance <= limit && x_distance >= -limit
-                && y_distance <= limit && y_distance >= -limit && fire == true) {
+        if (x_distance <= limit+50 && x_distance >= -limit-50
+                && y_distance <= limit+50 && y_distance >= -limit-50 && fire == true) {
 
             fire();
             fire = false;

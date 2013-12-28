@@ -1,6 +1,7 @@
 package fr.umlv.masterPilot.ship.enemy;
 
 import fr.umlv.masterPilot.ship.RayFire;
+import fr.umlv.masterPilot.ship.RayFireManager;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
@@ -24,10 +25,7 @@ public class Cruiser implements SpaceShip {
     private final Vec2 forceRight = new Vec2(+400f, +0f);
     private final Vec2 forceUp = new Vec2(+0f, +70000f);
     private final Vec2 forceDown = new Vec2(+0f, -70000f);
-//    private final Vec2 shoot1 = new Vec2(-15f, -15f);
-//    private final Vec2 shoot2 = new Vec2(+15f, -15f);
-//    private final Vec2 shoot3 = new Vec2(-5f, -15f);
-//    private final Vec2 shoot4 = new Vec2(+5f, -15f);
+
 
     private Vec2 shoot1;
     private Vec2 shoot2;
@@ -38,8 +36,8 @@ public class Cruiser implements SpaceShip {
     private Body body;
     private boolean direction = false;
     private Vec2 reference;
-    private int changeAxis = 0;
-    private boolean beginTorquing = false;
+    private Thread thread;
+
 
     public Cruiser(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
@@ -133,7 +131,7 @@ public class Cruiser implements SpaceShip {
         body.createFixture(fs);
         this.body = body;
 
-        Thread thread = new Thread(new Runnable() {
+        this.thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 for (; ; ) {
@@ -141,7 +139,8 @@ public class Cruiser implements SpaceShip {
                     try {
                         Thread.sleep(300);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                        break;
                     }
                 }
             }
@@ -277,6 +276,16 @@ public class Cruiser implements SpaceShip {
         rayon3.getBody().applyForce(force, point3);
         rayon4.getBody().setTransform(worldPoint4, body.getAngle());
         rayon4.getBody().applyForce(force, point4);
+
+
+/**
+ * add to manager in order to suppress it
+ */
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon1);
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon2);
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon3);
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon4);
+
     }
 
     @Override
@@ -307,14 +316,14 @@ public class Cruiser implements SpaceShip {
                 || (x_distance >= 0 && x_distance < 50))) {
 
 
-                up();
+            up();
 
             return;
         } else if ((y_distance > -50 && y_distance <= 0) && ((x_distance <= 0 && x_distance > -50)
                 || (x_distance >= 0 && x_distance < 50))) {
 
 
-                down();
+            down();
 
 
             return;
@@ -328,7 +337,7 @@ public class Cruiser implements SpaceShip {
                 this.body.setLinearVelocity(new Vec2());
 //                this.body.applyTorque(-1500);
                 this.body.setTransform(body.getPosition(), body.getAngle() - 0.05f);
-                this.beginTorquing = true;
+
                 return;
             }
         } else if (y_distance < 0) {
@@ -336,7 +345,7 @@ public class Cruiser implements SpaceShip {
                 this.body.setLinearVelocity(new Vec2());
 //                this.body.applyTorque(1500);
                 this.body.setTransform(body.getPosition(), body.getAngle() + 0.05f);
-                this.beginTorquing = true;
+
 
                 return;
             }
@@ -379,6 +388,16 @@ public class Cruiser implements SpaceShip {
 
         }
 
+    }
+
+
+    @Override
+    public boolean destroySpaceShip() {
+        if (this.thread.isAlive()) {
+            thread.interrupt();
+            return true;
+        }
+        return false;
     }
 }
 

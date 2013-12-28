@@ -3,6 +3,7 @@ package fr.umlv.masterPilot.ship.hero;
 import fr.umlv.masterPilot.bomb.Bomb;
 import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.ship.RayFire;
+import fr.umlv.masterPilot.ship.RayFireManager;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
@@ -13,11 +14,9 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
 
 /**
@@ -34,8 +33,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private final World world;
     private final Vec2 heroSpeed = new Vec2(0, -700f);
     private final Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
-    private final ScheduledExecutorService worker =
-            Executors.newSingleThreadScheduledExecutor();
+
 
     private Body body;
     private Bomb.BombType bombType = Bomb.BombType.NONE;
@@ -259,25 +257,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         cBomb.getBody().setTransform(worldPoint, body.getAngle());
         cBomb.getBody().applyForce(force, point);
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-                world.destroyBody(cBomb.getBody());
-
-            }
-        }, 5000, 1);
-
-
-        worker.schedule(new Runnable() {
-            @Override
-            public void run() {
-
-                timer.cancel();
-
-            }
-        }, 7000, TimeUnit.MILLISECONDS);
+        RayFireManager.addRayFire(new Vec2().set(body.getPosition()), cBomb);
 
 
     }
@@ -331,26 +311,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
         this.bombType = Bomb.BombType.NONE;
 
-//        Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//
-//
-//                bombType = Bomb.BombType.NONE;
-//
-//            }
-//        }, 500, 1);
-//
-//        worker.schedule(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                timer.cancel();
-//                ;
-//
-//            }
-//        }, 800, TimeUnit.MILLISECONDS);
+
     }
 
     /**

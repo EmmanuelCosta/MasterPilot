@@ -122,6 +122,9 @@ public class RayFire {
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
         bd.allowSleep = true;
+        bd.angularDamping = 4f;
+        bd.linearDamping = 0.1f;
+
         this.body = body;
 
     }
