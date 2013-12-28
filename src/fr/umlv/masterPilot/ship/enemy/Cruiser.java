@@ -303,26 +303,22 @@ public class Cruiser implements SpaceShip {
 
 
         //MANAGE WITH RECUL WHEN COLLISION WITH HERO IS POSSIBLE
-//        if ((y_distance < 50 && y_distance >= 0) && ((x_distance <= 0 && x_distance > -50)
-//                || (x_distance >= 0 && x_distance < 50))) {
-//
-//            if (this.direction) {
-//                up();
-//            } else {
-//                down();
-//            }
-//            return;
-//        } else if ((y_distance > -50 && y_distance <= 0) && ((x_distance <= 0 && x_distance > -50)
-//                || (x_distance >= 0 && x_distance < 50))) {
-//
-//            if (this.direction) {
-//                down();
-//            } else {
-//                up();
-//            }
-//
-//            return;
-//        }
+        if ((y_distance < 50 && y_distance >= 0) && ((x_distance <= 0 && x_distance > -50)
+                || (x_distance >= 0 && x_distance < 50))) {
+
+
+                up();
+
+            return;
+        } else if ((y_distance > -50 && y_distance <= 0) && ((x_distance <= 0 && x_distance > -50)
+                || (x_distance >= 0 && x_distance < 50))) {
+
+
+                down();
+        
+
+            return;
+        }
 
         //MANAGE TORQUING
         if (y_distance > 0) {
