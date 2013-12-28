@@ -3,10 +3,10 @@ package fr.umlv.masterPilot;
 import fr.umlv.masterPilot.world.KeyMotionObservable;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
 import fr.umlv.masterPilot.ship.SpaceShip;
+import fr.umlv.masterPilot.ship.SpaceshipFactory;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.star.Star;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
-import fr.umlv.masterPilot.world.SpaceshipFactory;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
 
@@ -32,8 +32,12 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
 
 
-    public void launchGame(ApplicationContext context) {
+    public void launchGame(ApplicationContext context, String levelFile) {
 
+            /**
+             * gerer le xml ici
+             */
+        
         context.render(graphics -> {
             MasterPilotWorld masterPilotWorld = initPlateform(graphics);
             gameTiming = Integer.valueOf("500");

@@ -4,14 +4,11 @@ import fr.umlv.masterPilot.ship.RayFire;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
-
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.awt.*;
 
 public class Invader implements SpaceShip {

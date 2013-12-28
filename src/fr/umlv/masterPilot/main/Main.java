@@ -13,7 +13,7 @@ public class Main {
         Application.run("Master Pilot Game", mPM.getWIDTH(), mPM.getHEIGHT(), context -> {
 
             context.render(graphics -> {
-                mPM.launchGame(context);
+                mPM.launchGame(context,args[0]);
             });
         });
 
