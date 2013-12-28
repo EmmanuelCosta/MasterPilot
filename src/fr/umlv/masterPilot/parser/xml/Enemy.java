@@ -1,54 +1,76 @@
 package fr.umlv.masterPilot.parser.xml;
 
 public class Enemy {
-    private short totalEnemyNumber;
-    private short tieNumber;
-    private short cruiserNumber;
-    private short squadronNumber;
+    private int totalEnemyNumber;
+    private int tieNumber;
+    private int cruiserNumber;
+    private int squadronNumber;
+    private int spaceBallNumber;
+    private int invaderNumber;
     
 /*------------------------------------------------------------------------------------------------*/
     
-    public short getTotalEnemyNumber() {
+    public int getTotalEnemyNumber() {
         return totalEnemyNumber;
     }
     
-    public short getTieNumber() {
+    public int getTieNumber() {
         return tieNumber;
     }
     
-    public short getcruiserNumber() {
+    public int getcruiserNumber() {
         return cruiserNumber;
     }
     
-    public short getSquadronNumber() {
+    public int getSquadronNumber() {
         return squadronNumber;
+    }
+    
+    public int getSpaceBallNumber() {
+        return spaceBallNumber;
+    }
+    
+    public int getInvaderNumber() {
+        return invaderNumber;
     }
     
 /*------------------------------------------------------------------------------------------------*/
         
-    public void setTotalEnemyNumber(short totalPercentage) { 
+    public void setTotalEnemyNumber(int totalPercentage) { 
         this.totalEnemyNumber = totalPercentage;
     }
     
-    public void setTieNumber(short tiePercentage) { 
+    public void setTieNumber(int tiePercentage) { 
         this.tieNumber = tiePercentage;
     }
     
-    public void setCruiserNumber(short cruiserPercentage) { 
+    public void setCruiserNumber(int cruiserPercentage) { 
         this.cruiserNumber = cruiserPercentage;
     }
     
-    public void setSquadronNumber(short squadronPercentage) { 
+    public void setSquadronNumber(int squadronPercentage) { 
         this.squadronNumber = squadronPercentage;
     }
+    
+    public void setSpaceBallNumber(int spaceBallNumber) { 
+        this.spaceBallNumber = spaceBallNumber;
+    }
+  
+    public void setInvaderNumber(int invaderNumber) { 
+        this.invaderNumber = invaderNumber;
+    }
+    
+    
 
 /*------------------------------------------------------------------------------------------------*/
     
     public String toString(){
-        return new StringBuffer("Total enemy's percentage: ").append(totalEnemyNumber).append("\n")
-            .append("TIE's Percentage : ").append(tieNumber).append("\n")
-            .append("Cruiser's Percentage : ").append(cruiserNumber).append("\n")
-            .append("Squadron's Percentage : ").append(squadronNumber).append("\n")
+        return new StringBuffer("Total enemy's number: ").append(totalEnemyNumber).append("\n")
+            .append("TIE's number : ").append(tieNumber).append("\n")
+            .append("Cruiser's number : ").append(cruiserNumber).append("\n")
+            .append("Squadron's number : ").append(squadronNumber).append("\n")
+            .append("SpaceBall's number : ").append(spaceBallNumber).append("\n")
+            .append("Invader's number : ").append(invaderNumber).append("\n")
             .toString();
     }
 }

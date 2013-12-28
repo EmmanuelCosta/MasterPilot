@@ -45,5 +45,6 @@ public class Main {
         short waveNumber = gestionnaire.getWave().getWaveEnemyNumber();
         // this is the same for Enemy and planet.
         System.out.println(time + " " + bombPercentage + " " + megaBombPercentage + " " + waveNumber);
+        gestionnaire.getEnemy().toString();
     }
 }

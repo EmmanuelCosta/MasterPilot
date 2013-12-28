@@ -16,6 +16,8 @@
 		<TieNumber id="3"></TieNumber>
 		<CruiserNumber id="3"></CruiserNumber>
 		<SquadronNumber id="5"></SquadronNumber>
+		<SpaceBallNumber id="8"></SpaceBallNumber>
+		<InvaderNumber id="6"></InvaderNumber>
 	</Enemy>	
 	<Planet> 
 		<TotalPlanetPercentage id ="20"></TotalPlanetPercentage>
