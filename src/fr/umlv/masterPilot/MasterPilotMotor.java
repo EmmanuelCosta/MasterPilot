@@ -92,7 +92,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //
         factory.createEnemy("SPACEBALL", 150, 50, h);
 
-        factory.createEnemy("TIE", 150, 50, h);
+//        factory.createEnemy("TIE", 150, 50, h);
 //
 //        factory.createEnemy("SQUADRON", 350, 50, h);
 //
