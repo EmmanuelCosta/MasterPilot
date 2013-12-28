@@ -38,7 +38,7 @@ public class LevelHandler extends DefaultHandler {
     private boolean inMegaBombPercentage, inBombPercentage;
     private boolean inWaveNumber;
     private boolean inEnemyNumber, inTieNumber, inCruiserNumber,
-            inSquadronNumber;
+            inSquadronNumber, inInvaderNumber, inSpaceBallNumber;
     private boolean inDensityMax, inDensityMin, inRadiusMax, inRadiusMin,
             inPlanetPercentage;
 
@@ -51,6 +51,7 @@ public class LevelHandler extends DefaultHandler {
 
     public void parse(InputStream input) throws ParserConfigurationException,
             SAXException, IOException {
+        
         // creation du parser SAX
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setValidating(true);
@@ -154,7 +155,7 @@ public class LevelHandler extends DefaultHandler {
 
         case "TotalEnemyNumber":
             try {
-                short percentage = Short.parseShort(attributes.getValue("id"));
+                int percentage = Integer.parseInt(attributes.getValue("id"));
                 enemy.setTotalEnemyNumber(percentage);
             } catch (Exception e) {
                 throw new SAXException(e);
@@ -164,7 +165,7 @@ public class LevelHandler extends DefaultHandler {
 
         case "TieNumber":
             try {
-                short tiePercentage = Short.parseShort(attributes.getValue("id"));
+                int tiePercentage = Integer.parseInt(attributes.getValue("id"));
                 enemy.setTieNumber(tiePercentage);
             } catch (Exception e) {
                 throw new SAXException(e);
@@ -174,7 +175,7 @@ public class LevelHandler extends DefaultHandler {
 
         case "CruiserNumber":
             try {
-                short cruiserPercentage = Short.parseShort(attributes.getValue("id"));
+                int cruiserPercentage = Integer.parseInt(attributes.getValue("id"));
                 enemy.setCruiserNumber(cruiserPercentage);
             } catch (Exception e) {
                 throw new SAXException(e);
@@ -184,13 +185,33 @@ public class LevelHandler extends DefaultHandler {
 
         case "SquadronNumber":
             try {
-                short squadronPercentage = Short.parseShort(attributes.getValue("id"));
+                int squadronPercentage = Integer.parseInt(attributes.getValue("id"));
                 enemy.setSquadronNumber(squadronPercentage);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
             System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
+            
+        case "SpaceBallNumber":
+            try {
+                int spaceBallNumber = Integer.parseInt(attributes.getValue("id"));
+                enemy.setSpaceBallNumber(spaceBallNumber);
+            } catch (Exception e) {
+                throw new SAXException(e);
+            }
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
+            break;
+            
+        case "InvaderNumber":
+            try {
+                short invaderNumber = Short.parseShort(attributes.getValue("id"));
+                enemy.setInvaderNumber(invaderNumber);
+            } catch (Exception e) {
+                throw new SAXException(e);
+            }
+            System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
+            break;   
             
         case "TotalPlanetPercentage":
             try {
@@ -326,6 +347,16 @@ public class LevelHandler extends DefaultHandler {
 
         case "SquadronNumber":
             inSquadronNumber = false;
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
+            break;
+            
+        case "SpaceBallNumber":
+            inSpaceBallNumber = false;
+            System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
+            break;
+            
+        case "InvaderNumber":
+            inInvaderNumber = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 

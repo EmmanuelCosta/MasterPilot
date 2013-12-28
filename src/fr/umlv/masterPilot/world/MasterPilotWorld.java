@@ -343,7 +343,7 @@ public class MasterPilotWorld implements ContactListener {
         if (userData.isDestroyable()) {
             destroyBody.add(fixtureA.getBody());
 
-               RayFireManager.remove(fixtureA.getBody());
+            RayFireManager.remove(fixtureA.getBody());
 
         }
 
@@ -363,7 +363,7 @@ public class MasterPilotWorld implements ContactListener {
             destroyBody.add(fixtureB.getBody());
 
 
-                RayFireManager.remove(fixtureB.getBody());
+            RayFireManager.remove(fixtureB.getBody());
 
         }
         if (userData2.hasJointBody()) {
@@ -404,10 +404,9 @@ public class MasterPilotWorld implements ContactListener {
         Iterator<RayFireManager.Distance> iterator = RayFireManager.getList().iterator();
         while (iterator.hasNext()) {
             RayFireManager.Distance distance = iterator.next();
-            System.out.println(distance.getX_distance()+"  "+distance.getY_distance());
             if (Math.abs(distance.getX_distance()) > distance.getLive() || Math.abs(distance.getY_distance()) > distance.getLive()) {
-                //this.world.destroyBody(distance.getBodyRayFire());
-destroyBody.add(distance.getBodyRayFire());
+
+                destroyBody.add(distance.getBodyRayFire());
                 iterator.remove();
             }
         }

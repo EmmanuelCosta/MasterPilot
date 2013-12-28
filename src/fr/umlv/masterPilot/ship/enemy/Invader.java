@@ -1,215 +1,298 @@
 package fr.umlv.masterPilot.ship.enemy;
+
 import fr.umlv.masterPilot.ship.RayFire;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
-import org.jbox2d.collision.shapes.CircleShape;
+
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.awt.*;
 
-public class Invader implements SpaceShip{
- 
-        private int maskBit;
-        private int category;
-        private  int x_axis;
-        private int y_axis;
-        private Hero hero;
-        private final Vec2 forceLeft = new Vec2(-150f, -5f);
-        private final Vec2 forceRight = new Vec2(+150f, -5f);
-        private final Vec2 forceUp = new Vec2(-5f, +150f);
-        private final Vec2 forceDown = new Vec2(-5f, -150f);
-        private World world;
-        private final Vec2 fireUp = new Vec2(0f, -10000f);
-        private final Vec2 fireLeft = new Vec2(0f, 10000f);
-        private final Vec2 fireRight = new Vec2(0f, 10000f);
-        private Body body;
-        private Vec2 shoot1;
-        private Vec2 shoot2;
-        private volatile boolean fire;
+public class Invader implements SpaceShip {
 
-        public Invader(World world, int x_axis, int y_axis, Hero hero) {
-            this.world = world;
-            this.x_axis = x_axis;
-            this.y_axis = y_axis;
-            this.hero = hero;
+    private int maskBit;
+    private int category;
+    private int x_axis;
+    private int y_axis;
+    private Hero hero;
+    private Vec2 forceLeft;
+    private Vec2 forceRight;
+    private Vec2 forceUp;
+    private Vec2 forceDown;
+    private World world;
+    private Vec2 shootUp;
+    private Vec2 shootLeft;
+    private Vec2 shootRight;
+    private Body body;
+    private Vec2 shoot1;
+    private Vec2 shoot2;
+    private volatile boolean fire;
 
+    public Invader(World world, int x_axis, int y_axis, Hero hero) {
+        this.world = world;
+        this.x_axis = x_axis;
+        this.y_axis = y_axis;
+        this.hero = hero;
 
-            /**
-             *  Interactions with the other bodies.
-             */
-            this.category = MasterPilotWorld.ENEMY;
-            this.maskBit = MasterPilotWorld.SHIELD
-                    | MasterPilotWorld.SHOOT
-                    | MasterPilotWorld.BOMB
-                    | MasterPilotWorld.MEGABOMB
-                    | MasterPilotWorld.HERO
-            |MasterPilotWorld.PLANET;
-        }
+        /**
+         * Interactions with the other bodies.
+         */
+        this.category = MasterPilotWorld.ENEMY;
+        this.maskBit = MasterPilotWorld.SHIELD | MasterPilotWorld.SHOOT
+                | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB
+                | MasterPilotWorld.HERO | MasterPilotWorld.PLANET;
 
-        public void create() {
+        /**
+         * Forces definitions
+         */
+        this.forceUp = new Vec2(0, +1000f);
+        this.forceLeft = new Vec2(-1000f, 0);
+        this.forceRight = new Vec2(+1000f, 0);
+        this.forceDown = new Vec2(0, -1000f);
 
-            PolygonShape ps = new PolygonShape();
-            
-            /**
-             * Number of vertices.
-             */
-            Vec2[] vertices = new Vec2[5];
-            vertices[0] = new Vec2(-5, -10);
-            vertices[1] = new Vec2(-5, +15);
-            vertices[2] = new Vec2(+0, +20);
-            vertices[3] = new Vec2(+5, +15);
-            vertices[4] = new Vec2(+5, -10);
-              
-            ps.set(vertices, 5);
+    }
 
-            /**
-             * Body definition of the Invader
-             */
-            BodyDef bd = new BodyDef();
-            bd.position.set(x_axis, y_axis);
-            bd.type = BodyType.DYNAMIC;
-            bd.userData = this.getClass();
-            bd.angularDamping = 2.0f;
-            bd.linearDamping = 0.0999f;
-            bd.angularDamping = 2.0f;
-            bd.linearDamping = 0.0999f;
+    @Override
+    public void create() {
 
-            /**
-             * Body fixtures of the Invader
-             */
-            FixtureDef fd = new FixtureDef();
-            fd.shape = ps;
-            fd.density = 1.5f;
-            fd.friction = 8f;
-            fd.restitution = 0.5f;
-            fd.filter.categoryBits = this.category;
-            fd.filter.maskBits = this.maskBit;
+        PolygonShape ps = new PolygonShape();
 
-            fd.userData = new EnemyBehaviour(this, Color.green);
-    
-    /*****************  LEFT WINGS  ***********************/
-            PolygonShape leftWing = new PolygonShape();
-            
-            /**
-             * Number of vertices.
-             */
-            Vec2[] LeftWingVertices  = new Vec2[5];
-            vertices[0] = new Vec2(-5, +5);
-            vertices[1] = new Vec2(-10, +5);
-            vertices[2] = new Vec2(-15, +0);
-            vertices[3] = new Vec2(-10, -5);
-            vertices[4] = new Vec2(-5, -5);
-           
-            leftWing.set(LeftWingVertices, 5);
-
-            /**
-             * Body fixtures of the Invader
-             */
-            FixtureDef fdlw = new FixtureDef();
-            fdlw.shape = leftWing;
-            fdlw.density = 1.5f;
-            fdlw.friction = 8f;
-            fdlw.restitution = 0.5f;
-            fdlw.filter.categoryBits = this.category;
-            fdlw.filter.maskBits = this.maskBit;
-
-            fdlw.userData = new EnemyBehaviour(this, Color.green);
-            
-    /*****************  RIGHT WINGS  ***********************/
-          
-            PolygonShape rightWing = new PolygonShape();
-            
-            /**
-             * Number of vertices.
-             */
-            Vec2[] rightWingVertices = new Vec2[5];
-            vertices[0] = new Vec2(+5, +5);
-            vertices[1] = new Vec2(+10, +5);
-            vertices[2] = new Vec2(+0, +15);
-            vertices[3] = new Vec2(+10, -5);
-            vertices[4] = new Vec2(+5, -5);
+        /**
+         * Number of vertices.
+         */
+        Vec2[] vertices = new Vec2[7];
+        vertices[0] = new Vec2(-5, -5);
+        vertices[1] = new Vec2(-2.5f, -10f);
+        vertices[2] = new Vec2(+2.5f, -10f);
+        vertices[3] = new Vec2(+5, -5);
+        vertices[4] = new Vec2(+5, +10);
+        vertices[5] = new Vec2(+0, +20);
+        vertices[6] = new Vec2(-5, +10);
         
-            rightWing.set(rightWingVertices, 5);
+        this.shootUp = vertices[5];
+        ps.set(vertices, 7);
 
-            /**
-             * Body fixtures of the Invader
-             */
-            FixtureDef fdrw = new FixtureDef();
-            fdrw.shape = ps;
-            fdrw.density = 1.5f;
-            fdrw.friction = 8f;
-            fdrw.restitution = 0.5f;
-            fdrw.filter.categoryBits = this.category;
-            fdrw.filter.maskBits = this.maskBit;
+        /**
+         * Body definition of the Invader
+         */
+        BodyDef bd = new BodyDef();
+        bd.position.set(x_axis, y_axis);
+        bd.type = BodyType.DYNAMIC;
+        bd.userData = this.getClass();
+        bd.angularDamping = 2.0f;
+        bd.linearDamping = 0.0999f;
+        bd.angularDamping = 2.0f;
+        bd.linearDamping = 0.0999f;
+        Body body = this.world.createBody(bd);
 
-            fdrw.userData = new EnemyBehaviour(this, Color.green);
-            
-    /**************  PRBOTTOM CIRCLE  *********************/
-            CircleShape cs = new CircleShape();
-            cs.setRadius(5);
+        /**
+         * Body fixtures of the Invader
+         */
+        FixtureDef fd = new FixtureDef();
+        fd.shape = ps;
+        fd.density = 1.5f;
+        fd.friction = 8f;
+        fd.restitution = 0.5f;
+        fd.filter.categoryBits = this.category;
+        fd.filter.maskBits = this.maskBit;
+        fd.userData = new EnemyBehaviour(this, Color.green);
+        body.createFixture(fd);
 
-            FixtureDef fdc = new FixtureDef();
-            fdc.shape = cs;
-            fdc.isSensor = false;
-            fdc.density = 1.5f;
-            fdc.friction = 8f;
-            fdc.restitution = 0.5f;
-            fdc.filter.categoryBits = MasterPilotWorld.ENEMY;
-            fdc.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.SHIELD;
-            fdc.userData = new EnemyBehaviour(this, Color.green);
-            
-            Body body = this.world.createBody(bd);
-            body.createFixture(fd);
-            body.createFixture(fdlw);
-            body.createFixture(fdrw);
-            body.createFixture(fdc);
+        /***************** LEFT WINGS ***********************/
+        PolygonShape leftWing = new PolygonShape();
 
-            this.body = body;
+        /**
+         * Number of vertices.
+         */
+        Vec2[] leftWingVertices = new Vec2[5];
+        leftWingVertices[0] = new Vec2(-5, +5);
+        leftWingVertices[1] = new Vec2(-10, +5);
+        leftWingVertices[2] = new Vec2(-15, +0);
+        leftWingVertices[3] = new Vec2(-10, -5);
+        leftWingVertices[4] = new Vec2(-5, -5);
+        
+        this.shootLeft = leftWingVertices[2];
+        leftWing.set(leftWingVertices, 5);
+
+        /**
+         * Body fixtures of the Invader
+         */
+        FixtureDef fdlw = new FixtureDef();
+        fdlw.shape = leftWing;
+        fdlw.density = 1.5f;
+        fdlw.friction = 8f;
+        fdlw.restitution = 0.5f;
+        fdlw.filter.categoryBits = this.category;
+        fdlw.filter.maskBits = this.maskBit;
+        fdlw.userData = new EnemyBehaviour(this, Color.green);
+        body.createFixture(fdlw);
+
+        /***************** RIGHT WINGS ***********************/
+
+        PolygonShape rightWing = new PolygonShape();
+
+        /**
+         * Number of vertices.
+         */
+        Vec2[] rightWingVertices = new Vec2[5];
+        rightWingVertices[0] = new Vec2(+5, +5);
+        rightWingVertices[1] = new Vec2(+10, +5);
+        rightWingVertices[2] = new Vec2(+15, +0);
+        rightWingVertices[3] = new Vec2(+10, -5);
+        rightWingVertices[4] = new Vec2(+5, -5);
+        
+        this.shootRight = rightWingVertices[2];
+        rightWing.set(rightWingVertices, 5);
+
+        /**
+         * Body fixtures of the Invader
+         */
+        FixtureDef fdrw = new FixtureDef();
+        fdrw.shape = rightWing;
+        fdrw.density = 1.5f;
+        fdrw.friction = 8f;
+        fdrw.restitution = 0.5f;
+        fdrw.filter.categoryBits = this.category;
+        fdrw.filter.maskBits = this.maskBit;
+        fdrw.userData = new EnemyBehaviour(this, Color.green);
+        body.createFixture(fdrw);
+
+        /**
+         * Make the Invader fire
+         */
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (;;) {
+                    fire = true;
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
+
+    }
+
+    @Override
+    public void right() {
+        Vec2 force = body.getWorldVector(forceRight);
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+        this.body.applyForceToCenter(force);
+    }
+
+    @Override
+    public void left() {
+        Vec2 force = body.getWorldVector(forceLeft);
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+        this.body.applyForceToCenter(force);
+    }
+
+    @Override
+    public void up() {
+        Vec2 force = body.getWorldVector(forceUp);
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+        this.body.applyForceToCenter(force);
+    }
+
+    @Override
+    public void down() {
+        Vec2 force = body.getWorldVector(forceDown);
+        this.body.setTransform(body.getPosition(), this.body.getAngle());
+        this.body.applyForceToCenter(force);
+    }
+
+    @Override
+    public void doMove() {
+        if (fire == true) {
+            fire();
+            fire = false;
         }
+    }
 
-        @Override
-        public void right() {
-         
-        }
+    @Override
+    public void fire() {
+        
+        /**
+         * I get the actual tip coordinate in the world
+         */
+        Vec2 worldPointUp = body.getWorldPoint(shootUp);
+        Vec2 worldPointLeft = body.getWorldPoint(shootLeft);
+        Vec2 worldPointRight = body.getWorldPoint(shootRight);
 
-        @Override
-        public void left() {
+        /**
+         * create the shoot
+         */
+        RayFire rayonUp = new RayFire(this.world, worldPointUp.x,
+                worldPointUp.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO
+                        | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB
+                        | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET,
+                Color.yellow);
+        rayonUp.create();
 
-        }
+        RayFire rayonLeft = new RayFire(this.world, worldPointLeft.x,
+                worldPointLeft.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO
+                        | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB
+                        | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET,
+                Color.yellow);
+        rayonLeft.create();
 
-        @Override
-        public void up() {
-    
-        }
+        RayFire rayonRight = new RayFire(this.world, worldPointRight.x,
+                worldPointRight.y, MasterPilotWorld.ENEMY,
+                MasterPilotWorld.HERO | MasterPilotWorld.BOMB
+                        | MasterPilotWorld.MEGABOMB | MasterPilotWorld.SHIELD
+                        | MasterPilotWorld.PLANET, Color.yellow);
+        rayonRight.create();
 
-        @Override
-        public void down() {
-          
-        }
+        /**
+         * need to do transform to position the shoot in good direction
+         */
+        rayonUp.getBody().setTransform(worldPointUp, hero.getBody().getAngle());
+        rayonLeft.getBody().setTransform(worldPointLeft, hero.getBody().getAngle());
+        rayonRight.getBody().setTransform(worldPointRight, hero.getBody().getAngle());
 
-        @Override
-        public void doMove() {
-        }
+        /**
+         * Tansform the position of the shoot UP in the right direction
+         */
+        Vec2 pointUp = rayonUp.getBody().getWorldCenter();
+        Vec2 blastDirUp = pointUp.sub(hero.getBody().getPosition());
+        rayonUp.getBody().applyLinearImpulse(blastDirUp.mul(-10000), pointUp);
 
-        @Override
-        public void fire() {
-        }
+        /**
+         * Tansform the position of the shoot DOWN in the right direction
+         */
+        Vec2 pointLeft = rayonLeft.getBody().getWorldCenter();
+        Vec2 blastDirLeft = pointLeft.sub(hero.getBody().getPosition());
+        rayonLeft.getBody().applyLinearImpulse(blastDirLeft.mul(-10000), pointLeft);
 
-        @Override
-        public void fireBomb() {
-            throw new NotImplementedException();
-        }
+        /**
+         * Tansform the position of the shoot DOWN in the right direction
+         */
+        Vec2 pointRight = rayonRight.getBody().getWorldCenter();
+        Vec2 blastDirRight = pointUp.sub(hero.getBody().getPosition());
+        rayonRight.getBody().applyLinearImpulse(blastDirRight.mul(-10000), pointRight);
+    }
 
-        @Override
-        public void shield() {
-            throw new NotImplementedException();
-        }
+    @Override
+    public void fireBomb() {
+        throw new NotImplementedException();
+    }
 
-        public Body getBody() {
-            return body;
-        }
+    @Override
+    public void shield() {
+        throw new NotImplementedException();
+    }
+
+    public Body getBody() {
+        return body;
+    }
 
 }
