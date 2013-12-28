@@ -90,7 +90,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //
 //
 //
-        factory.createEnemy("SPACEBALL", 150, 50, h);
+        factory.createEnemy("INVADER", 150, 50, h);
 
 //        factory.createEnemy("TIE", 150, 50, h);
 //
@@ -264,35 +264,12 @@ public class MasterPilotMotor implements KeyMotionObservable {
         observerList.remove(observer);
     }
 
-    /**
-     * this will apply the spaceship logic for all ennemy
-     *
-     * @param spaceShips
-     * @param hero
-     * @see #doEnemyLogic(fr.umlv.masterPilot.ship.SpaceShip, fr.umlv.masterPilot.ship.hero.Hero)
-     */
+
     private void proccessManager(List<SpaceShip> spaceShips, Hero hero) {
         for (SpaceShip space : spaceShips) {
            space.doMove();
         }
     }
-
-
-    /**
-     * this will contains the logic of enemy spaceship for move and fire
-     * according to the hero
-     *
-     * @param enemy : the enemy spaceship
-     * @param hero  : the spaceship hero
-     */
-    private void doEnemyLogic(SpaceShip enemy, Hero hero) {
-
-
-
-
-        
-    }
-
 
     public void run2(MasterPilotWorld masterPilotWorld, ApplicationContext context) {
         long lastLoopTime = System.nanoTime();

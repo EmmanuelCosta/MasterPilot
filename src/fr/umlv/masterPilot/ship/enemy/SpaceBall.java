@@ -338,8 +338,6 @@ public class SpaceBall implements SpaceShip {
 
     @Override
     public void doMove() {
-        float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
-        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
         double distance = Math.sqrt(Math.pow(body.getPosition().x - hero.getBody().getPosition().x, 2)
                                   + Math.pow(body.getPosition().y - hero.getBody().getPosition().y, 2));
         int limit = 200;

@@ -26,11 +26,10 @@ public class Invader implements SpaceShip {
     private Vec2 forceDown;
     private World world;
     private Vec2 shootUp;
+    private Vec2 shootDown;
     private Vec2 shootLeft;
     private Vec2 shootRight;
     private Body body;
-    private Vec2 shoot1;
-    private Vec2 shoot2;
     private volatile boolean fire;
 
     public Invader(World world, int x_axis, int y_axis, Hero hero) {
@@ -65,17 +64,17 @@ public class Invader implements SpaceShip {
         /**
          * Number of vertices.
          */
-        Vec2[] vertices = new Vec2[7];
-        vertices[0] = new Vec2(-5, -5);
-        vertices[1] = new Vec2(-2.5f, -10f);
-        vertices[2] = new Vec2(+2.5f, -10f);
-        vertices[3] = new Vec2(+5, -5);
-        vertices[4] = new Vec2(+5, +10);
-        vertices[5] = new Vec2(+0, +20);
-        vertices[6] = new Vec2(-5, +10);
-        
-        this.shootUp = vertices[5];
-        ps.set(vertices, 7);
+        Vec2[] vertices = new Vec2[6];
+        vertices[0] = new Vec2(-5f, -10f);
+        vertices[1] = new Vec2(-0, -20f);
+        vertices[2] = new Vec2(+5f, -10f);
+        vertices[3] = new Vec2(+5f, +10f);
+        vertices[4] = new Vec2(+0, +20f);
+        vertices[5] = new Vec2(-5f, +10f);
+
+        this.shootUp = vertices[4];
+        this.shootDown = vertices[1];
+        ps.set(vertices,6);
 
         /**
          * Body definition of the Invader
@@ -88,7 +87,7 @@ public class Invader implements SpaceShip {
         bd.linearDamping = 0.0999f;
         bd.angularDamping = 2.0f;
         bd.linearDamping = 0.0999f;
-        Body body = this.world.createBody(bd);
+        body = this.world.createBody(bd);
 
         /**
          * Body fixtures of the Invader
@@ -111,11 +110,11 @@ public class Invader implements SpaceShip {
          */
         Vec2[] leftWingVertices = new Vec2[5];
         leftWingVertices[0] = new Vec2(-5, +5);
-        leftWingVertices[1] = new Vec2(-10, +5);
-        leftWingVertices[2] = new Vec2(-15, +0);
-        leftWingVertices[3] = new Vec2(-10, -5);
+        leftWingVertices[1] = new Vec2(-15, +5);
+        leftWingVertices[2] = new Vec2(-20, +0);
+        leftWingVertices[3] = new Vec2(-15, -5);
         leftWingVertices[4] = new Vec2(-5, -5);
-        
+
         this.shootLeft = leftWingVertices[2];
         leftWing.set(leftWingVertices, 5);
 
@@ -141,11 +140,11 @@ public class Invader implements SpaceShip {
          */
         Vec2[] rightWingVertices = new Vec2[5];
         rightWingVertices[0] = new Vec2(+5, +5);
-        rightWingVertices[1] = new Vec2(+10, +5);
-        rightWingVertices[2] = new Vec2(+15, +0);
-        rightWingVertices[3] = new Vec2(+10, -5);
+        rightWingVertices[1] = new Vec2(+15, +5);
+        rightWingVertices[2] = new Vec2(+20, +0);
+        rightWingVertices[3] = new Vec2(+15, -5);
         rightWingVertices[4] = new Vec2(+5, -5);
-        
+
         this.shootRight = rightWingVertices[2];
         rightWing.set(rightWingVertices, 5);
 
@@ -212,7 +211,66 @@ public class Invader implements SpaceShip {
 
     @Override
     public void doMove() {
-        if (fire == true) {
+        double distance = Math.sqrt(Math.pow(body.getPosition().x
+                - hero.getBody().getPosition().x, 2)
+                + Math.pow(body.getPosition().y
+                        - hero.getBody().getPosition().y, 2));
+        int limit = 200;
+
+        /**
+         * Horizontal movement
+         */
+        if (body.getPosition().x >= 0 && hero.getBody().getPosition().x >= 0) {
+            if (body.getPosition().x > hero.getBody().getPosition().x && distance > limit) {
+                left();
+            } else if (hero.getBody().getPosition().x > body.getPosition().x && distance > limit) {
+                right();
+            }
+        } else if (body.getPosition().x >= 0 && hero.getBody().getPosition().x < 0) {
+            if (distance > limit) {
+                left();
+            }
+        } else if (body.getPosition().x < 0 && hero.getBody().getPosition().x >= 0) {
+            if (distance > limit) {
+                right();
+            }
+        } else if (body.getPosition().x < 0 && hero.getBody().getPosition().x < 0) {
+            if (body.getPosition().x > hero.getBody().getPosition().x && distance > limit) {
+                left();
+            } else if (hero.getBody().getPosition().x > body.getPosition().x && distance > limit) {
+                right();
+            }
+        }
+
+        /**
+         * Vertical movement
+         */
+        if (body.getPosition().y >= 0 && hero.getBody().getPosition().y >= 0) {
+            if (body.getPosition().y > hero.getBody().getPosition().y && distance > limit) {
+                down();
+            } else if (hero.getBody().getPosition().y > body.getPosition().y && distance > limit) {
+                up();
+            }
+        } else if (body.getPosition().y >= 0 && hero.getBody().getPosition().y < 0) {
+            if (distance > limit) {
+                down();
+            }
+        } else if (body.getPosition().y < 0 && hero.getBody().getPosition().y >= 0) {
+            if (distance > limit) {
+                up();
+            }
+        } else if (body.getPosition().y < 0 && hero.getBody().getPosition().y < 0) {
+            if (body.getPosition().y > hero.getBody().getPosition().y && distance > limit) {
+                down();
+            } else if (hero.getBody().getPosition().y > body.getPosition().y && distance > limit) {
+                up();
+            }
+        }
+
+        /**
+         * Shoot or not
+         */        
+        if (distance <= limit && fire == true) {
             fire();
             fire = false;
         }
@@ -220,14 +278,15 @@ public class Invader implements SpaceShip {
 
     @Override
     public void fire() {
-        
+
         /**
          * I get the actual tip coordinate in the world
          */
         Vec2 worldPointUp = body.getWorldPoint(shootUp);
+        Vec2 worldPointDown = body.getWorldPoint(shootDown);
         Vec2 worldPointLeft = body.getWorldPoint(shootLeft);
         Vec2 worldPointRight = body.getWorldPoint(shootRight);
-
+        
         /**
          * create the shoot
          */
@@ -237,6 +296,13 @@ public class Invader implements SpaceShip {
                         | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET,
                 Color.yellow);
         rayonUp.create();
+        
+        RayFire rayonDown = new RayFire(this.world, worldPointDown.x,
+                worldPointDown.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO
+                        | MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB
+                        | MasterPilotWorld.SHIELD | MasterPilotWorld.PLANET,
+                Color.yellow);
+        rayonDown.create();
 
         RayFire rayonLeft = new RayFire(this.world, worldPointLeft.x,
                 worldPointLeft.y, MasterPilotWorld.ENEMY, MasterPilotWorld.HERO
@@ -256,6 +322,7 @@ public class Invader implements SpaceShip {
          * need to do transform to position the shoot in good direction
          */
         rayonUp.getBody().setTransform(worldPointUp, hero.getBody().getAngle());
+        rayonDown.getBody().setTransform(worldPointDown, hero.getBody().getAngle());
         rayonLeft.getBody().setTransform(worldPointLeft, hero.getBody().getAngle());
         rayonRight.getBody().setTransform(worldPointRight, hero.getBody().getAngle());
 
@@ -265,6 +332,13 @@ public class Invader implements SpaceShip {
         Vec2 pointUp = rayonUp.getBody().getWorldCenter();
         Vec2 blastDirUp = pointUp.sub(hero.getBody().getPosition());
         rayonUp.getBody().applyLinearImpulse(blastDirUp.mul(-10000), pointUp);
+        
+        /**
+         * Tansform the position of the shoot DOWN in the right direction
+         */
+        Vec2 pointDown = rayonDown.getBody().getWorldCenter();
+        Vec2 blastDirDown = pointDown.sub(hero.getBody().getPosition());
+        rayonDown.getBody().applyLinearImpulse(blastDirDown.mul(-10000), pointDown);
 
         /**
          * Tansform the position of the shoot DOWN in the right direction
