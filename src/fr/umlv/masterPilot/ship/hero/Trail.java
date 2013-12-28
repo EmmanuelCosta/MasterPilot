@@ -79,7 +79,6 @@ public class Trail {
 
         fd.filter.maskBits = this.maskBit;
 
-        fd.isSensor = true;
         fd.userData = new TrailBehaviour(this.color);
 
         // body

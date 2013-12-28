@@ -369,28 +369,58 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
 
 
-//LEFT
-        Trail cBomb = new Trail(this.world, worldPoint.x, worldPoint.y,
+////LEFT
+//        Trail cBomb = new Trail(this.world, worldPoint.x, worldPoint.y,
+//                MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
+//                | MasterPilotWorld.ENEMY
+//                | MasterPilotWorld.RADAR, Color.CYAN, 2);
+//        cBomb.create();
+//
+//
+//
+////RIGHT
+//        cBomb = new Trail(this.world, worldPoint2.x, worldPoint2.y,
+//                MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
+//                | MasterPilotWorld.ENEMY
+//                | MasterPilotWorld.RADAR, Color.CYAN, 2);
+//        cBomb.create();
+//
+////MIDDLE
+//        cBomb = new Trail(this.world, worldPoint3.x, worldPoint3.y,
+//                MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
+//                | MasterPilotWorld.ENEMY
+//                | MasterPilotWorld.RADAR, Color.CYAN, 2);
+//        cBomb.create();
+        Trail trail1 = new Trail(this.world, worldPoint.x, worldPoint.y,
                 MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
                 | MasterPilotWorld.ENEMY
-                | MasterPilotWorld.RADAR, Color.CYAN, 2);
-        cBomb.create();
+                | MasterPilotWorld.RADAR
 
-//RIGHT
-        cBomb = new Trail(this.world, worldPoint2.x, worldPoint2.y,
+                , Color.CYAN, 2);
+        trail1.create();
+
+
+        Trail trail2 = new Trail(this.world, worldPoint2.x, worldPoint2.y,
                 MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
                 | MasterPilotWorld.ENEMY
-                | MasterPilotWorld.RADAR, Color.CYAN, 2);
-        cBomb.create();
+                | MasterPilotWorld.RADAR
 
-//MIDDLE
-        cBomb = new Trail(this.world, worldPoint3.x, worldPoint3.y,
+                , Color.CYAN, 2);
+        trail2.create();
+
+
+        Trail trail3 = new Trail(this.world, worldPoint3.x, worldPoint3.y,
                 MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
                 | MasterPilotWorld.ENEMY
-                | MasterPilotWorld.RADAR, Color.CYAN, 2);
-        cBomb.create();
+                | MasterPilotWorld.RADAR
 
-        TrailManager.addTrail(new Vec2().set(worldPoint3), cBomb);
+               , Color.CYAN, 2);
+        trail3.create();
+
+
+        TrailManager.addTrail(this.getBody(), trail1);
+        TrailManager.addTrail(this.getBody(), trail2);
+        TrailManager.addTrail(this.getBody(), trail3);
 
 
 

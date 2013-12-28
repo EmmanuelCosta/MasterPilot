@@ -12,25 +12,25 @@ import java.util.LinkedList;
 public class TrailManager {
 
     private static  final LinkedList<DistanceTrail> list = new LinkedList<>();
-    public static int limitLive = 500;
+    public static int limitLive = 1;
 
     /**
      * add all RayFire to the Manager
-     * @param initPosition
+     * @param body
      * @param trail
      */
-    public static void addTrail(Vec2 initPosition,Trail trail){
-        list.add(new DistanceTrail(initPosition, trail,limitLive));
+    public static void addTrail(Body body,Trail trail){
+        list.add(new DistanceTrail(body, trail,limitLive));
     }
 
     /**
      * see
-     * @param initPosition
+     * @param body
      * @param trail
      * @param live
      */
-    public static void addTrail(Vec2 initPosition,Trail trail,int live){
-        list.add(new DistanceTrail(initPosition, trail,live));
+    public static void addTrail(Body body,Trail trail,int live){
+        list.add(new DistanceTrail(body, trail,live));
     }
 
     public static void remove(Body body) {
@@ -38,7 +38,7 @@ public class TrailManager {
         while(iterator.hasNext()){
 
             DistanceTrail next = iterator.next();
-            if(next.getBodyBullet().equals(body)){
+            if(next.getBodyTrail().equals(body)){
 
                 iterator.remove();
                 return;
@@ -52,23 +52,23 @@ public class TrailManager {
      */
     public  static class DistanceTrail{
 
-        private Vec2 initPosition;
+        private Body refBody;
         private Trail trail;
         private  final int live;
-        private DistanceTrail(Vec2 initPosition, Trail trail,int limitLive) {
-            this.initPosition = initPosition;
+        private DistanceTrail(Body refBody, Trail trail,int limitLive) {
+            this.refBody = refBody;
             this.trail = trail;
             this.live=limitLive;
         }
 
         public float getX_distance() {
-            return initPosition.x - trail.getBody().getPosition().x;
+            return refBody.getPosition().x - trail.getBody().getPosition().x;
         }
         public float getY_distance() {
-            return initPosition.y - trail.getBody().getPosition().y;
+            return refBody.getPosition().y - trail.getBody().getPosition().y;
         }
 
-        public Body getBodyBullet() {
+        public Body getBodyTrail() {
             return trail.getBody();
         }
 

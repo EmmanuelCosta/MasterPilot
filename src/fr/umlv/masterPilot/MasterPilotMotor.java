@@ -75,7 +75,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         star4.create();
 
 
-        Hero h = new Hero(masterPilotWorld.getWorld(), 0, 0, MasterPilotWorld.MODE.HARDCORE);
+        Hero h = new Hero(masterPilotWorld.getWorld(), 0, 0, MasterPilotWorld.MODE.CHEAT);
         //
         h.create();
 

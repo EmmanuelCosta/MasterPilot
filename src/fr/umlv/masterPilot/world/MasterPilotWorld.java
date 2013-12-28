@@ -6,6 +6,7 @@ import fr.umlv.masterPilot.graphic.MasterPilot2D;
 import fr.umlv.masterPilot.ship.RayFireManager;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
+import fr.umlv.masterPilot.ship.hero.TrailManager;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -411,6 +412,17 @@ public class MasterPilotWorld implements ContactListener {
 
                 destroyBody.add(distance.getBodyRayFire());
                 iterator.remove();
+            }
+        }
+
+        Iterator<TrailManager.DistanceTrail> trailManagerIterator = TrailManager.getList().iterator();
+
+        while (trailManagerIterator.hasNext()) {
+            TrailManager.DistanceTrail live = trailManagerIterator.next();
+            if (Math.abs(live.getX_distance()) > live.getLive() || Math.abs(live.getY_distance()) > live.getLive()) {
+
+                destroyBody.add(live.getBodyTrail());
+                trailManagerIterator.remove();
             }
         }
         List<Body> newList = new ArrayList<>(destroyBody);
