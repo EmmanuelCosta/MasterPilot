@@ -1,5 +1,7 @@
 package fr.umlv.masterPilot;
 
+import fr.umlv.masterPilot.bomb.Bomb;
+import fr.umlv.masterPilot.bomb.GenericBomb;
 import fr.umlv.masterPilot.world.KeyMotionObservable;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
 import fr.umlv.masterPilot.ship.SpaceShip;
@@ -94,14 +96,14 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //
 //
 //
-        factory.createEnemy("INVADER", 150, 50, h);
+//        factory.createEnemy("INVADER", 150, 50, h);
 
 //        factory.createEnemy("TIE", 150, 50, h);
 //
 //        factory.createEnemy("SQUADRON", 350, 50, h);
 //
 
-        factory.createEnemy("CRUISER", -350, 50, h);
+//        factory.createEnemy("CRUISER", -350, 50, h);
 //
 ////
 //        factory.createEnemy("SQUADRON", -20, 90, h);
@@ -119,12 +121,12 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //        factory.createEnemy("CRUISER", -50, 90, h);
 
 //
-//        GenericBomb empBomb = new GenericBomb(masterPilotWorld.getWorld(), 70, -35, Bomb.BombType.BOMB);
-//        empBomb.create();
-//
-//        masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
-//        empBomb = new GenericBomb(masterPilotWorld.getWorld(), 170, -35, Bomb.BombType.MEGABOMB);
-//        empBomb.create();
+        GenericBomb empBomb = new GenericBomb(masterPilotWorld.getWorld(), 70, -35, Bomb.BombType.BOMB);
+        empBomb.create();
+
+        masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
+        empBomb = new GenericBomb(masterPilotWorld.getWorld(), 170, -35, Bomb.BombType.MEGABOMB);
+        empBomb.create();
 
 //        masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
 
@@ -231,14 +233,14 @@ public class MasterPilotMotor implements KeyMotionObservable {
             }
 
 
-            if (gameTiming < 0 ) {
-                masterPilotWorld.drawFrameworkEnd(false,WIDTH/2,HEIGHT/2);
-                return;
-            }
-            else if(masterPilotWorld.getEnemyList().isEmpty()){
-                masterPilotWorld.drawFrameworkEnd(true,WIDTH/2,HEIGHT/2);
-                return;
-            }
+//            if (gameTiming < 0 ) {
+//                masterPilotWorld.drawFrameworkEnd(false,WIDTH/2,HEIGHT/2);
+//                return;
+//            }
+//            else if(masterPilotWorld.getEnemyList().isEmpty()){
+//                masterPilotWorld.drawFrameworkEnd(true,WIDTH/2,HEIGHT/2);
+//                return;
+//            }
             beforeTime = System.nanoTime();
         }
     }

@@ -391,7 +391,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 //                | MasterPilotWorld.ENEMY
 //                | MasterPilotWorld.RADAR, Color.CYAN, 2);
 //        cBomb.create();
-        Trail trail1 = new Trail(this.world, worldPoint.x, worldPoint.y,
+        Trail trail1 = new Trail(this.world, worldPoint.x+3, worldPoint.y+3,
                 MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
                 | MasterPilotWorld.ENEMY
                 | MasterPilotWorld.RADAR

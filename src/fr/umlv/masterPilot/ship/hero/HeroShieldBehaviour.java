@@ -26,7 +26,8 @@ public class HeroShieldBehaviour implements UserSpec {
  */
             if (flag == true) {
 
-                if (fix2.getFilterData().categoryBits != (MasterPilotWorld.BOMB | MasterPilotWorld.MEGABOMB)) {
+                if (fix2.getFilterData().categoryBits != MasterPilotWorld.BOMB ||
+                        fix2.getFilterData().categoryBits !=  MasterPilotWorld.MEGABOMB) {
 
 
                     collide = false;
