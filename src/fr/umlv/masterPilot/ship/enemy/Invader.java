@@ -5,6 +5,7 @@ import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 
+import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
@@ -49,10 +50,10 @@ public class Invader implements SpaceShip {
         /**
          * Forces definitions
          */
-        this.forceUp = new Vec2(0, +1000f);
+        this.forceUp = new Vec2(0, +70000f);
         this.forceLeft = new Vec2(-1000f, 0);
         this.forceRight = new Vec2(+1000f, 0);
-        this.forceDown = new Vec2(0, -1000f);
+        this.forceDown = new Vec2(0, -70000f);
 
     }
 
@@ -96,7 +97,7 @@ public class Invader implements SpaceShip {
         fd.shape = ps;
         fd.density = 1.5f;
         fd.friction = 8f;
-        fd.restitution = 0.5f;
+        fd.restitution = 2.f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
         fd.userData = new EnemyBehaviour(this, Color.green);
@@ -125,7 +126,7 @@ public class Invader implements SpaceShip {
         fdlw.shape = leftWing;
         fdlw.density = 1.5f;
         fdlw.friction = 8f;
-        fdlw.restitution = 0.5f;
+        fdlw.restitution = 2f;
         fdlw.filter.categoryBits = this.category;
         fdlw.filter.maskBits = this.maskBit;
         fdlw.userData = new EnemyBehaviour(this, Color.green);
@@ -155,12 +156,32 @@ public class Invader implements SpaceShip {
         fdrw.shape = rightWing;
         fdrw.density = 1.5f;
         fdrw.friction = 8f;
-        fdrw.restitution = 0.5f;
+        fdrw.restitution = 2.f;
         fdrw.filter.categoryBits = this.category;
         fdrw.filter.maskBits = this.maskBit;
         fdrw.userData = new EnemyBehaviour(this, Color.green);
         body.createFixture(fdrw);
 
+        /************* CREATE SHIELD ****************/
+        
+        CircleShape shield = new CircleShape();
+        shield.setRadius(25);
+        FixtureDef fshield = new FixtureDef();
+        fshield.shape = shield;
+
+        fshield.isSensor = true;
+        fshield.density = 0.0f;
+        fshield.friction = 0.3f;
+        fshield.restitution = 0.5f;
+
+        fshield.filter.categoryBits = MasterPilotWorld.ENEMY;
+        fshield.filter.maskBits = MasterPilotWorld.SHOOT | MasterPilotWorld.PLANET
+                | MasterPilotWorld.SHIELD | MasterPilotWorld.HERO;
+        fshield.userData = new EnemyShieldBehaviour(5);
+        body.createFixture(fshield);
+        
+        /********************************************************/
+        
         /**
          * Make the Invader fire
          */
@@ -208,69 +229,85 @@ public class Invader implements SpaceShip {
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         this.body.applyForceToCenter(force);
     }
-
-    @Override
-    public void doMove() {
-        double distance = Math.sqrt(Math.pow(body.getPosition().x
-                - hero.getBody().getPosition().x, 2)
-                + Math.pow(body.getPosition().y
-                        - hero.getBody().getPosition().y, 2));
+    
+    public void moveHorizontal() {
+        float x_distanceABS = Math.abs(body.getPosition().x - hero.getBody().getPosition().x);
+        float y_distanceABS = Math.abs(body.getPosition().y - hero.getBody().getPosition().y);
         int limit = 200;
-
+        
         /**
          * Horizontal movement
          */
         if (body.getPosition().x >= 0 && hero.getBody().getPosition().x >= 0) {
-            if (body.getPosition().x > hero.getBody().getPosition().x && distance > limit) {
+            if (body.getPosition().x > hero.getBody().getPosition().x && x_distanceABS > limit) {
                 left();
-            } else if (hero.getBody().getPosition().x > body.getPosition().x && distance > limit) {
+            } else if(hero.getBody().getPosition().x > body.getPosition().x  && x_distanceABS > limit){
                 right();
             }
         } else if (body.getPosition().x >= 0 && hero.getBody().getPosition().x < 0) {
-            if (distance > limit) {
-                left();
+            if (x_distanceABS > limit) {
+                  left();
             }
         } else if (body.getPosition().x < 0 && hero.getBody().getPosition().x >= 0) {
-            if (distance > limit) {
+            if (x_distanceABS > limit) {
                 right();
-            }
+          }
         } else if (body.getPosition().x < 0 && hero.getBody().getPosition().x < 0) {
-            if (body.getPosition().x > hero.getBody().getPosition().x && distance > limit) {
+            if (body.getPosition().x > hero.getBody().getPosition().x && x_distanceABS > limit) {
                 left();
-            } else if (hero.getBody().getPosition().x > body.getPosition().x && distance > limit) {
+            }else if(hero.getBody().getPosition().x > body.getPosition().x && x_distanceABS > limit){
                 right();
             }
         }
+    }
+
+    @Override
+    public void doMove() {
+        double distance = Math.sqrt(Math.pow(body.getPosition().x - hero.getBody().getPosition().x, 2)
+                + Math.pow(body.getPosition().y - hero.getBody().getPosition().y, 2));
+        float x_distanceABS = Math.abs(body.getPosition().x - hero.getBody().getPosition().x);
+        float y_distanceABS = Math.abs(body.getPosition().y - hero.getBody().getPosition().y);
+        float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
+        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
+        int limit = 200;
 
         /**
          * Vertical movement
          */
         if (body.getPosition().y >= 0 && hero.getBody().getPosition().y >= 0) {
-            if (body.getPosition().y > hero.getBody().getPosition().y && distance > limit) {
+            if (body.getPosition().y > hero.getBody().getPosition().y && y_distanceABS > limit) {
                 down();
-            } else if (hero.getBody().getPosition().y > body.getPosition().y && distance > limit) {
+            }else if(hero.getBody().getPosition().y > body.getPosition().y && y_distanceABS > limit){
                 up();
-            }
+            }else if (y_distanceABS <= limit) {
+                moveHorizontal();
+            }    
         } else if (body.getPosition().y >= 0 && hero.getBody().getPosition().y < 0) {
-            if (distance > limit) {
+            if (y_distanceABS > limit) {
                 down();
+            } else if (y_distanceABS <= limit) {
+                moveHorizontal();
             }
         } else if (body.getPosition().y < 0 && hero.getBody().getPosition().y >= 0) {
-            if (distance > limit) {
+            if (y_distanceABS > limit) {
                 up();
+            } else if (y_distanceABS <= limit) {
+                moveHorizontal();
             }
         } else if (body.getPosition().y < 0 && hero.getBody().getPosition().y < 0) {
-            if (body.getPosition().y > hero.getBody().getPosition().y && distance > limit) {
+            if (body.getPosition().y > hero.getBody().getPosition().y && y_distanceABS > limit) {
                 down();
-            } else if (hero.getBody().getPosition().y > body.getPosition().y && distance > limit) {
+            } else if (hero.getBody().getPosition().y > body.getPosition().y && y_distanceABS > limit){
                 up();
+            } else if (y_distanceABS <= limit) {
+                moveHorizontal();
             }
-        }
-
+        }  
+        
         /**
          * Shoot or not
-         */        
-        if (distance <= limit && fire == true) {
+         */
+        if (distance <= 300  && fire == true) {
             fire();
             fire = false;
         }

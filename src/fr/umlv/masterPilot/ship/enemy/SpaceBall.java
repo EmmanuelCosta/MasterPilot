@@ -1,8 +1,6 @@
 package fr.umlv.masterPilot.ship.enemy;
 
 import java.awt.Color;
-import java.util.Timer;
-
 import fr.umlv.masterPilot.ship.RayFireManager;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -35,7 +33,6 @@ public class SpaceBall implements SpaceShip {
     private Vec2 forceLeft;
     private Vec2 forceRight;
     private Vec2 forceDown;
-    private Vec2 rayonForce;
     private volatile boolean fire;
 
     public SpaceBall(World world, float x, float y, Hero hero) {
@@ -55,7 +52,6 @@ public class SpaceBall implements SpaceShip {
         /**
          * Forces definitions
          */
-        this.rayonForce = new Vec2(+0f, -1500f);
         this.forceUp = new Vec2(0, +1000f);
         this.forceLeft = new Vec2(-1000f, 0);
         this.forceRight = new Vec2(+1000f, 0);
