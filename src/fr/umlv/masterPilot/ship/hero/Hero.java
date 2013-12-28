@@ -30,6 +30,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private final World world;
     private final Vec2 heroSpeed = new Vec2(0, -700f);
     private final Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
+    private final MasterPilotWorld.MODE mode;
 
 
     private Body body;
@@ -43,11 +44,12 @@ public class Hero implements KeyMotionObserver, SpaceShip {
      * @param x_axis
      * @param y_axis
      */
-    public Hero(World world, int x_axis, int y_axis) {
+    public Hero(World world, int x_axis, int y_axis,MasterPilotWorld.MODE mode) {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.world = world;
         this.color = Color.lightGray;
+        this.mode = mode;
     }
 
     /**
@@ -58,11 +60,12 @@ public class Hero implements KeyMotionObserver, SpaceShip {
      * @param y_axis
      * @param color
      */
-    public Hero(World world, int x_axis, int y_axis, Color color) {
+    public Hero(World world, int x_axis, int y_axis, Color color,MasterPilotWorld.MODE mode) {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.world = world;
         this.color = color;
+        this.mode = mode;
     }
 
     /**
@@ -123,7 +126,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fs.filter.categoryBits = MasterPilotWorld.SHIELD;
 
 
-        fs.userData = new HeroShieldBehaviour();
+        fs.userData = new HeroShieldBehaviour(mode);
 /*************************************************************************************************************/
         Body body = this.world.createBody(bd);
 

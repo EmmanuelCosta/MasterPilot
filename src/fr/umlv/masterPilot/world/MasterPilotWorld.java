@@ -34,6 +34,9 @@ import java.util.List;
  */
 public class MasterPilotWorld implements ContactListener {
 
+    public static enum MODE{
+        CHEAT,HARDCORE;
+    }
     /**
      * This is category of MasterPilotworld
      */
