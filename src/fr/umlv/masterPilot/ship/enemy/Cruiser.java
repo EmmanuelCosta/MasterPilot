@@ -8,7 +8,6 @@ import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-
 import java.awt.*;
 
 public class Cruiser implements SpaceShip {
@@ -18,7 +17,6 @@ public class Cruiser implements SpaceShip {
     private final int x_axis;
     private final int y_axis;
     private final Hero hero;
-    private final Vec2 cruiserSpeed = new Vec2(0, -50f);
     private final Vec2 rayonForce = new Vec2(+0f, -150f);
     private final Vec2 forceLeft = new Vec2(-400f, +0f);
     private final Vec2 forceRight = new Vec2(+400f, +0f);

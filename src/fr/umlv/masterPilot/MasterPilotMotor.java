@@ -86,7 +86,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //        factory.createEnemy("TIE", 250, -50, h);
 ////
 //
-        factory.createEnemy("SPACEBALL", 150, 50, h);
+        factory.createEnemy("INVADER", 150, 50, h);
 
 //        factory.createEnemy("TIE", 150, 50, h);
 //
@@ -272,23 +272,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
            space.doMove();
         }
     }
-
-
-    /**
-     * this will contains the logic of enemy spaceship for move and fire
-     * according to the hero
-     *
-     * @param enemy : the enemy spaceship
-     * @param hero  : the spaceship hero
-     */
-    private void doEnemyLogic(SpaceShip enemy, Hero hero) {
-
-
-
-
-        
-    }
-
 
     public void run2(MasterPilotWorld masterPilotWorld, ApplicationContext context) {
         long lastLoopTime = System.nanoTime();
