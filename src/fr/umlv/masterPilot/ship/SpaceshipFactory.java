@@ -56,20 +56,23 @@ public class SpaceshipFactory {
             case "TIE":
                 space = new TIE(this.masterPilotWorld.getWorld(), x, y, hero);
                 break;
+                
             case "CRUISER":
                 space = new Cruiser(this.masterPilotWorld.getWorld(), x, y, hero);
                 break;
+                
             case "SQUADRON":
-
                 space = new Squadron(this.masterPilotWorld.getWorld(), x, y, hero);
                 break;
+                
             case "INVADER":
                 space = new Invader(this.masterPilotWorld.getWorld(), x, y, hero);
                 break;
+                
             case "SPACEBALL":
                 space = new SpaceBall(this.masterPilotWorld.getWorld(), x, y, hero);
-
                 break;
+                
             default:
                 throw new UnsupportedOperationException();
         }

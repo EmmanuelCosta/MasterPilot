@@ -2,19 +2,18 @@ package fr.umlv.masterPilot;
 
 import fr.umlv.masterPilot.bomb.Bomb;
 import fr.umlv.masterPilot.bomb.GenericBomb;
-
 import fr.umlv.masterPilot.parser.handler.LevelHandler;
+import fr.umlv.masterPilot.star.Star;
 import fr.umlv.masterPilot.star.StarFactory;
 import fr.umlv.masterPilot.world.KeyMotionObservable;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
-
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.SpaceshipFactory;
 import fr.umlv.masterPilot.ship.hero.Hero;
-
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
+
 import org.jbox2d.dynamics.Body;
 import org.xml.sax.SAXException;
 
@@ -150,6 +149,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         maximum = 8; // because we can't have more than 8 planet on a surface.
         i = rn.nextInt() % n;
         int planetNumber =  planetPercentage * (minimum + i) / 100;
+        System.out.println("planet number " + planetNumber);
         
         minimum = radiusMin;
         maximum = radiusMax;
@@ -405,6 +405,134 @@ nb=5;
         }
     }
 
+    private void generateEnemies(int tieNumber, int cruiserNumber,
+                                 int squadronNumber, int invaderNumber, 
+                                 int spaceBallNumber, 
+                                 Hero hero,
+                                 MasterPilotWorld masterPilotWorld) {
+        int number = 0;
+        
+        /**
+         * Generate x position
+         */
+        float x_min = hero.getBody().getPosition().x - 450;
+        float x_max = hero.getBody().getPosition().x + 450;
+        Random x_rand = new Random();
+        float x_mod = x_max - x_min + 1;
+        float x_pos;
+        
+        /**
+         * Generate y position
+         */
+        float y_min = hero.getBody().getPosition().y + 350;
+        float y_max = hero.getBody().getPosition().y + 500;
+        Random y_rand = new Random();
+        float y_mod = y_max - y_min + 1;
+        float y_pos;
+        
+        SpaceshipFactory enemyFactory = new SpaceshipFactory(masterPilotWorld); 
+        
+        // Generate tie 
+        number = tieNumber;
+        while (number != 0) {
+            
+            x_pos = x_rand.nextFloat() % x_mod;
+            y_pos = y_rand.nextFloat() % y_mod;
+            
+            // Check if the tie position is not on a planet
+            for ( Star planet : masterPilotWorld.getStarList()) {
+                
+                // If its not, generate a tie.
+                if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
+                    if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
+                        enemyFactory.createEnemy("TIE", (int)x_pos, (int)y_pos, hero);
+                        --number;                        
+                    }
+                } 
+            }
+        }
+        
+        //Generate cruiser
+        number = cruiserNumber;
+        while (number != 0) {
+            
+            x_pos = x_rand.nextFloat() % x_mod;
+            y_pos = y_rand.nextFloat() % y_mod;
+            
+            // Check if the cruiser position is not on a planet
+            for ( Star planet : masterPilotWorld.getStarList()) {
+                
+                // If its not generate a cruiser.
+                if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
+                    if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
+                        enemyFactory.createEnemy("CRUISER", (int)x_pos, (int)y_pos, hero);
+                        --number;
+                    }
+                } 
+            }
+        }
+        
+      //Generate squadron
+        number = squadronNumber;
+        while (number != 0) {
+            
+            x_pos = x_rand.nextFloat() % x_mod;
+            y_pos = y_rand.nextFloat() % y_mod;
+            
+            // Check if the squadron position is not on a planet
+            for ( Star planet : masterPilotWorld.getStarList()) {
+                
+                // If its not generate a squadron.
+                if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
+                    if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
+                        enemyFactory.createEnemy("SQUADRON", (int)x_pos, (int)y_pos, hero);
+                        --number;
+                    }
+                } 
+            }
+        }
+        
+        //Generate invader
+        number = invaderNumber;
+        while (number != 0) {
+            
+            x_pos = x_rand.nextFloat() % x_mod;
+            y_pos = y_rand.nextFloat() % y_mod;
+            
+            // Check if the invader position is not on a planet
+            for ( Star planet : masterPilotWorld.getStarList()) {
+                
+                // If its not generate an invader.
+                if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
+                    if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
+                        enemyFactory.createEnemy("INVADER", (int)x_pos, (int)y_pos, hero);
+                        --number;
+                    }
+                } 
+            }
+        }
+        
+        //Generate squadron
+        number = spaceBallNumber;
+        while (number != 0) {
+            
+            x_pos = x_rand.nextFloat() % x_mod;
+            y_pos = y_rand.nextFloat() % y_mod;
+            
+            // Check if the spaceball position is not on a planet
+            for ( Star planet : masterPilotWorld.getStarList()) {
+                
+                // If its not generate a spaceBall.
+                if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
+                    if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
+                        enemyFactory.createEnemy("SPACEBALL", (int)x_pos, (int)y_pos, hero);
+                        --number;
+                    }
+                } 
+            }
+        }
+    }
+    
     public void run2(MasterPilotWorld masterPilotWorld,
             ApplicationContext context) {
         long lastLoopTime = System.nanoTime();
