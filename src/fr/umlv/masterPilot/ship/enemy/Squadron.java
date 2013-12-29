@@ -26,6 +26,7 @@ public class Squadron implements SpaceShip {
     private final Vec2 forceUp = new Vec2(0f, +150f);
     private final Vec2 forceDown = new Vec2(0f, -150f);
     private final ArrayList<Body> bodyJointList;
+    private final Vec2 maxSpeed;
     private volatile boolean fire;
     private Vec2 referenceVertices1;
     private Vec2 referenceVertices2;
@@ -41,6 +42,8 @@ public class Squadron implements SpaceShip {
         this.y_axis = y_axis;
 
         this.hero = hero;
+
+        this.maxSpeed=hero.getMaxSpeed().sub(new Vec2(2,2));
         /**
          * Interactions with the other bodies.
          */
@@ -205,7 +208,12 @@ public class Squadron implements SpaceShip {
             force = body.getWorldVector(forceLeft);
         }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-        this.body.applyForceToCenter(force);
+        Vec2 lVelocity = this.body.getLinearVelocity();
+
+
+        if (Math.abs(lVelocity.y) < maxSpeed.y) {
+            this.body.applyForceToCenter(force);
+        }
     }
 
     @Override
@@ -219,7 +227,12 @@ public class Squadron implements SpaceShip {
             force = body.getWorldVector(forceRight);
         }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-        this.body.applyForceToCenter(force);
+        Vec2 lVelocity = this.body.getLinearVelocity();
+
+
+        if (Math.abs(lVelocity.y) < maxSpeed.y) {
+            this.body.applyForceToCenter(force);
+        }
 
     }
 
@@ -234,7 +247,12 @@ public class Squadron implements SpaceShip {
             force = body.getWorldVector(forceDown);
         }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-        this.body.applyForceToCenter(force);
+        Vec2 lVelocity = this.body.getLinearVelocity();
+
+
+        if (Math.abs(lVelocity.y) < maxSpeed.y) {
+            this.body.applyForceToCenter(force);
+        }
 
 //        this.body.applyForce(for);
 
@@ -252,7 +270,12 @@ public class Squadron implements SpaceShip {
             force = body.getWorldVector(forceUp);
         }
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-        this.body.applyForceToCenter(force);
+        Vec2 lVelocity = this.body.getLinearVelocity();
+
+
+        if (Math.abs(lVelocity.y) < maxSpeed.y) {
+            this.body.applyForceToCenter(force);
+        }
     }
 
 
@@ -302,7 +325,7 @@ public class Squadron implements SpaceShip {
         //MANAGE WITH RECUL WHEN COLLISION WITH HERO IS POSSIBLE
         if ((y_distance < 50 && y_distance >= 0) && ((x_distance <= 0 && x_distance > -150)
                 || (x_distance >= 0 && x_distance < 150))) {
-            System.out.println("up");
+
 
             up();
 
@@ -310,7 +333,6 @@ public class Squadron implements SpaceShip {
         } else if ((y_distance > -150 && y_distance <= 0) && ((x_distance <= 0 && x_distance > -150)
                 || (x_distance >= 0 && x_distance < 150))) {
 
-            System.out.println("down");
             down();
 
 

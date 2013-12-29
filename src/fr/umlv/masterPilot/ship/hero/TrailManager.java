@@ -12,7 +12,7 @@ import java.util.LinkedList;
 public class TrailManager {
 
     private static  final LinkedList<DistanceTrail> list = new LinkedList<>();
-    public static int limitLive = 1;
+    public static int limitLive = 5;
 
     /**
      * add all RayFire to the Manager

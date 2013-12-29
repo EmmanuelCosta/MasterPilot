@@ -12,13 +12,13 @@ import org.jbox2d.dynamics.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
-import java.util.Timer;
 
 /**
  * Created by emmanuel on 22/12/13.
  */
 public class TIE implements SpaceShip {
 
+    private  final Vec2 maxSpeed;
     private final int maskBit;
     private final int category;
 
@@ -43,7 +43,7 @@ public class TIE implements SpaceShip {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.hero = hero;
-
+        this.maxSpeed =hero.getMaxSpeed().sub(new Vec2(2,2));
 
         /**
          *  Interactions with the other bodies.
@@ -55,7 +55,7 @@ public class TIE implements SpaceShip {
                 | MasterPilotWorld.MEGABOMB
                 | MasterPilotWorld.HERO
                 | MasterPilotWorld.PLANET
-                ;
+        ;
     }
 
     public void create() {
@@ -155,7 +155,7 @@ public class TIE implements SpaceShip {
         fr.isSensor = false;
         fr.density = 0.0f;
         fr.friction = 0.3f;
-        fr.restitution = 0.5f;
+        fr.restitution = 1.5f;
 
         fr.filter.categoryBits = MasterPilotWorld.ENEMY;
         fr.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.SHIELD;
@@ -199,8 +199,12 @@ public class TIE implements SpaceShip {
         Vec2 force = body.getWorldVector(forceRight);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
 
+        Vec2 lVelocity = this.body.getLinearVelocity();
 
-        this.body.applyForceToCenter(force);
+        if(  Math.abs(lVelocity.y) < maxSpeed.y){
+            this.body.applyForceToCenter(force);
+        }
+
 
     }
 
@@ -209,8 +213,11 @@ public class TIE implements SpaceShip {
         Vec2 force = body.getWorldVector(forceLeft);
 
         this.body.setTransform(body.getPosition(), this.body.getAngle());
+        Vec2 lVelocity = this.body.getLinearVelocity();
 
-        this.body.applyForceToCenter(force);
+        if(  Math.abs(lVelocity.y) < maxSpeed.y){
+            this.body.applyForceToCenter(force);
+        }
 
 
     }
@@ -220,7 +227,11 @@ public class TIE implements SpaceShip {
         Vec2 force = body.getWorldVector(forceUp);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
 
-        this.body.applyForceToCenter(force);
+        Vec2 lVelocity = this.body.getLinearVelocity();
+
+        if(  Math.abs(lVelocity.y) < maxSpeed.y){
+            this.body.applyForceToCenter(force);
+        }
 
     }
 
@@ -229,7 +240,11 @@ public class TIE implements SpaceShip {
         Vec2 force = body.getWorldVector(forceDown);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
 
-        this.body.applyForceToCenter(force);
+        Vec2 lVelocity = this.body.getLinearVelocity();
+
+        if(  Math.abs(lVelocity.y) < maxSpeed.y){
+            this.body.applyForceToCenter(force);
+        }
 
     }
 
@@ -250,6 +265,7 @@ public class TIE implements SpaceShip {
 //            fire();
 //            fire = false;
 //        }
+
 
         if ((x_distance >= -50 - limit && x_distance <= 50 + limit) && (y_distance >= -50 - limit && y_distance <= 50 + limit)
                 && fire == true) {

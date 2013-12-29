@@ -36,6 +36,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private Body body;
     private Bomb.BombType bombType = Bomb.BombType.NONE;
     private Bomb cBomb;
+    private final Vec2 maxSpeed = new Vec2(10,10);
 
     /**
      * create the hero at the specify coordinate
@@ -44,7 +45,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
      * @param x_axis
      * @param y_axis
      */
-    public Hero(World world, int x_axis, int y_axis,MasterPilotWorld.MODE mode) {
+    public Hero(World world, int x_axis, int y_axis, MasterPilotWorld.MODE mode) {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.world = world;
@@ -60,7 +61,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
      * @param y_axis
      * @param color
      */
-    public Hero(World world, int x_axis, int y_axis, Color color,MasterPilotWorld.MODE mode) {
+    public Hero(World world, int x_axis, int y_axis, Color color, MasterPilotWorld.MODE mode) {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.world = world;
@@ -327,13 +328,24 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     @Override
     public void up() {
 
+
         Vec2 force = body.getWorldVector(heroSpeed);
         Vec2 point = body.getWorldPoint(body.getLocalCenter().add(
                 new Vec2(0.0f, 100.0f)));
+        Vec2 lVelocity = this.body.getLinearVelocity();
 
-        this.body.applyForce(force, point);
+
+        if (Math.abs(lVelocity.y) < maxSpeed.y) {
+            this.body.applyForce(force, point);
+        }
+
 //MAKE TRAIL
         makeTrail();
+    }
+
+    @Override
+    public void down() {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -391,7 +403,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 //                | MasterPilotWorld.ENEMY
 //                | MasterPilotWorld.RADAR, Color.CYAN, 2);
 //        cBomb.create();
-        Trail trail1 = new Trail(this.world, worldPoint.x+3, worldPoint.y+3,
+        Trail trail1 = new Trail(this.world, worldPoint.x, worldPoint.y,
                 MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
                 | MasterPilotWorld.ENEMY
                 | MasterPilotWorld.RADAR
@@ -414,7 +426,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
                 | MasterPilotWorld.ENEMY
                 | MasterPilotWorld.RADAR
 
-               , Color.CYAN, 2);
+                , Color.CYAN, 2);
         trail3.create();
 
 
@@ -423,19 +435,17 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         TrailManager.addTrail(this.getBody(), trail3);
 
 
-
-
     }
 
-    @Override
-    public void down() {
-        throw new UnsupportedOperationException();
-    }
 
     public void setBomb(Bomb bomb) {
         if (!Objects.isNull(bomb) && bomb.getBombeState() != Bomb.BombState.ARMED) {
             this.bombType = bomb.getBombType();
             this.cBomb = bomb;
         }
+    }
+
+    public Vec2 getMaxSpeed() {
+        return maxSpeed;
     }
 }
