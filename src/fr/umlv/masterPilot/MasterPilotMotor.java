@@ -122,42 +122,46 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //        masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
 
 
-        System.out.println("==========");
-        for (SpaceShip space : masterPilotWorld.getEnemyList()) {
-            System.out.println(space);
-        }
+
     }
 
     private void createRandomStar(MasterPilotWorld masterPilotWorld, int nb) {
         StarFactory startFactory = new StarFactory(masterPilotWorld);
-//        startFactory.createStar(WIDTH / 2 - 100, HEIGHT / 2 - 100, Color.yellow);
-////
-//
-//
-//        startFactory.createStar(100, 550, Color.GREEN);
-//
-//
-//        startFactory.createStar( 400, 350, Color.RED);
-//
-//        startFactory.createStar(400, 650, Color.BLUE);
 
-        int w = 0;
-       ;
 
-        for (int i = 0; i < 1; i++,w++) {
-//            for (int j = -2; j < 2; j++,w++) {
-                int al =  200 + (int)(Math.random() * ((400 - 200) + 1)) ;
-               int rInterval = 8+(int)(Math.random() * ((16 - 8) + 1));
-                if (w % 4 == 0) {
-                    startFactory.createStar((WIDTH / rInterval) + al , (HEIGHT / rInterval) - al, Color.yellow);
-                } else if (w % 4 == 1) {
-                    startFactory.createStar((WIDTH / rInterval) + al , -(HEIGHT / rInterval) + al, Color.RED);
-                }else if(w % 4 == 2){
-                    startFactory.createStar(-(WIDTH / rInterval) - al, -(HEIGHT / rInterval) + al , Color.BLUE);
-                }else{
-                    startFactory.createStar(-(WIDTH / rInterval) - al , (HEIGHT / rInterval) - al , Color.WHITE);
+int pc=(int)((0.8)%10+1);
+        System.out.println(pc);
+        for(int i=-(WIDTH/2)*2;i<=(WIDTH/2)*2;i=i+280){
+nb=5;
+            for(int p=-(HEIGHT/2)*2;p<=(HEIGHT/2)*2;p=p+180){
+                int rInterval = 0 + (int)(Math.random() * ((5 - 0) + 1));
+//               sout
+                System.out.println(rInterval);
+               if(nb == 0)
+                   break;
+                if(rInterval== 4){
+
+                     startFactory.createStar(i, p, Color.yellow);
                 }
+                nb--;
+                pc++;
             }
+        }
+
+//        for (int i = 0; i < 1; i++,w++) {
+////            for (int j = -2; j < 2; j++,w++) {
+//                int al =  200 + (int)(Math.random() * ((400 - 200) + 1)) ;
+//               int rInterval = 8+(int)(Math.random() * ((16 - 8) + 1));
+//                if (w % 4 == 0) {
+//                    startFactory.createStar((WIDTH / rInterval) + al , (HEIGHT / rInterval) - al, Color.yellow);
+//                } else if (w % 4 == 1) {
+//                    startFactory.createStar((WIDTH / rInterval) + al , -(HEIGHT / rInterval) + al, Color.RED);
+//                }else if(w % 4 == 2){
+//                    startFactory.createStar(-(WIDTH / rInterval) - al, -(HEIGHT / rInterval) + al , Color.BLUE);
+//                }else{
+//                    startFactory.createStar(-(WIDTH / rInterval) - al , (HEIGHT / rInterval) - al , Color.WHITE);
+//                }
+//            }
 //        }
     }
 
@@ -251,15 +255,15 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
 /**
  * testing game time
- */
-            if (gameTiming < 0 ) {
-                masterPilotWorld.drawFrameworkEnd(false,WIDTH/2,HEIGHT/2);
-                return;
-            }
-            else if(masterPilotWorld.getEnemyList().isEmpty()){
-                masterPilotWorld.drawFrameworkEnd(true,WIDTH/2,HEIGHT/2);
-                return;
-            }
+// */
+//            if (gameTiming < 0 ) {
+//                masterPilotWorld.drawFrameworkEnd(false,WIDTH/2,HEIGHT/2);
+//                return;
+//            }
+//            else if(masterPilotWorld.getEnemyList().isEmpty()){
+//                masterPilotWorld.drawFrameworkEnd(true,WIDTH/2,HEIGHT/2);
+//                return;
+//            }
             beforeTime = System.nanoTime();
         }
     }
