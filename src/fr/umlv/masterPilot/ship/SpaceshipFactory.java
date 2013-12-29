@@ -6,11 +6,9 @@ import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 
 /**
- * <<<<<<< HEAD
+ * this will create a Star and register it to the StarManager
  * Created by emmanuel on 28/12/13.
- * =======
- * Created by emmanuel on 19/12/13.
- * >>>>>>> d713d4794548f2f9100ba0683bc2286c74de1644
+
  */
 public class SpaceshipFactory {
 

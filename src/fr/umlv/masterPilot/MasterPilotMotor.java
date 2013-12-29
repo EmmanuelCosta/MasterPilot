@@ -1,22 +1,21 @@
 package fr.umlv.masterPilot;
 
-import fr.umlv.masterPilot.bomb.Bomb;
-import fr.umlv.masterPilot.bomb.GenericBomb;
+
 import fr.umlv.masterPilot.parser.handler.LevelHandler;
+import fr.umlv.masterPilot.ship.SpaceShip;
+import fr.umlv.masterPilot.ship.SpaceshipFactory;
+import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.star.Star;
 import fr.umlv.masterPilot.star.StarFactory;
 import fr.umlv.masterPilot.world.KeyMotionObservable;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
-import fr.umlv.masterPilot.ship.SpaceShip;
-import fr.umlv.masterPilot.ship.SpaceshipFactory;
-import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
-
 import org.jbox2d.dynamics.Body;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,13 +24,14 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 /**
+ * This is the motor of the game
+ * it launch and end  the game
+ * create and destroy his character
  * Created by emmanuel on 06/12/13.
  */
 public class MasterPilotMotor implements KeyMotionObservable {
-    private final int WIDTH = 900;
+    private final int WIDTH = 800;
     private final int HEIGHT = 600;
     // OBSERVER LIST
     private final List<KeyMotionObserver> observerList = new ArrayList<>();
@@ -41,13 +41,19 @@ public class MasterPilotMotor implements KeyMotionObservable {
     private final int positionIterations = 3;
     private int gameTiming;
 
-
+    /**
+     * this will launch the game
+     * @param context
+     * @param levelFile this is a path to the xml level config
+     */
     public void launchGame(ApplicationContext context, String levelFile, String mode) {
+
 
         /**
          * Load the level.
          */
-        final LevelHandler levelParser = new LevelHandler();;
+        final LevelHandler levelParser = new LevelHandler();
+       
         try {
             // Get the current directory from which the user work
             StringBuffer accessFileName = new StringBuffer();
@@ -67,7 +73,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
             System.out.println("Input/Output error");
             System.out.println("Error when calling parse()");
         }
-         
+
 
         context.render(graphics -> {
             MasterPilotWorld masterPilotWorld = initPlateform(graphics);
@@ -103,24 +109,24 @@ public class MasterPilotMotor implements KeyMotionObservable {
         /**
          * Get datas from the xml.
          */
-        
+
         // Data about the timer
         int timer = levelParser.getTime().getTimer();
-        
+
         // Data about wave
         short waveNumber = levelParser.getWave().getWaveEnemyNumber();
-        
+
         // Datas about bombs and megaBombs.
         short bombPercentage = levelParser.getBomb().getBombPercentage();
         short megaBombPercentage = levelParser.getMegaBomb().getMegaBombPercentage();
-        
+
         // Datas about planets.
         short planetPercentage = levelParser.getPlanet().getTotalPercentage();
         short radiusMin = levelParser.getPlanet().getRadiusMin();
         short radiusMax = levelParser.getPlanet().getRadiusMax();
         int densityMin = levelParser.getPlanet().getDensityMin();
         int densityMax = levelParser.getPlanet().getDensityMax();
-                
+
         // Datas about enemies.
         int enemyNumber = levelParser.getEnemy().getTotalEnemyNumber();
         int tieNumber = levelParser.getEnemy().getTieNumber();
@@ -137,48 +143,41 @@ public class MasterPilotMotor implements KeyMotionObservable {
         Random rn = new Random();
         int n = maximum - minimum + 1;
         int i;
-        
+
         // About bombs and megabombs        
         i = rn.nextInt() % n;
-        int bombNumber =  bombPercentage * (minimum + i) / 100;
+        int bombNumber = bombPercentage * (minimum + i) / 100;
         i = rn.nextInt() % n;
         int megaBombNumber = megaBombPercentage * (minimum + i) / 100;
-        
+
         // About the planets
         minimum = 1;
         maximum = 8; // because we can't have more than 8 planet on a surface.
         i = rn.nextInt() % n;
-        int planetNumber =  planetPercentage * (minimum + i) / 100;
-        System.out.println("planet number " + planetNumber);
-        
+
+        int planetNumber = planetPercentage * (minimum + i) / 100;
+
         minimum = radiusMin;
         maximum = radiusMax;
         i = rn.nextInt() % n;
-        int  radius = minimum + i;
-        
+        int radius = minimum + i;
+
         minimum = densityMin;
         maximum = densityMax;
         i = rn.nextInt() % n;
-        int  density = minimum + i;
-        
+        int density = minimum + i;
+
         /**
          * Create planets and add the planets to the manager
          */
-        
+
         /**
          * Put some planets
          */
-
+        createRandomStar(masterPilotWorld, planetPercentage);
         /**
          * Put enemies 's first wave.
          */
-        
-        // TODO MANAGE WITH FILE CONFIG
-        StarFactory startFactory = new StarFactory(masterPilotWorld);
-        startFactory.createStar(100, 250, Color.yellow);
-        startFactory.createStar(100, 550, Color.GREEN);
-        startFactory.createStar(400, 350, Color.RED);
-        startFactory.createStar(400, 650, Color.BLUE);
 
         
         SpaceshipFactory factory = new SpaceshipFactory(masterPilotWorld);
@@ -225,73 +224,144 @@ public class MasterPilotMotor implements KeyMotionObservable {
         //
         //
 //        factory.createEnemy("CRUISER", -50, 90, h);
+}
 
-        //
-        GenericBomb empBomb = new GenericBomb(masterPilotWorld.getWorld(), 70,
-                -35, Bomb.BombType.BOMB);
-        empBomb.create();
+    /**
+     * this will generate a certain number of Star according to the given percentage
+     *
+     * @param masterPilotWorld
+     * @param percentage
+     */
+    private void createRandomStar(MasterPilotWorld masterPilotWorld, int percentage) {
+        StarFactory startFactory = new StarFactory(masterPilotWorld);
+    /**
+     * caculate number of star
+     */
 
-        masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
-        empBomb = new GenericBomb(masterPilotWorld.getWorld(), 170, -35,
-                Bomb.BombType.MEGABOMB);
-        empBomb.create();
-        masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
+
+        int pc = (int) ((0.08 * percentage)) + 1;
+
+
+        int tc = pc;
+
+
+        int tour = 0;
 
         // masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
-    }
+        for (int i = -(WIDTH / 2) * 10; i <= 0; i = i + 280) {
 
-    private void createRandomStar(MasterPilotWorld masterPilotWorld, int nb) {
-        StarFactory startFactory = new StarFactory(masterPilotWorld);
+            if (tour % 3 == 0) {
+                tc = pc;
 
-
-int pc=(int)((0.8)%10+1);
-        System.out.println(pc);
-        for(int i=-(WIDTH/2)*2;i<=(WIDTH/2)*2;i=i+280){
-nb=5;
-            for(int p=-(HEIGHT/2)*2;p<=(HEIGHT/2)*2;p=p+180){
-                int rInterval = 0 + (int)(Math.random() * ((5 - 0) + 1));
-//               sout
-                System.out.println(rInterval);
-               if(nb == 0)
-                   break;
-                if(rInterval== 4){
-
-                     startFactory.createStar(i, p, Color.yellow);
-                }
-                nb--;
-                pc++;
             }
+
+            for (int p = (HEIGHT / 2) * 10; p >= 0; p = p - 180) {
+                int rInterval = 2 + (int) (Math.random() * ((pc - 2) + 1));
+
+                if (rInterval % pc == 0 && tc >= 0) {
+                    startFactory.createStar(i, p, Color.yellow);
+                    tc--;
+
+
+                }
+
+
+            }
+
+            tour++;
         }
 
-//        for (int i = 0; i < 1; i++,w++) {
-////            for (int j = -2; j < 2; j++,w++) {
-//                int al =  200 + (int)(Math.random() * ((400 - 200) + 1)) ;
-//               int rInterval = 8+(int)(Math.random() * ((16 - 8) + 1));
-//                if (w % 4 == 0) {
-//                    startFactory.createStar((WIDTH / rInterval) + al , (HEIGHT / rInterval) - al, Color.yellow);
-//                } else if (w % 4 == 1) {
-//                    startFactory.createStar((WIDTH / rInterval) + al , -(HEIGHT / rInterval) + al, Color.RED);
-//                }else if(w % 4 == 2){
-//                    startFactory.createStar(-(WIDTH / rInterval) - al, -(HEIGHT / rInterval) + al , Color.BLUE);
-//                }else{
-//                    startFactory.createStar(-(WIDTH / rInterval) - al , (HEIGHT / rInterval) - al , Color.WHITE);
-//                }
-//            }
-//        }
+
+        tour = 0;
+        for (int i = -(WIDTH / 2) * 10; i <= 0; i = i + 280) {
+
+            if (tour % 3 == 0) {
+                tc = pc;
+
+            }
+
+            for (int p = -(HEIGHT / 2) * 10; p <= 0; p = p + 180) {
+                int rInterval = 2 + (int) (Math.random() * ((pc - 2) + 1));
+
+
+                if (rInterval % pc == 0 && tc >= 0) {
+                    startFactory.createStar(i, p, Color.yellow);
+                    tc--;
+
+
+                }
+
+
+            }
+
+            tour++;
+        }
+        tour = 0;
+        for (int i = 0; i <= (WIDTH / 2) * 10; i = i + 280) {
+
+            if (tour % 3 == 0) {
+                tc = pc;
+
+            }
+
+            for (int p = 0; p >= -(HEIGHT / 2) * 10; p = p - 180) {
+                int rInterval = 2 + (int) (Math.random() * ((pc - 2) + 1));
+
+
+                if (rInterval % pc == 0 && tc >= 0) {
+                    startFactory.createStar(i, p, Color.yellow);
+                    tc--;
+
+                }
+
+
+            }
+
+            tour++;
+        }
+
+
+        tour = 0;
+        for (int i = 0; i <= (WIDTH / 2) * 10; i = i + 280) {
+
+            if (tour % 3 == 0) {
+                tc = pc;
+
+            }
+
+            for (int p = (HEIGHT / 2) * 10; p >= 0; p = p - 180) {
+                int rInterval = 2 + (int) (Math.random() * ((pc - 2) + 1));
+
+
+                if (rInterval % pc == 0 && tc >= 0) {
+                    startFactory.createStar(i, p, Color.yellow);
+                    tc--;
+
+                }
+
+
+            }
+
+            tour++;
+        }
+
+        System.out.println("THIS MAP CONTAINS " + masterPilotWorld.getStarList().size() + "  star");
     }
 
     /**
      * main loop of the game
-     * 
-     * @param masterPilotWorld
-     *            : This is the masterpilote world
+     *
+     *
+     * @param masterPilotWorld : This is the masterpilote world
      * @param context
      */
     private void run(MasterPilotWorld masterPilotWorld,
             ApplicationContext context, LevelHandler levelParser) {
+
         long beforeTime, afterTime, timeDiff, sleepTime;
 
         beforeTime = System.nanoTime();
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -302,25 +372,8 @@ nb=5;
             }
         }, 1000, 1000);
 
-        // Thread thread = new Thread(()->{
-        // for (SpaceShip space : masterPilotWorld.getEnemyList()) {
-        // space.doMove();
-        // }
-        // });
-        // thread.start();
 
-        // Timer time = new Timer();
-        // time.schedule(new TimerTask() {
-        // @Override
-        // public void run() {
-        // for (SpaceShip space : masterPilotWorld.getEnemyList()) {
-        // space.doMove();
-        // }
-        //
-        //
-        // }
-        // }, 500, 500);
-        for (;;) {
+        for (; ; ) {
 
             masterPilotWorld.getWorld().step(timeStep, velocityIterations,
                     positionIterations);
@@ -426,9 +479,10 @@ nb=5;
         }
     }
 
+
     private void generateEnemies(int tieNumber, int cruiserNumber,
-                                 int squadronNumber, int invaderNumber, 
-                                 int spaceBallNumber, 
+                                 int squadronNumber, int invaderNumber,
+                                 int spaceBallNumber,
                                  Hero hero,
                                  MasterPilotWorld masterPilotWorld) {
         
@@ -448,7 +502,7 @@ nb=5;
         Random x_rand = new Random();
         float x_mod = x_max - x_min + 1;
         float x_pos;
-        
+
         /**
          * Generate y position
          */
@@ -461,22 +515,20 @@ nb=5;
         SpaceshipFactory enemyFactory = new SpaceshipFactory(masterPilotWorld); 
         
         // Generate enemy
-        while (number > 0) {
-            
-            x_pos = (x_rand.nextFloat() % x_mod) + HEIGHT;
+        while (number > 0) {            
+            x_pos = x_rand.nextFloat() % x_mod;
             y_pos = y_rand.nextFloat() % y_mod;
-            
+
             // Check if the tie position is not on a planet
-            for ( Star planet : masterPilotWorld.getStarList()) {
-                
+            for (Star planet : masterPilotWorld.getStarList()) {
+
                 // If its not, generate a tie.
                 if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
                     if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
                         enemyFactory.createEnemy(type, (int)x_pos, (int)y_pos, hero);
                         --number;                        
                     }
-                }
-                else {
+                } else {
                     enemyFactory.createEnemy(type, (int)x_pos + 100, (int)y_pos + 100, hero);
                     --number;
                 }
@@ -575,11 +627,8 @@ nb=5;
                     e.printStackTrace();
                 }
             }
-
-            if (gameTiming < 0) {
-                return;
-            }
         }
     }
+
 
 }

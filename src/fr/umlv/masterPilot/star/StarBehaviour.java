@@ -7,6 +7,8 @@ import org.jbox2d.dynamics.Fixture;
 import java.awt.*;
 
 /**
+ * @see fr.umlv.masterPilot.common.UserSpec
+ * specify the collision behaviour of the star
  * Created by emmanuel on 29/12/13.
  */
 public class StarBehaviour implements UserSpec {

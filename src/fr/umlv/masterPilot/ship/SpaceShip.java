@@ -2,6 +2,10 @@ package fr.umlv.masterPilot.ship;
 
 import org.jbox2d.dynamics.Body;
 
+/**
+ * All MasterPilot Ship Hero like ennemy
+ * derive from that interface
+ */
 
 public interface SpaceShip extends Move {
 

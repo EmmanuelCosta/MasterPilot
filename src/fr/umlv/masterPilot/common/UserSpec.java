@@ -7,7 +7,8 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * This class contains the caracteristic
+ * This class have to be given in fixture.userData
+ * it will contains the basic behaviour of body when collision is detected
  * <p>
  * <p>
  * <p>
