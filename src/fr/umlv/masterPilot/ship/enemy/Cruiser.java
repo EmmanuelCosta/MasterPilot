@@ -23,8 +23,8 @@ public class Cruiser implements SpaceShip {
     private final Vec2 rayonForce = new Vec2(+0f, -150f);
     private final Vec2 forceLeft = new Vec2(-400f, +0f);
     private final Vec2 forceRight = new Vec2(+400f, +0f);
-    private final Vec2 forceUp = new Vec2(+0f, +70000f);
-    private final Vec2 forceDown = new Vec2(+0f, -70000f);
+    private final Vec2 forceUp = new Vec2(+0f, +170000f);
+    private final Vec2 forceDown = new Vec2(+0f, -170000f);
 
 
     private Vec2 shoot1;
@@ -169,7 +169,7 @@ public class Cruiser implements SpaceShip {
         Vec2 lVelocity = this.body.getLinearVelocity();
 
 
-        if (Math.abs(lVelocity.y) < maxSpeed.y) {
+        if (Math.abs(lVelocity.y) <= maxSpeed.y) {
             this.body.applyForceToCenter(force);
         }
     }
@@ -189,7 +189,7 @@ public class Cruiser implements SpaceShip {
         Vec2 lVelocity = this.body.getLinearVelocity();
 
 
-        if (Math.abs(lVelocity.y) < maxSpeed.y) {
+        if (Math.abs(lVelocity.y) <= maxSpeed.y) {
             this.body.applyForceToCenter(force);
         }
 
@@ -210,7 +210,7 @@ public class Cruiser implements SpaceShip {
         Vec2 lVelocity = this.body.getLinearVelocity();
 
 
-        if (Math.abs(lVelocity.y) < maxSpeed.y) {
+        if (Math.abs(lVelocity.y) <= maxSpeed.y) {
             this.body.applyForceToCenter(force);
         }
 
@@ -231,7 +231,7 @@ public class Cruiser implements SpaceShip {
         Vec2 lVelocity = this.body.getLinearVelocity();
 
 
-        if (Math.abs(lVelocity.y) < maxSpeed.y) {
+        if (Math.abs(lVelocity.y) <= maxSpeed.y) {
             this.body.applyForceToCenter(force);
         }
     }

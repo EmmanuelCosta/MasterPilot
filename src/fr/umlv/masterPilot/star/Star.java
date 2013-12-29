@@ -50,15 +50,8 @@ public class Star {
                 | MasterPilotWorld.MEGABOMB | MasterPilotWorld.BOMB;
     }
 
-    public Star(World world, float x_axis, float y_axis, int category, int maskBit, Color color) {
-        this.world = world;
-        this.x_axis = x_axis;
-        this.y_axis = y_axis;
-
-        this.category = category;
-        this.maskBit = maskBit;
-
-        this.color = color;
+    public Star(World world, float x_axis, float y_axis,int density,int radius) {
+       this(world,x_axis,y_axis);
     }
 
     /**

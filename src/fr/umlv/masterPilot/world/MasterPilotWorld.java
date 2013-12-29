@@ -7,6 +7,7 @@ import fr.umlv.masterPilot.ship.RayFireManager;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.ship.hero.TrailManager;
+import fr.umlv.masterPilot.star.Star;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -35,6 +36,11 @@ import java.util.List;
  */
 public class MasterPilotWorld implements ContactListener {
 
+
+
+    /**
+     * this is the available mode game
+     */
     public static enum MODE{
         CHEAT,HARDCORE;
     }
@@ -61,6 +67,7 @@ public class MasterPilotWorld implements ContactListener {
     private final MasterPilot2D masterPilot2D;
     private final HashMap<Body, SpaceShip> enemyManager;
     private final HashMap<Body, Bomb> bombManager;
+    private final HashMap<Body, Star> starManager;
     private final ArrayList<Body> destroyBody;
     /**
      * keep reference o main character of the game
@@ -76,6 +83,7 @@ public class MasterPilotWorld implements ContactListener {
 
         this.enemyManager = new HashMap<>();
         this.bombManager = new HashMap<>();
+        this.starManager = new HashMap<>();
         this.destroyBody = new ArrayList<>();
 
 
@@ -385,8 +393,7 @@ public class MasterPilotWorld implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-        Fixture fixtureA = contact.getFixtureA();
-        fixtureA.getBody().setTransform(new Vec2(80, 100), 1500);
+
     }
 
     @Override
@@ -403,7 +410,7 @@ public class MasterPilotWorld implements ContactListener {
     public List<Body> getDestroyBody() {
 
 /**
- * suppress all register fire if they have reached a certain distance
+ * suppress all register Ray fire if they have reached a certain distance
  */
         Iterator<RayFireManager.Distance> iterator = RayFireManager.getList().iterator();
         while (iterator.hasNext()) {
@@ -414,7 +421,9 @@ public class MasterPilotWorld implements ContactListener {
                 iterator.remove();
             }
         }
-
+/**
+ * because we want to erase the trail
+ */
         Iterator<TrailManager.DistanceTrail> trailManagerIterator = TrailManager.getList().iterator();
 
         while (trailManagerIterator.hasNext()) {
@@ -460,6 +469,10 @@ public class MasterPilotWorld implements ContactListener {
 
     }
 
+    /**
+     * retreive all existed ennemy in the world
+     * @return
+     */
     public List<SpaceShip> getEnemyList() {
         return new ArrayList<>(this.enemyManager.values());
     }
@@ -470,10 +483,43 @@ public class MasterPilotWorld implements ContactListener {
         }
     }
 
+    /**
+     * register the star to his manager in MasterPilotWorld
+     * @param body
+     * @param star
+     */
+    public void addToStarManager(Body body, Star star) {
+
+        if (!this.starManager.containsKey(body)) {
+            this.starManager.put(body, star);
+        }
+    }
+
+    /**
+     * use this to get the star register in the world
+     * @return
+     */
+    public List<Star> getStarList() {
+        return new ArrayList<>(this.starManager.values());
+    }
+
+    /**
+     * use this to draw the framework clock in the top left side
+     * @param hour
+     * @param minute
+     * @param second
+     */
     public void drawFrameworkClock(int hour, int minute, int second) {
         this.masterPilot2D.drawFrameworkClock(hour, minute, second);
     }
 
+    /**
+     * this will draw the final status of the game
+     * winner or lose
+     * @param iswin
+     * @param x
+     * @param y
+     */
     public void drawFrameworkEnd(boolean iswin, int x, int y) {
         this.masterPilot2D.drawFrameworkEnd(iswin, x, y);
     }

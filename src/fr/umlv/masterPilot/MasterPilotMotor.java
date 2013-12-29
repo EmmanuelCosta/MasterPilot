@@ -26,7 +26,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
     private final int HEIGHT = 600;
     //OBSERVER LIST
     private final List<KeyMotionObserver> observerList = new ArrayList<>();
-    //TODO MOVE IT IN MASTERPILOTE WORLD
+
     private final float timeStep = 1.0f / 6f;
     private final int velocityIterations = 6;
     private final int positionIterations = 3;

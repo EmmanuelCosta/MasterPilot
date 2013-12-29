@@ -36,7 +36,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private Body body;
     private Bomb.BombType bombType = Bomb.BombType.NONE;
     private Bomb cBomb;
-    private final Vec2 maxSpeed = new Vec2(10,10);
+    private final Vec2 maxSpeed = new Vec2(5,5);
 
     /**
      * create the hero at the specify coordinate
