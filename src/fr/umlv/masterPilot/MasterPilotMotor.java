@@ -234,25 +234,18 @@ public class MasterPilotMotor implements KeyMotionObservable {
      */
     private void createRandomStar(MasterPilotWorld masterPilotWorld, int percentage) {
         StarFactory startFactory = new StarFactory(masterPilotWorld);
-    /**
-     * caculate number of star
-     */
-
-
+        
+        /**
+         * caculate number of star
+         */
         int pc = (int) ((0.08 * percentage)) + 1;
-
-
         int tc = pc;
-
-
         int tour = 0;
 
         // masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
         for (int i = -(WIDTH / 2) * 10; i <= 0; i = i + 280) {
-
             if (tour % 3 == 0) {
                 tc = pc;
-
             }
 
             for (int p = (HEIGHT / 2) * 10; p >= 0; p = p - 180) {
@@ -261,39 +254,25 @@ public class MasterPilotMotor implements KeyMotionObservable {
                 if (rInterval % pc == 0 && tc >= 0) {
                     startFactory.createStar(i, p, Color.yellow);
                     tc--;
-
-
                 }
-
-
             }
-
             tour++;
         }
 
 
         tour = 0;
         for (int i = -(WIDTH / 2) * 10; i <= 0; i = i + 280) {
-
             if (tour % 3 == 0) {
                 tc = pc;
-
             }
 
             for (int p = -(HEIGHT / 2) * 10; p <= 0; p = p + 180) {
                 int rInterval = 2 + (int) (Math.random() * ((pc - 2) + 1));
-
-
                 if (rInterval % pc == 0 && tc >= 0) {
                     startFactory.createStar(i, p, Color.yellow);
                     tc--;
-
-
                 }
-
-
             }
-
             tour++;
         }
         tour = 0;
@@ -301,26 +280,16 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
             if (tour % 3 == 0) {
                 tc = pc;
-
             }
-
             for (int p = 0; p >= -(HEIGHT / 2) * 10; p = p - 180) {
                 int rInterval = 2 + (int) (Math.random() * ((pc - 2) + 1));
-
-
                 if (rInterval % pc == 0 && tc >= 0) {
                     startFactory.createStar(i, p, Color.yellow);
                     tc--;
-
                 }
-
-
             }
-
             tour++;
         }
-
-
         tour = 0;
         for (int i = 0; i <= (WIDTH / 2) * 10; i = i + 280) {
 
@@ -328,7 +297,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
                 tc = pc;
 
             }
-
             for (int p = (HEIGHT / 2) * 10; p >= 0; p = p - 180) {
                 int rInterval = 2 + (int) (Math.random() * ((pc - 2) + 1));
 
@@ -336,10 +304,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
                 if (rInterval % pc == 0 && tc >= 0) {
                     startFactory.createStar(i, p, Color.yellow);
                     tc--;
-
                 }
-
-
             }
 
             tour++;
@@ -529,7 +494,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
                         --number;                        
                     }
                 } else {
-                    enemyFactory.createEnemy(type, (int)x_pos + 100, (int)y_pos + 100, hero);
+                    enemyFactory.createEnemy(type, (int)x_pos, (int)y_pos + 150, hero);
                     --number;
                 }
             }
