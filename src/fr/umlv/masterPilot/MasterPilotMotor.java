@@ -2,6 +2,7 @@ package fr.umlv.masterPilot;
 
 import fr.umlv.masterPilot.bomb.Bomb;
 import fr.umlv.masterPilot.bomb.GenericBomb;
+import fr.umlv.masterPilot.star.StarFactory;
 import fr.umlv.masterPilot.world.KeyMotionObservable;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
 import fr.umlv.masterPilot.ship.SpaceShip;
@@ -63,29 +64,25 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
     private void populatedWorld(MasterPilotWorld masterPilotWorld, ApplicationContext context) {
         //TODO MANAGE WITH FILE CONFIG
+
+        StarFactory startFactory = new StarFactory(masterPilotWorld);
+        startFactory.createStar(100, 250, Color.yellow);
 //
-        Star star = new Star(masterPilotWorld.getWorld(), 100, 250, Color.yellow);
-        star.create();
-
-        Star star2 = new Star(masterPilotWorld.getWorld(), 100, 550, Color.GREEN);
-        star2.create();
-
-        Star star3 = new Star(masterPilotWorld.getWorld(), 400, 350, Color.RED);
-        star3.create();
-
-        Star star4 = new Star(masterPilotWorld.getWorld(), 400, 650, Color.BLUE);
-        star4.create();
 
 
-        Hero h = new Hero(masterPilotWorld.getWorld(), 0, 0, MasterPilotWorld.MODE.CHEAT);
-        //
-        h.create();
+        startFactory.createStar(100, 550, Color.GREEN);
 
-        masterPilotWorld.setHero(h);
-        this.addObserver(h);
+
+        startFactory.createStar( 400, 350, Color.RED);
+
+        startFactory.createStar(400, 650, Color.BLUE);
 
         SpaceshipFactory factory = new SpaceshipFactory(masterPilotWorld);
-//        factory.createEnemy("TIE", 350, 150, h);
+        Hero h = factory.createHero(0, 0, MasterPilotWorld.MODE.CHEAT);
+
+        this.addObserver(h);
+
+ //        factory.createEnemy("TIE", 350, 150, h);
 //
 //        factory.createEnemy("TIE", 850, 750, h);
 ////

@@ -12,12 +12,13 @@ import java.awt.*;
  * Created by emmanuel
  */
 public class Star {
-    private final int radius = 50;
+    private final int radius;
     private final int maskBit;
     private final int category;
     private final World world;
     private final float x_axis;
     private final float y_axis;
+    private final int density ;
     private Color color;
     private Body body;
 
@@ -37,9 +38,16 @@ public class Star {
         this.maskBit = MasterPilotWorld.ENEMY | MasterPilotWorld.HERO
                 | MasterPilotWorld.SHOOT | MasterPilotWorld.SHIELD
                 | MasterPilotWorld.MEGABOMB | MasterPilotWorld.BOMB;
+        this.density = 150;
+        this.radius=50;
     }
 
     public Star(World world, float x_axis, float y_axis,Color color) {
+        this(world,x_axis,y_axis);
+        this.color=color;
+    }
+
+    public Star(World world, float x_axis, float y_axis,int density,int radius,Color color) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
@@ -48,10 +56,8 @@ public class Star {
         this.maskBit = MasterPilotWorld.ENEMY | MasterPilotWorld.HERO
                 | MasterPilotWorld.SHOOT | MasterPilotWorld.SHIELD
                 | MasterPilotWorld.MEGABOMB | MasterPilotWorld.BOMB;
-    }
-
-    public Star(World world, float x_axis, float y_axis,int density,int radius) {
-       this(world,x_axis,y_axis);
+        this.density = density;
+        this.radius=radius;
     }
 
     /**
@@ -75,7 +81,7 @@ public class Star {
         FixtureDef fd = new FixtureDef();
         // applique toi a cs
         fd.shape = cs;
-        fd.density = 150f;
+        fd.density = this.density;
         fd.friction = 50f;
         fd.restitution = 0.5f;
 
@@ -84,24 +90,7 @@ public class Star {
          * we set the color of
          * the body
          */
-        fd.userData = new UserSpec() {
-            @Override
-            public void onCollide(Fixture fix2, boolean flag) {
-                /**
-                 * i have to put hero shield when  it
-                 * will collide with a star
-                 */
-                if(fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD){
-
-                    fix2.m_isSensor = false;
-                }
-            }
-
-            @Override
-            public Color getColor() {
-                return color;
-            }
-        };
+        fd.userData = new StarBehaviour(this.color);
 
         fd.filter.categoryBits = this.category;
 

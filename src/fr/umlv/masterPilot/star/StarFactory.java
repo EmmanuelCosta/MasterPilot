@@ -5,6 +5,8 @@ import fr.umlv.masterPilot.ship.enemy.*;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 
+import java.awt.*;
+
 /**
  * Use this to create star in jbox world
  * it will register it into the StarManager of the MasterPiloteWorld
@@ -20,8 +22,15 @@ public class StarFactory {
         this.masterPilotWorld = masterPilotWorld;
     }
 
-    public Star createStar(float x_axis, float y_axis,int density,int radius){
-        Star star = new Star(this.masterPilotWorld.getWorld(),x_axis,y_axis,density,radius);
+    public Star createStar(float x_axis, float y_axis,int density,int radius,Color color){
+        Star star = new Star(this.masterPilotWorld.getWorld(),x_axis,y_axis,density,radius,color);
+        star.create();
+        this.masterPilotWorld.addToStarManager(star.getBody(), star);
+        return star;
+    }
+
+    public Star createStar(float x_axis, float y_axis,Color color){
+        Star star = new Star(this.masterPilotWorld.getWorld(),x_axis,y_axis,color);
         star.create();
         this.masterPilotWorld.addToStarManager(star.getBody(), star);
         return star;
