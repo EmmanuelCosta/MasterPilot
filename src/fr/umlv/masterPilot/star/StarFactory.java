@@ -1,10 +1,6 @@
 package fr.umlv.masterPilot.star;
 
-import fr.umlv.masterPilot.ship.SpaceShip;
-import fr.umlv.masterPilot.ship.enemy.*;
-import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
-
 import java.awt.*;
 
 /**
@@ -13,12 +9,9 @@ import java.awt.*;
  * Created by emmanuel on 28/12/13.
  */
 public class StarFactory {
-
-
     private final MasterPilotWorld masterPilotWorld;
 
     public StarFactory(MasterPilotWorld masterPilotWorld) {
-
         this.masterPilotWorld = masterPilotWorld;
     }
 

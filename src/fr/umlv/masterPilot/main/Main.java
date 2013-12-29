@@ -1,5 +1,6 @@
 package fr.umlv.masterPilot.main;
 
+import java.util.Objects;
 import fr.umlv.masterPilot.MasterPilotMotor;
 import fr.umlv.zen3.Application;
 
@@ -8,12 +9,10 @@ import fr.umlv.zen3.Application;
  */
 public class Main {
     public static void main(String[] args) {
-        MasterPilotMotor mPM = new MasterPilotMotor();
-
+        MasterPilotMotor mPM = new MasterPilotMotor();        
         Application.run("Master Pilot Game", mPM.getWIDTH(), mPM.getHEIGHT(), context -> {
-
             context.render(graphics -> {
-                mPM.launchGame(context,args[0]);
+                mPM.launchGame(context,Objects.requireNonNull(args[0]));
             });
         });
 
