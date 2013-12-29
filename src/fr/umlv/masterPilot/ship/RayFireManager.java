@@ -5,7 +5,6 @@ import org.jbox2d.dynamics.Body;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * This will Manage the RayFire which is fire of @SpaceShip

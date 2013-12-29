@@ -25,6 +25,9 @@ import java.util.*;
 import java.util.List;
 
 /**
+ * This is the motor of the game
+ * it launch and end  the game
+ * create and destroy his character
  * Created by emmanuel on 06/12/13.
  */
 public class MasterPilotMotor implements KeyMotionObservable {
@@ -38,7 +41,11 @@ public class MasterPilotMotor implements KeyMotionObservable {
     private final int positionIterations = 3;
     private int gameTiming;
 
-
+    /**
+     * this will launch the game
+     * @param context
+     * @param levelFile this is a path to the xml level config
+     */
     public void launchGame(ApplicationContext context, String levelFile) {
 
         /**
@@ -305,6 +312,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
     /**
      * main loop of the game
+     *
      *
      * @param masterPilotWorld : This is the masterpilote world
      * @param context

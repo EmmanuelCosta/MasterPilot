@@ -1,6 +1,5 @@
 package fr.umlv.masterPilot.ship;
 
-import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
@@ -11,7 +10,7 @@ import java.awt.*;
 /**
  * Ray bomb are normal bomb
  * by default is hero friendly but
- * enemy ans star hostile
+ * enemy and star hostile
  * <p>
  * created By Babala Costa Emmanuel
  */

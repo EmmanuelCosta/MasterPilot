@@ -14,6 +14,9 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * an ennemy spaceShip which is protected by a 7 small triangle
+ */
 public class Squadron implements SpaceShip {
     private final int maskBit;
     private final int category;

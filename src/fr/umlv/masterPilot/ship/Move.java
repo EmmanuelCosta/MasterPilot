@@ -1,5 +1,8 @@
 package fr.umlv.masterPilot.ship;
 
+/**
+ * interface of basic move direction of character in MasterPilotWorld
+ */
 public interface Move {
 	public void right();
 

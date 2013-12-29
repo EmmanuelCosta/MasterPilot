@@ -10,6 +10,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
+ * @see fr.umlv.masterPilot.common.UserSpec
+ *
+ * basic collision behaviour of the triangle space which protect the Squadon Mother Ship
+ * @see fr.umlv.masterPilot.ship.enemy.Squadron
  * Created by emmanuel on 22/12/13.
  */
 public class TriangleBehaviour implements UserSpec {

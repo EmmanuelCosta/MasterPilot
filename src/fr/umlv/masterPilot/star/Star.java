@@ -1,6 +1,5 @@
 package fr.umlv.masterPilot.star;
 
-import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.*;
@@ -8,7 +7,7 @@ import org.jbox2d.dynamics.*;
 import java.awt.*;
 
 /**
- * created a start in the world
+ * created a star in the world
  * Created by emmanuel
  */
 public class Star {
