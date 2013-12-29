@@ -42,7 +42,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
     private int gameTiming;
 
 
-    public void launchGame(ApplicationContext context, String levelFile) {
+    public void launchGame(ApplicationContext context, String levelFile, String mode) {
 
         /**
          * Load the level.
@@ -73,8 +73,8 @@ public class MasterPilotMotor implements KeyMotionObservable {
             MasterPilotWorld masterPilotWorld = initPlateform(graphics);
             gameTiming = Integer.valueOf("500");
 
-            populatedWorld(masterPilotWorld, context, levelParser);
-            run(masterPilotWorld, context);
+            populatedWorld(masterPilotWorld, context, levelParser, mode);
+            run(masterPilotWorld, context, levelParser);
         });
     }
 
@@ -95,10 +95,10 @@ public class MasterPilotMotor implements KeyMotionObservable {
      *
      * @param masterPilotWorld
      * @param context
-     */
+     */ 
 
     private void populatedWorld(MasterPilotWorld masterPilotWorld,
-            ApplicationContext context, LevelHandler levelParser) {
+            ApplicationContext context, LevelHandler levelParser, String mode) {
         
         /**
          * Get datas from the xml.
@@ -180,33 +180,51 @@ public class MasterPilotMotor implements KeyMotionObservable {
         startFactory.createStar(400, 350, Color.RED);
         startFactory.createStar(400, 650, Color.BLUE);
 
-
+        
         SpaceshipFactory factory = new SpaceshipFactory(masterPilotWorld);
-        Hero h = factory.createHero(0, 0, MasterPilotWorld.MODE.CHEAT);
+        
+        /**
+         * Initialize the game mode.
+         */
+        Hero h = null;
+        switch(mode){
+        case "-h":
+            h = factory.createHero(0, 0, MasterPilotWorld.MODE.HARDCORE); 
+            break;
+            
+        case "-c":
+            h = factory.createHero(0, 0, MasterPilotWorld.MODE.CHEAT);
+            break;
+          
+        default:
+            throw new IllegalArgumentException("The specified argument for the game mode is not valid.\n Please enter -c for the cheat mode. \n Or enter -h for the hardcore mode.");
+        }
 
         this.addObserver(h);
-
-        factory.createEnemy("INVADER", 150, 50, h);
-
-        factory.createEnemy("TIE", 150, 50, h);
-
-        factory.createEnemy("SQUADRON", 350, 50, h);
-
-        factory.createEnemy("CRUISER", -350, 50, h);
+        
+        generateEnemies(1, 1, 1, 1, 1, h, masterPilotWorld);
+        
+//        factory.createEnemy("INVADER", 150, 50, h);
+//
+//        factory.createEnemy("TIE", 150, 50, h);
+//
+//        factory.createEnemy("SQUADRON", 350, 50, h);
+//
+//        factory.createEnemy("CRUISER", -350, 50, h);
 
         //
-        factory.createEnemy("SQUADRON", -20, 90, h);
-        factory.createEnemy("CRUISER", -350, 100, h);
-
-        factory.createEnemy("SPACEBALL", -20, 90, h);
+//        factory.createEnemy("SQUADRON", -20, 90, h);
+//        factory.createEnemy("CRUISER", -350, 100, h);
+//
+//        factory.createEnemy("SPACEBALL", -20, 90, h);
         // //
         // //
-        factory.createEnemy("TIE", 200, 90, h);
+ //       factory.createEnemy("TIE", 200, 90, h);
         //
-        factory.createEnemy("TIE", 200, 90, h);
+//        factory.createEnemy("TIE", 200, 90, h);
         //
         //
-        factory.createEnemy("CRUISER", -50, 90, h);
+//        factory.createEnemy("CRUISER", -50, 90, h);
 
         //
         GenericBomb empBomb = new GenericBomb(masterPilotWorld.getWorld(), 70,
@@ -220,8 +238,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
         masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
 
         // masterPilotWorld.addToBombManager(empBomb.getBody(), empBomb);
-
-
     }
 
     private void createRandomStar(MasterPilotWorld masterPilotWorld, int nb) {
@@ -272,7 +288,7 @@ nb=5;
      * @param context
      */
     private void run(MasterPilotWorld masterPilotWorld,
-            ApplicationContext context) {
+            ApplicationContext context, LevelHandler levelParser) {
         long beforeTime, afterTime, timeDiff, sleepTime;
 
         beforeTime = System.nanoTime();
@@ -354,6 +370,11 @@ nb=5;
                 masterPilotWorld.drawFrameworkEnd(false, WIDTH / 2, HEIGHT / 2);
                 return;
             } else if (masterPilotWorld.getEnemyList().isEmpty()) {
+                // If there is wave again
+                    // Generate enemies.
+                
+                // If there is no waves again
+                    // YOU WIN
                 masterPilotWorld.drawFrameworkEnd(true, WIDTH / 2, HEIGHT / 2);
                 return;
             }
@@ -410,13 +431,20 @@ nb=5;
                                  int spaceBallNumber, 
                                  Hero hero,
                                  MasterPilotWorld masterPilotWorld) {
-        int number = 0;
         
+        generateEnemy("TIE", tieNumber, hero, masterPilotWorld);
+        generateEnemy("CRUISER", cruiserNumber, hero, masterPilotWorld);
+        generateEnemy("SQUADRON", squadronNumber, hero, masterPilotWorld);
+        generateEnemy("INVADER", invaderNumber, hero, masterPilotWorld);
+        generateEnemy("SPACEBALL", spaceBallNumber, hero, masterPilotWorld);
+    }
+    
+    private void generateEnemy(String type, int number, Hero hero, MasterPilotWorld masterPilotWorld){        
         /**
          * Generate x position
          */
-        float x_min = hero.getBody().getPosition().x - 450;
-        float x_max = hero.getBody().getPosition().x + 450;
+        float x_min = hero.getBody().getPosition().x - WIDTH;
+        float x_max = hero.getBody().getPosition().x + WIDTH;
         Random x_rand = new Random();
         float x_mod = x_max - x_min + 1;
         float x_pos;
@@ -424,19 +452,18 @@ nb=5;
         /**
          * Generate y position
          */
-        float y_min = hero.getBody().getPosition().y + 350;
-        float y_max = hero.getBody().getPosition().y + 500;
+        float y_min = hero.getBody().getPosition().y;
+        float y_max = hero.getBody().getPosition().y + HEIGHT + 200;
         Random y_rand = new Random();
         float y_mod = y_max - y_min + 1;
         float y_pos;
         
         SpaceshipFactory enemyFactory = new SpaceshipFactory(masterPilotWorld); 
         
-        // Generate tie 
-        number = tieNumber;
-        while (number != 0) {
+        // Generate enemy
+        while (number > 0) {
             
-            x_pos = x_rand.nextFloat() % x_mod;
+            x_pos = (x_rand.nextFloat() % x_mod) + HEIGHT;
             y_pos = y_rand.nextFloat() % y_mod;
             
             // Check if the tie position is not on a planet
@@ -445,90 +472,14 @@ nb=5;
                 // If its not, generate a tie.
                 if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
                     if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
-                        enemyFactory.createEnemy("TIE", (int)x_pos, (int)y_pos, hero);
+                        enemyFactory.createEnemy(type, (int)x_pos, (int)y_pos, hero);
                         --number;                        
                     }
-                } 
-            }
-        }
-        
-        //Generate cruiser
-        number = cruiserNumber;
-        while (number != 0) {
-            
-            x_pos = x_rand.nextFloat() % x_mod;
-            y_pos = y_rand.nextFloat() % y_mod;
-            
-            // Check if the cruiser position is not on a planet
-            for ( Star planet : masterPilotWorld.getStarList()) {
-                
-                // If its not generate a cruiser.
-                if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
-                    if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
-                        enemyFactory.createEnemy("CRUISER", (int)x_pos, (int)y_pos, hero);
-                        --number;
-                    }
-                } 
-            }
-        }
-        
-      //Generate squadron
-        number = squadronNumber;
-        while (number != 0) {
-            
-            x_pos = x_rand.nextFloat() % x_mod;
-            y_pos = y_rand.nextFloat() % y_mod;
-            
-            // Check if the squadron position is not on a planet
-            for ( Star planet : masterPilotWorld.getStarList()) {
-                
-                // If its not generate a squadron.
-                if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
-                    if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
-                        enemyFactory.createEnemy("SQUADRON", (int)x_pos, (int)y_pos, hero);
-                        --number;
-                    }
-                } 
-            }
-        }
-        
-        //Generate invader
-        number = invaderNumber;
-        while (number != 0) {
-            
-            x_pos = x_rand.nextFloat() % x_mod;
-            y_pos = y_rand.nextFloat() % y_mod;
-            
-            // Check if the invader position is not on a planet
-            for ( Star planet : masterPilotWorld.getStarList()) {
-                
-                // If its not generate an invader.
-                if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
-                    if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
-                        enemyFactory.createEnemy("INVADER", (int)x_pos, (int)y_pos, hero);
-                        --number;
-                    }
-                } 
-            }
-        }
-        
-        //Generate squadron
-        number = spaceBallNumber;
-        while (number != 0) {
-            
-            x_pos = x_rand.nextFloat() % x_mod;
-            y_pos = y_rand.nextFloat() % y_mod;
-            
-            // Check if the spaceball position is not on a planet
-            for ( Star planet : masterPilotWorld.getStarList()) {
-                
-                // If its not generate a spaceBall.
-                if(x_pos < planet.getBody().getPosition().x - 50f && x_pos > planet.getBody().getPosition().x + 50) {
-                    if(y_pos < planet.getBody().getPosition().y - 50f && y_pos > planet.getBody().getPosition().y + 50){
-                        enemyFactory.createEnemy("SPACEBALL", (int)x_pos, (int)y_pos, hero);
-                        --number;
-                    }
-                } 
+                }
+                else {
+                    enemyFactory.createEnemy(type, (int)x_pos + 100, (int)y_pos + 100, hero);
+                    --number;
+                }
             }
         }
     }

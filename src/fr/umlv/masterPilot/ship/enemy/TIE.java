@@ -190,8 +190,6 @@ public class TIE implements SpaceShip {
             }
         });
         this.thread.start();
-
-
     }
 
     @Override
