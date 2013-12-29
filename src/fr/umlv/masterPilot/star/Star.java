@@ -38,7 +38,7 @@ public class Star {
         this.maskBit = MasterPilotWorld.ENEMY | MasterPilotWorld.HERO
                 | MasterPilotWorld.SHOOT | MasterPilotWorld.SHIELD
                 | MasterPilotWorld.MEGABOMB | MasterPilotWorld.BOMB;
-        this.density = 150;
+        this.density = 15;
         this.radius=50;
     }
 

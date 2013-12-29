@@ -85,7 +85,7 @@ public class TIE implements SpaceShip {
         fd.shape = cs;
         fd.density = 1.5f;
         fd.friction = 8f;
-        fd.restitution = 0.5f;
+        fd.restitution = 10.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
 
