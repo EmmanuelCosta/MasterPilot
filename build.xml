@@ -1,67 +1,44 @@
-<project name="compiltation des classes" default="compile" basedir="."> 
-    <!-- proprietes du projet -->
-    <property name="projet.creators" value="Babala Costa Emmanuel and Sybille Crimet" /> 
-    <property name="projet.source.dir" value="src" /> 
-    <property name="projet.lib.dir" value="lib" /> 
-    <property name="projet.classes.dir" value="classes" /> 
-    <property name="projet.doc.dir" value="docs/doc" /> 
-    <property name="projet.jar.file" value="master-pilot.jar" /> 
-    <property name="main.class" value="fr.umlv.masterPilot.main.Main" /> 
-  
-    <!-- classpath du projet -->
-    <path id="projet.classpath"> 
-        <fileset dir="${projet.lib.dir}"> 
-            <include name="*.jar" /> 
-        </fileset> 
-        <pathelement location="${projet.classes.dir}" /> 
-    </path> 
-  
-    <!-- compilation des classes du projet -->
-    <target name="compile" description="Compilation des classes"> 
-        <mkdir dir="${projet.classes.dir}" /> 
-        <javac encoding="UTF-8" srcdir="${projet.source.dir}" destdir="${projet.classes.dir}" debug="on" optimize="off" deprecation="on" includeantruntime="false"> 
-            <classpath refid="projet.classpath" /> 
-        </javac> 
-    </target> 
-  
-    <!-- clean du projet -->
-    <target name="clean"> 
-        <delete dir="${projet.classes.dir}" /> 
-        <mkdir dir="${projet.classes.dir}" /> 
-        <delete dir="${projet.doc.dir}" /> 
-        <delete file="${projet.jar.file}" /> 
-    </target> 
-  
-    <!-- generation de la javadoc -->
-    <target name="javadoc"> 
-        <mkdir dir="${projet.classes.dir}" /> 
-        <javadoc sourcepath="${projet.source.dir}" destdir="${projet.doc.dir}"> 
-        </javadoc> 
-    </target> 
-  
-     <!-- generation du .jar -->
-    <target name="jar" depends="compile"> 
-        <!-- recuperation des path des libs du projet -->
-        <pathconvert property="libs.project" pathsep=" "> 
-            <mapper> 
-                <chainedmapper> 
-                    <flattenmapper /> 
-                    <globmapper from="*" to="${projet.lib.dir}/*" /> 
-                </chainedmapper> 
-            </mapper> 
-            <path> 
-                <fileset dir="${projet.lib.dir}"> 
-                    <include name="**/*.jar" /> 
-                </fileset> 
-            </path> 
-        </pathconvert> 
-        <jar basedir="${projet.classes.dir}" destfile="${projet.jar.file}"> 
-            <manifest> 
-                <attribute name="Built-By" value="${projet.creators}" /> 
-                <attribute name="Main-Class" value="${main.class}" /> 
-                <attribute name="Class-Path" value="${libs.project}" /> 
-            </manifest> 
-        </jar> 
-    </target> 
-  
+<?xml version="1.0"?>
+<project name="MasterPilot" default="compile">
+          <property name="projet.creators" value="Babala Costa Emmanuel and Sybille Crimet" /> 
+        <property name="bin.dir" value="classes" />
+         <property name="src.dir" value="src" />
+        <property name="docs.dir" value="docs" />
+        <property name="lib.dir" value="lib"/>
+        <path id="classpath">
+                <fileset dir="${lib.dir}" includes="**/*.jar"/>
+        </path>        
+
+        <target name="init">
+           <mkdir dir="${bin.dir}" />        
+                 <mkdir dir="${docs.dir}/doc" />
+        </target>
+  <target name="compile" depends="init">
+           <javac srcdir="${src.dir}" destdir="${bin.dir}" includeantruntime="false" classpathref="classpath"/>
+    <echo message="Ant Done!"/>
+  </target>
+        <target name="jar" depends="compile">
+                <jar destfile="master-pilot.jar" basedir="${bin.dir}" >
+                                        <manifest>
+                                           <attribute name="Built-By" value="${projet.creators}" /> 
+                                                  <attribute name="Main-Class" value="fr.umlv.masterPilot.main.Main" />
+
+                                          </manifest>
+
+                         <zipgroupfileset dir="${lib.dir}" includes="**/*.jar" />
+                            
+               </jar>        
+        </target>
+         <target name="javadoc" depends="init" description="generate javadoc">
+            <javadoc sourcepath="${src.dir}" destdir="${docs.dir}/doc"/>
+                 
+          </target>
+        <target name="clean" description="Cleanup">
+                <delete includeEmptyDirs="true">
+                        <fileset dir="${bin.dir}" includes="**/*" defaultexcludes="no"/>
+                </delete>
+                <delete file="master-pilot.jar" />
+                <delete dir="${docs.dir}/doc" />
+
+        </target>
 </project>
