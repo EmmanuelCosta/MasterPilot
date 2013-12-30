@@ -152,7 +152,7 @@ public class TIE implements SpaceShip {
         chr.createChain(rVertices, 3);
 
 
-        //ps.set(vertices[1], vertices[2]);
+
 
 
         FixtureDef fr = new FixtureDef();
@@ -257,18 +257,9 @@ public class TIE implements SpaceShip {
         float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
         float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
         int limit = 100;
-
-//        if(x_distance > 800 || y_distance > 800){
-//            this.body.setTransform(new Vec2(this.hero.getBody().getPosition().x +200,
-//                    this.hero.getBody().getPosition().y+300),
-//                    this.getBody().getAngle());
-//        }
-
-//        if (x_distance > -30 && x_distance < 30 && fire == true) {
-//
-//            fire();
-//            fire = false;
-//        }
+        if(Math.abs(x_distance) > 1000 || Math.abs(y_distance)> 1000){
+                adjustPath();
+        }
 
 
         if ((x_distance >= -50 - limit && x_distance <= 50 + limit) && (y_distance >= -50 - limit && y_distance <= 50 + limit)
@@ -329,6 +320,19 @@ public class TIE implements SpaceShip {
 
     }
 
+    /**
+     * this is use to reduce distance between ennemy and hero
+     * otherwise it can be difficult to catch it again
+     */
+private void adjustPath(){
+    /**
+     * I get the actual tip coordinate in the world
+     */
+
+
+    Vec2 position = hero.getBody().getPosition();
+    this.body.setTransform(new Vec2(position.x+50,position.y+150),0);
+}
     @Override
     public void fire() {
 
@@ -352,18 +356,7 @@ public class TIE implements SpaceShip {
          * Apply force to the specific point
          */
 
-//        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
-//        Vec2 force;
-//        if (y_distance > 0) {
-//            force = body.getWorldVector(fireUp);
-//        } else {
-//            force = body.getWorldVector(fireDown);
-//            ;
-//        }
-//
-//
-//        Vec2 point1 = body.getWorldPoint(rayon1.getBody().getWorldCenter());
-//        Vec2 point2 = body.getWorldPoint(rayon2.getBody().getWorldCenter());
+
 
         /**
          * need to do transform to position the shoot
@@ -371,10 +364,8 @@ public class TIE implements SpaceShip {
          */
         rayon1.getBody().setTransform(worldPoint1, hero.getBody().getAngle());
 
-        // rayon1.getBody().applyForce(force, point1);
         rayon2.getBody().setTransform(worldPoint2, hero.getBody().getAngle());
 
-        // rayon2.getBody().applyForce(force, point2);
 
 
         Vec2 worldCenter = rayon1.getBody().getWorldCenter();
