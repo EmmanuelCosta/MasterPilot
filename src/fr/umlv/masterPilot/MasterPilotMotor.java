@@ -124,12 +124,8 @@ public class MasterPilotMotor implements KeyMotionObservable {
         final LevelHandler levelParser = new LevelHandler();
 
         try {
-            // Get the current directory from which the user work
-            StringBuffer accessFileName = new StringBuffer();
-            accessFileName.append(System.getProperty("user.dir"))
-                    .append(File.separator).append(levelFile);
-            InputStream fichier = new FileInputStream(new File(
-                    accessFileName.toString()));
+
+            InputStream fichier = new FileInputStream(new File(levelFile));
             levelParser.parse(fichier);
 
         } catch (ParserConfigurationException pce) {
