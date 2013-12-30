@@ -31,16 +31,12 @@ public class SpaceshipFactory {
     }
 
     /**
-     * <<<<<<< HEAD
+     *
      * create an enemy according to his type
      * create his body in the world
      * and register it in enemy Manager
-     * <p>
-     * =======
-     * create an enemy according to his type
-     * create his body in the world
-     * and register it in enemy Manager
-     * >>>>>>> d713d4794548f2f9100ba0683bc2286c74de1644
+     *
+     *
      *
      * @param enemyType
      * @param x

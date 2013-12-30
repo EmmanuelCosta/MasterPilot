@@ -9,7 +9,6 @@ import org.jbox2d.collision.shapes.ChainShape;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
 
@@ -386,12 +385,12 @@ public class TIE implements SpaceShip {
 
     @Override
     public void fireBomb() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void shield() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     public Body getBody() {

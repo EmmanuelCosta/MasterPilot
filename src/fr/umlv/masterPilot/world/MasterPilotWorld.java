@@ -285,7 +285,7 @@ public class MasterPilotWorld implements ContactListener {
      * specify param
      * <p>
      * use this to change referentiel
-     * made a translation of (0,0) -> (i,j)
+     * made a translation of (0,0) to (i,j)
      *
      * @param i
      * @param j

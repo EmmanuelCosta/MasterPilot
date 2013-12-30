@@ -167,7 +167,7 @@ public class MasterPilot2D {
      *
      * @param argWorld
      * @param argScreen
-     * @see org.jbox2d.common.IViewportTransform#getWorldToScreen(org.jbox2d.common.Vec2, org.jbox2d.common.Vec2)
+     * 
      */
     public void getWorldToScreenToOut(Vec2 argWorld, Vec2 argScreen) {
         viewportTransform.getWorldToScreen(argWorld, argScreen);
@@ -179,7 +179,7 @@ public class MasterPilot2D {
      * specify param
      * <p>
      * use this to change referentiel
-     * made a translation of (0,0) -> (i,j)
+     * made a translation of (0,0) to (i,j)
      *
      * @param i
      * @param j
