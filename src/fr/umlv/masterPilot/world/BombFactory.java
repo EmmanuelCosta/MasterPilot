@@ -25,7 +25,7 @@ public class BombFactory {
      */
     public Bomb createBomb(int x, int y, Bomb.BombType type) {
         GenericBomb gBomb = new GenericBomb(this.masterPilotWorld.getWorld(), x, y, type);
-
+gBomb.create();
         this.masterPilotWorld.addToBombManager( gBomb);
 
         return gBomb;

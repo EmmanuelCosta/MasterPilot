@@ -1,10 +1,12 @@
 package fr.umlv.masterPilot;
 
+import fr.umlv.masterPilot.bomb.Bomb;
 import fr.umlv.masterPilot.parser.handler.LevelHandler;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.SpaceShipFactory;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.star.StarFactory;
+import fr.umlv.masterPilot.world.BombFactory;
 import fr.umlv.masterPilot.world.KeyMotionObservable;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
@@ -12,6 +14,7 @@ import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
 import org.jbox2d.dynamics.Body;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.File;
@@ -47,10 +50,12 @@ public class MasterPilotMotor implements KeyMotionObservable {
         private final int spaceBallNumber;
         private final int waveNumber;
         private final int timer;
+        private final int bombPercentage;
+        private final int megaBombPercentage;
 
         private GameSpec(int tieNumber, int cruiserNumber, int squadronNumber,
-                int invaderNumber, int spaceBallNumber, int waveNumber,
-                int timer) {
+                         int invaderNumber, int spaceBallNumber, int waveNumber,
+                         int timer, int bombPercentage, int megaBombPercentage) {
             this.tieNumber = tieNumber;
             this.cruiserNumber = cruiserNumber;
             this.squadronNumber = squadronNumber;
@@ -58,6 +63,16 @@ public class MasterPilotMotor implements KeyMotionObservable {
             this.spaceBallNumber = spaceBallNumber;
             this.waveNumber = waveNumber;
             this.timer = timer;
+            this.bombPercentage = bombPercentage;
+            this.megaBombPercentage = megaBombPercentage;
+        }
+
+        public int getBombPercentage() {
+            return bombPercentage;
+        }
+
+        public int getMegaBombPercentage() {
+            return megaBombPercentage;
         }
 
         public int getTimer() {
@@ -185,6 +200,8 @@ public class MasterPilotMotor implements KeyMotionObservable {
         int invaderNumber = levelParser.getEnemy().getInvaderNumber();
         int spaceBallNumber = levelParser.getEnemy().getSpaceBallNumber();
 
+        int bombPercentage = levelParser.getBomb().getBombPercentage();
+        short megaBombPercentage = levelParser.getMegaBomb().getMegaBombPercentage();
         /**
          * Put some planets
          */
@@ -214,7 +231,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         GameSpec gameSpec = new GameSpec(tieNumber, cruiserNumber,
                 squadronNumber, invaderNumber, spaceBallNumber, waveNumber,
-                timer);
+                timer, bombPercentage, megaBombPercentage);
         run(masterPilotWorld, context, gameSpec);
     }
 
@@ -344,12 +361,21 @@ public class MasterPilotMotor implements KeyMotionObservable {
                 gameSpec.getCruiserNumber(), gameSpec.getSquadronNumber(),
                 gameSpec.getInvaderNumber(), gameSpec.getSpaceBallNumber());
 
+        int lastNumber=masterPilotWorld.getEnemyList().size();
+
         for (;;) {
 
             masterPilotWorld.getWorld().step(timeStep, velocityIterations,
                     positionIterations);
 
             destroyCharacter(masterPilotWorld);
+
+            if(lastNumber > masterPilotWorld.getEnemyList().size() && wave !=1){
+                generateBomb(masterPilotWorld,gameSpec.getBombPercentage(),"BOMB");
+                generateBomb(masterPilotWorld,gameSpec.getMegaBombPercentage(),"MEGABOMB");
+                lastNumber=masterPilotWorld.getEnemyList().size();
+            }
+
 
             KeyboardEvent keyEvent = context.pollKeyboard();
 
@@ -466,6 +492,39 @@ public class MasterPilotMotor implements KeyMotionObservable {
         }
     }
 
+    /**
+     * this will generate a bomb accornding to the given percentage
+     *
+     * @param masterPilotWorld
+     * @param bombPercentage
+     * @param type
+     */
+    public void generateBomb(MasterPilotWorld masterPilotWorld,int bombPercentage,String type){
+        Body bodyHero = masterPilotWorld.getBodyHero();
+
+        int x = (int) bodyHero.getPosition().x;
+        int y = (int) bodyHero.getPosition().y;
+
+        int rand = new Random().nextInt();
+
+        rand= Math.abs(rand)%100;
+
+        BombFactory bombFactory = new BombFactory(masterPilotWorld);
+
+        if(rand <= bombPercentage){
+
+            switch (type){
+                case "BOMB":
+                    bombFactory.createBomb(x+200,y-50, Bomb.BombType.BOMB);
+                    break;
+                case "MEGABOMB":
+                    bombFactory.createBomb(x-350,y+50, Bomb.BombType.MEGABOMB);
+                    break;
+                default :
+                    break;
+            }
+        }
+    }
     /**
      * this will create in the world ennemies accroding to the given ennemyTab
      * each indices of tab concern a specific type of ennemy in the world
@@ -626,4 +685,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
             compt++;
         }
     }
+
+
 }
