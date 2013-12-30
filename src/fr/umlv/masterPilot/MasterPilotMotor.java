@@ -371,7 +371,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
             destroyCharacter(masterPilotWorld);
 
-            if(lastNumber > masterPilotWorld.getEnemyList().size()){
+            if(lastNumber > masterPilotWorld.getEnemyList().size() && wave !=1){
                 generateBomb(masterPilotWorld,gameSpec.getBombPercentage(),"BOMB");
                 generateBomb(masterPilotWorld,gameSpec.getMegaBombPercentage(),"MEGABOMB");
                 lastNumber=masterPilotWorld.getEnemyList().size();
