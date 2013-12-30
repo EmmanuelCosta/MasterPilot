@@ -509,10 +509,11 @@ public class MasterPilotWorld implements ContactListener {
 
     /**
      * register a spaceship to the ennemyManager
-     * @param bodySpaceship :the body of ennemy to register
+
      * @param spaceShip : the space ship register
      */
-    public void addToSpaceshipManager(Body bodySpaceship, SpaceShip spaceShip) {
+    public void addToSpaceshipManager( SpaceShip spaceShip) {
+        Body bodySpaceship= spaceShip.getBody();
         if (!enemyManager.containsKey(bodySpaceship)) {
             this.enemyManager.put(bodySpaceship, spaceShip);
         }
@@ -539,10 +540,11 @@ public class MasterPilotWorld implements ContactListener {
 
     /**
      * add a bomb to his manager
-     * @param body the bomb body
+
      * @param bomb the bomb to be had
      */
-    public void addToBombManager(Body body, Bomb bomb) {
+    public void addToBombManager( Bomb bomb) {
+        Body body= bomb.getBody();
         if (!this.bombManager.containsKey(body)) {
             this.bombManager.put(body, bomb);
         }
@@ -550,11 +552,11 @@ public class MasterPilotWorld implements ContactListener {
 
     /**
      * register the star to his manager in MasterPilotWorld
-     * @param body
-     * @param star
-     */
-    public void addToStarManager(Body body, Star star) {
 
+     * @param star : the star to be register
+     */
+    public void addToStarManager( Star star) {
+        Body body = star.getBody();
         if (!this.starManager.containsKey(body)) {
             this.starManager.put(body, star);
         }

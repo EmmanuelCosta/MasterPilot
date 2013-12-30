@@ -27,7 +27,7 @@ public class StarFactory {
     public Star createStar(float x_axis, float y_axis,int density,int radius,Color color){
         Star star = new Star(this.masterPilotWorld.getWorld(),x_axis,y_axis,density,radius,color);
         star.create();
-        this.masterPilotWorld.addToStarManager(star.getBody(), star);
+        this.masterPilotWorld.addToStarManager( star);
         return star;
     }
 
@@ -41,7 +41,7 @@ public class StarFactory {
     public Star createStar(float x_axis, float y_axis,Color color){
         Star star = new Star(this.masterPilotWorld.getWorld(),x_axis,y_axis,color);
         star.create();
-        this.masterPilotWorld.addToStarManager(star.getBody(), star);
+        this.masterPilotWorld.addToStarManager( star);
         return star;
     }
 

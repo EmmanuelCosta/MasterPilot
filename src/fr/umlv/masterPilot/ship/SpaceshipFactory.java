@@ -77,7 +77,7 @@ public class SpaceShipFactory {
                 throw new UnsupportedOperationException();
         }
         space.create();
-        this.masterPilotWorld.addToSpaceshipManager(space.getBody(), space);
+        this.masterPilotWorld.addToSpaceshipManager( space);
         return space;
     }
 }
