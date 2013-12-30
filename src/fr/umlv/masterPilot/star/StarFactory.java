@@ -4,7 +4,7 @@ import fr.umlv.masterPilot.world.MasterPilotWorld;
 import java.awt.*;
 
 /**
- * Use this to create star in jbox world
+ * Use this to create star in jbox2d world
  * it will register it into the StarManager of the MasterPiloteWorld
  * Created by emmanuel on 28/12/13.
  */

@@ -10,11 +10,11 @@ import fr.umlv.masterPilot.world.MasterPilotWorld;
  * Created by emmanuel on 28/12/13.
 
  */
-public class SpaceshipFactory {
+public class SpaceShipFactory {
 
     private final MasterPilotWorld masterPilotWorld;
 
-    public SpaceshipFactory(MasterPilotWorld masterPilotWorld) {
+    public SpaceShipFactory(MasterPilotWorld masterPilotWorld) {
 
         this.masterPilotWorld = masterPilotWorld;
     }

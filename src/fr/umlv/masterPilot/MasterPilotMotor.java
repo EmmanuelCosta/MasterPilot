@@ -3,9 +3,8 @@ package fr.umlv.masterPilot;
 
 import fr.umlv.masterPilot.parser.handler.LevelHandler;
 import fr.umlv.masterPilot.ship.SpaceShip;
-import fr.umlv.masterPilot.ship.SpaceshipFactory;
+import fr.umlv.masterPilot.ship.SpaceShipFactory;
 import fr.umlv.masterPilot.ship.hero.Hero;
-import fr.umlv.masterPilot.star.Star;
 import fr.umlv.masterPilot.star.StarFactory;
 import fr.umlv.masterPilot.world.KeyMotionObservable;
 import fr.umlv.masterPilot.world.KeyMotionObserver;
@@ -240,7 +239,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
          */
 
 
-        SpaceshipFactory factory = new SpaceshipFactory(masterPilotWorld);
+        SpaceShipFactory factory = new SpaceShipFactory(masterPilotWorld);
 
         /**
          * Initialize the game mode.
@@ -536,7 +535,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         int init_y = 0;
         int direction;
         String type;
-        SpaceshipFactory enemyFactory = new SpaceshipFactory(masterPilotWorld);
+        SpaceShipFactory enemyFactory = new SpaceShipFactory(masterPilotWorld);
 
 
         for (int i : ennemyTab) {
