@@ -46,7 +46,7 @@ public class Squadron implements SpaceShip {
 
         this.hero = hero;
 
-        this.maxSpeed=hero.getMaxSpeed().sub(new Vec2(2,2));
+        this.maxSpeed=hero.getMaxSpeed();
         /**
          * Interactions with the other bodies.
          */
@@ -319,7 +319,7 @@ public class Squadron implements SpaceShip {
     public void doMove() {
         float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
         float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
-        int limit = 200;
+        int limit = 150;
 
 
         tryToProtectTheMotherShip();
