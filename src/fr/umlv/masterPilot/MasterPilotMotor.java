@@ -41,12 +41,55 @@ public class MasterPilotMotor implements KeyMotionObservable {
     private final int positionIterations = 3;
     private int gameTiming;
 
-    /**
-     * this will launch the game
-     *
-     * @param context
-     * @param levelFile this is a path to the xml level config
-     */
+
+
+    private class GameSpec{
+        private final int tieNumber;
+        private final int cruiserNumber;
+        private final int squadronNumber;
+        private final int invaderNumber;
+        private final int spaceBallNumber;
+        private final int vogueNumber;
+        private final int timer;
+
+        private GameSpec(int tieNumber, int cruiserNumber, int squadronNumber, int invaderNumber, int spaceBallNumber, int vogueNumber, int timer) {
+            this.tieNumber = tieNumber;
+            this.cruiserNumber = cruiserNumber;
+            this.squadronNumber = squadronNumber;
+            this.invaderNumber = invaderNumber;
+            this.spaceBallNumber = spaceBallNumber;
+            this.vogueNumber = vogueNumber;
+            this.timer = timer;
+        }
+
+        public int getTimer() {
+            return timer;
+        }
+
+        public int getTieNumber() {
+            return tieNumber;
+        }
+
+        public int getWaveNumber() {
+            return vogueNumber;
+        }
+
+        public int getSpaceBallNumber() {
+            return spaceBallNumber;
+        }
+
+        public int getInvaderNumber() {
+            return invaderNumber;
+        }
+
+        public int getSquadronNumber() {
+            return squadronNumber;
+        }
+
+        public int getCruiserNumber() {
+            return cruiserNumber;
+        }
+    }
     public void launchGame(ApplicationContext context, String levelFile, String mode) {
 
 
@@ -78,10 +121,10 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         context.render(graphics -> {
             MasterPilotWorld masterPilotWorld = initPlateform(graphics);
-            gameTiming = Integer.valueOf("500");
+
 
             populatedWorld(masterPilotWorld, context, levelParser, mode);
-            run(masterPilotWorld, context, levelParser);
+
         });
     }
 
@@ -113,7 +156,8 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         // Data about the timer
         int timer = levelParser.getTime().getTimer();
-
+        //set timer
+      //  gameTiming = timer;
         // Data about wave
         short waveNumber = levelParser.getWave().getWaveEnemyNumber();
 
@@ -202,33 +246,10 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         this.addObserver(h);
 
-//        generateEnemies(1, 1, 1, 1, 1, h, masterPilotWorld);
 
-
-
-        createVogueEnnemy(masterPilotWorld,5,2,4,2,7);
-
-//        factory.createEnemy("INVADER", 150, 50, h);
+        GameSpec gameSpec = new GameSpec(tieNumber, cruiserNumber, squadronNumber, invaderNumber, spaceBallNumber, waveNumber, timer);
 //
-//        factory.createEnemy("TIE", 150, 50, h);
-//
-//        factory.createEnemy("SQUADRON", 350, 50, h);
-
-//        factory.createEnemy("CRUISER", -350, 50, h);
-
-        //
-//        factory.createEnemy("SQUADRON", -20, 90, h);
-//        factory.createEnemy("CRUISER", -350, 100, h);
-//
-//        factory.createEnemy("SPACEBALL", -20, 90, h);
-        // //
-        // //
-//        factory.createEnemy("TIE", 200, 90, h);
-        //
-//        factory.createEnemy("TIE", 200, 90, h);
-        //
-        //
-//        factory.createEnemy("CRUISER", -50, 90, h);
+        run(masterPilotWorld, context,gameSpec);
     }
 
     /**
@@ -325,17 +346,19 @@ public class MasterPilotMotor implements KeyMotionObservable {
     /**
      * main loop of the game
      *
-     * @param masterPilotWorld : This is the masterpilote world
+     * @param masterPilotWorld : This is the masterpilot world
      * @param context
      */
     private void run(MasterPilotWorld masterPilotWorld,
-                     ApplicationContext context, LevelHandler levelParser) {
+                     ApplicationContext context, GameSpec gameSpec) {
 
         long beforeTime, afterTime, timeDiff, sleepTime;
 
         beforeTime = System.nanoTime();
 
         Timer timer = new Timer();
+
+        gameTiming = gameSpec.getTimer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -344,6 +367,12 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
             }
         }, 1000, 1000);
+
+        int wave = gameSpec.getWaveNumber();
+        wave--;
+        createEnnemyWave(masterPilotWorld, gameSpec.getTieNumber(), gameSpec.getCruiserNumber(),
+                gameSpec.getSquadronNumber(), gameSpec.getInvaderNumber(), gameSpec.getSpaceBallNumber());
+
 
 
         for (; ; ) {
@@ -372,7 +401,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
                 Body hero = masterPilotWorld.getBodyHero();
 
-                // TODO use this to center view place it in proper place
+                //  use this to center view place it in proper place
                 masterPilotWorld.setCamera(hero.getPosition());
 
             });
@@ -398,11 +427,18 @@ public class MasterPilotMotor implements KeyMotionObservable {
             } else if (masterPilotWorld.getEnemyList().isEmpty()) {
                 // If there is wave again
                 // Generate enemies.
+                if(wave > 0){
+                    createEnnemyWave(masterPilotWorld, gameSpec.getTieNumber(), gameSpec.getCruiserNumber(),
+                            gameSpec.getSquadronNumber(), gameSpec.getInvaderNumber(), gameSpec.getSpaceBallNumber());
+
+                    wave--;
+                }else {
 
                 // If there is no waves again
                 // YOU WIN
                 masterPilotWorld.drawFrameworkEnd(true, WIDTH / 2, HEIGHT / 2);
                 return;
+                }
             }
             beforeTime = System.nanoTime();
         }
@@ -452,7 +488,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         }
     }
 
-    public void createVogueEnnemy(MasterPilotWorld masterPilotWorld, Integer... ennemyTab) {
+    public void createEnnemyWave(MasterPilotWorld masterPilotWorld, Integer... ennemyTab) {
         Body bodyHero = masterPilotWorld.getBodyHero();
         Hero hero = masterPilotWorld.getHero();
         int x =(int) bodyHero.getPosition().x;

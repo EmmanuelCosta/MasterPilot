@@ -12,13 +12,14 @@
 		<TotalWaveNumber id="6"></TotalWaveNumber>
 	</Wave>
 	<Enemy>
-		<TotalEnemyNumber id="30"></TotalEnemyNumber>
+		<TotalEnemyNumber id="14"></TotalEnemyNumber>
 		<TieNumber id="5"></TieNumber>
 		<CruiserNumber id="3"></CruiserNumber>
-		<SquadronNumber id="5"></SquadronNumber>
-	</Enemy>	
+		<InvaderNumber id="2"></InvaderNumber>
+        <SpaceBallNumber id="4"></SpaceBallNumber>
+	</Enemy>
 	<Planet> 
-		<TotalPlanetPercentage id ="5"></TotalPlanetPercentage>
+		<TotalPlanetPercentage id ="25"></TotalPlanetPercentage>
 		<RadiusMin id="10"></RadiusMin>
 		<RadiusMax id="70"></RadiusMax>
 		<DensityMin id="1500"></DensityMin>
