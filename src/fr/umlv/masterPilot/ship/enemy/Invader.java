@@ -228,7 +228,6 @@ public class Invader implements SpaceShip {
     
     public void moveHorizontal() {
         float x_distanceABS = Math.abs(body.getPosition().x - hero.getBody().getPosition().x);
-        float y_distanceABS = Math.abs(body.getPosition().y - hero.getBody().getPosition().y);
         int limit = 200;
         
         /**
@@ -261,10 +260,7 @@ public class Invader implements SpaceShip {
     public void doMove() {
         double distance = Math.sqrt(Math.pow(body.getPosition().x - hero.getBody().getPosition().x, 2)
                 + Math.pow(body.getPosition().y - hero.getBody().getPosition().y, 2));
-        float x_distanceABS = Math.abs(body.getPosition().x - hero.getBody().getPosition().x);
         float y_distanceABS = Math.abs(body.getPosition().y - hero.getBody().getPosition().y);
-        float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
-        float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
         int limit = 200;
 
         /**

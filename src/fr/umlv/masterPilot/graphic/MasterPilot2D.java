@@ -4,10 +4,8 @@ import org.jbox2d.common.IViewportTransform;
 import org.jbox2d.common.OBBViewportTransform;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.pooling.arrays.IntArray;
-
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
 
 /**
  * This is graphical part of MasterPilotWorld Game

@@ -2,9 +2,8 @@ package fr.umlv.masterPilot.common;
 
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
-
 import java.awt.*;
-import java.util.*;
+
 
 /**
  * This class have to be given in fixture.userData

@@ -1,13 +1,10 @@
 package fr.umlv.masterPilot.bomb;
 
-import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-
-import java.awt.*;
 import java.util.Iterator;
 
 /**
@@ -103,7 +100,6 @@ public class GenericBomb implements Bomb {
      */
     @Override
     public void boum() {
-        int numRays = 720;
         Vec2 center = this.body.getPosition();
         float blastRadius = 100f;
         float powerBlast = 0;

@@ -15,7 +15,6 @@ public class SpaceshipFactory {
     private final MasterPilotWorld masterPilotWorld;
 
     public SpaceshipFactory(MasterPilotWorld masterPilotWorld) {
-
         this.masterPilotWorld = masterPilotWorld;
     }
 

@@ -1,14 +1,10 @@
 package fr.umlv.masterPilot.ship.enemy;
 
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
-import org.jbox2d.dynamics.World;
 
-import java.util.ArrayList;
 
 /**
  * Created by emmanuel on 26/12/13.

@@ -158,7 +158,6 @@ public class Cruiser implements SpaceShip {
     public void right() {
         Vec2 worldPoint1 = body.getWorldPoint(shoot1);
         Vec2 worldPoint2 = body.getWorldPoint(shoot2);
-        Vec2 worldPoint3 = body.getWorldPoint(reference);
         Vec2 force;
         if (worldPoint1.x < worldPoint2.x) {
             force = body.getWorldVector(forceRight);
@@ -178,7 +177,6 @@ public class Cruiser implements SpaceShip {
     public void left() {
         Vec2 worldPoint1 = body.getWorldPoint(shoot1);
         Vec2 worldPoint2 = body.getWorldPoint(shoot2);
-        Vec2 worldPoint3 = body.getWorldPoint(reference);
         Vec2 force;
         if (worldPoint1.x < worldPoint2.x) {
             force = body.getWorldVector(forceLeft);
@@ -199,7 +197,6 @@ public class Cruiser implements SpaceShip {
     public void up() {
         Vec2 worldPoint1 = body.getWorldPoint(shoot1);
         Vec2 worldPoint2 = body.getWorldPoint(shoot2);
-        Vec2 worldPoint3 = body.getWorldPoint(reference);
         Vec2 force;
         if (worldPoint1.x < worldPoint2.x) {
             force = body.getWorldVector(forceUp);
@@ -220,7 +217,6 @@ public class Cruiser implements SpaceShip {
     public void down() {
         Vec2 worldPoint1 = body.getWorldPoint(shoot1);
         Vec2 worldPoint2 = body.getWorldPoint(shoot2);
-        Vec2 worldPoint3 = body.getWorldPoint(reference);
         Vec2 force;
         if (worldPoint1.x < worldPoint2.x) {
             force = body.getWorldVector(forceDown);

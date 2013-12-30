@@ -285,15 +285,12 @@ public class Squadron implements SpaceShip {
     @Override
     public void fire() {
 
-        Vec2 fireUp = new Vec2(0f, -10000f);
         ArrayList<Body> bdt = new ArrayList<>();
         for (Body b = this.world.getBodyList(); b != null; b = b.getNext()) {
             if (this.bodyJointList.contains(b)) {
                 bdt.add(b);
             }
         }
-
-
         for (Body bd : bdt) {
 
             Vec2 worldPoint1 = bd.getWorldPoint(new Vec2(0, -10));

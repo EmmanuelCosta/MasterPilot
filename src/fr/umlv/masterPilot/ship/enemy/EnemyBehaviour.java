@@ -3,7 +3,6 @@ package fr.umlv.masterPilot.ship.enemy;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.common.UserSpec;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 
 import java.awt.*;
@@ -14,17 +13,13 @@ import java.awt.*;
 public class EnemyBehaviour implements UserSpec {
 
     private boolean destroy = false;
-    private final SpaceShip enemySpaceShip ;
     private final Color color;
     public EnemyBehaviour(SpaceShip enemySpaceShip,Color color) {
-        this.enemySpaceShip = enemySpaceShip;
         this.color=color;
     }
 
     @Override
     public void onCollide(Fixture fix2, boolean flag) {
-
-
         if (flag == false) {
             if (fix2.getFilterData().categoryBits == (MasterPilotWorld.SHOOT)
                     || fix2.getFilterData().categoryBits == (MasterPilotWorld.SHIELD)) {

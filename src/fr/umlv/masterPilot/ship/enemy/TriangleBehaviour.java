@@ -18,13 +18,11 @@ import java.util.ArrayList;
  */
 public class TriangleBehaviour implements UserSpec {
 
-    private final SpaceShip enemySpaceShip;
     private final Color color;
     private final ArrayList<Body> bodyJointList;
     private boolean destroy = false;
 
     public TriangleBehaviour(SpaceShip enemySpaceShip, Color color, ArrayList<Body> bodyJointList) {
-        this.enemySpaceShip = enemySpaceShip;
         this.color = color;
         this.bodyJointList = bodyJointList;
     }

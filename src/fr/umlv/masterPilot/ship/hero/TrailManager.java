@@ -1,8 +1,6 @@
 package fr.umlv.masterPilot.ship.hero;
 
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 

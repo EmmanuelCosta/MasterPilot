@@ -11,7 +11,6 @@ import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-
 import java.awt.*;
 import java.util.Objects;
 
@@ -26,7 +25,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     private final int x_axis;
     private final int y_axis;
-    private final Color color;
     private final World world;
     private final Vec2 heroSpeed = new Vec2(0, -700f);
     private final Vec2 classicBombSpeed = new Vec2(0, -3000.0f);
@@ -49,7 +47,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.world = world;
-        this.color = Color.lightGray;
         this.mode = mode;
     }
 
@@ -65,7 +62,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         this.x_axis = x_axis;
         this.y_axis = y_axis;
         this.world = world;
-        this.color = color;
         this.mode = mode;
     }
 
