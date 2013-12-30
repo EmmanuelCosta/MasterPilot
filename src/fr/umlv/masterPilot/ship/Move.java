@@ -11,7 +11,9 @@ public interface Move {
 	public void up();
 
 	public void down();
-
+    /**
+     * for complex movement
+     */
     public  default void doMove(){
         throw new UnsupportedOperationException();
     }

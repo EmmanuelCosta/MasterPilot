@@ -5,6 +5,8 @@ import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.dynamics.Fixture;
 
 /**
+ * @see fr.umlv.masterPilot.common.UserSpec
+ * basic behaviour of hero when collision is detected
  * Created by emmanuel on 28/12/13.
  */
 public class HeroBehaviuor implements UserSpec {

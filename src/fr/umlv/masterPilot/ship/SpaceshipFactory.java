@@ -6,7 +6,7 @@ import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 
 /**
- * this will create a Star and register it to the StarManager
+ * this will create a spaceship and register it to the SpaceShipManager in MasterPilotWorld
  * Created by emmanuel on 28/12/13.
 
  */
@@ -19,7 +19,13 @@ public class SpaceShipFactory {
         this.masterPilotWorld = masterPilotWorld;
     }
 
-
+    /**
+     * create an hero at the given coordinate with the specify mode
+     * @param x
+     * @param y
+     * @param mode @see MODE
+     * @return
+     */
     public Hero createHero(int x, int y, MasterPilotWorld.MODE mode) {
         Hero h = new Hero(masterPilotWorld.getWorld(), 0, 0, mode);
 
@@ -33,8 +39,8 @@ public class SpaceShipFactory {
     /**
      *
      * create an enemy according to his type
-     * create his body in the world
-     * and register it in enemy Manager
+     * create his body in the jbox 2d world
+     * and register it in enemy Manager in MasterPilotWorld
      *
      *
      *

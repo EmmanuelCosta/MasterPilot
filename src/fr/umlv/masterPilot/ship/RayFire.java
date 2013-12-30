@@ -8,7 +8,7 @@ import org.jbox2d.dynamics.*;
 import java.awt.*;
 
 /**
- * Ray bomb are normal bomb
+ * Ray bomb are normal fire
  * by default is hero friendly but
  * enemy and star hostile
  * <p>
@@ -25,7 +25,7 @@ public class RayFire {
     private Body body;
 
     /**
-     * create a ray Bomb at the given position
+     * create a RayFire at the given position
      * @param world
      * @param x_axis : x coordinate  of the bomb
      * @param y_axis : y coordinate of the bomb
@@ -65,7 +65,7 @@ public class RayFire {
     }
 
     /**
-     * create the rayBomb in the world
+     * create the RayFire in the jbox2d  world
      */
     public void create() {
         /**

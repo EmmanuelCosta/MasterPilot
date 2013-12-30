@@ -29,14 +29,13 @@ public interface SpaceShip extends Move {
      */
     public void create();
 
+    /**
+     * get the jbox 2d Body Object of the spaceShip
+     * @return jbox 2d Body Object of the spaceShip
+     */
     public Body getBody();
 
-    /**
-     * for complex movement
-     */
-    public void doMove();
-
-    /**
+     /**
      * defines here some proccess to do when your spaceShip is destroy
      * like stopping every thread launched by him
      * @return
