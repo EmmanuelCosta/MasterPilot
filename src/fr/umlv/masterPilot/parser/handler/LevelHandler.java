@@ -4,17 +4,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
 import fr.umlv.masterPilot.parser.xml.Bomb;
 import fr.umlv.masterPilot.parser.xml.Enemy;
 import fr.umlv.masterPilot.parser.xml.Megabomb;
@@ -24,26 +19,13 @@ import fr.umlv.masterPilot.parser.xml.Wave;
 
 public class LevelHandler extends DefaultHandler {
 
-    // résultats de notre parsing>
+    // Results of our parsing.
     private Bomb bomb;
     private Megabomb megaBomb;
     private Enemy enemy;
     private Wave wave;
     private Planet planet;
     private Timer time;
-
-    // flags nous indiquant la position du parseur
-    private boolean inLevel, inBomb, inMegaBomb, inEnemy, inWave, inPlanet,
-            inTimer;
-    private boolean inMegaBombPercentage, inBombPercentage;
-    private boolean inWaveNumber;
-    private boolean inEnemyNumber, inTieNumber, inCruiserNumber,
-            inSquadronNumber, inInvaderNumber, inSpaceBallNumber;
-    private boolean inDensityMax, inDensityMin, inRadiusMax, inRadiusMin,
-            inPlanetPercentage;
-
-    // buffer nous permettant de récupérer les données
-    private StringBuffer buffer;
 
     public LevelHandler() {
         super();
@@ -52,15 +34,13 @@ public class LevelHandler extends DefaultHandler {
     public void parse(InputStream input) throws ParserConfigurationException,
             SAXException, IOException {
         
-        // creation du parser SAX
+        // Creation of the SAX parser.
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setValidating(true);
         factory.setNamespaceAware(true);
         SAXParser parser = factory.newSAXParser();
 
-        // lancement du parsing en précisant le flux et le "handler"
-        // l'instance qui implémente les méthodes appelées par le parser
-        // dans notre cas: this
+        //Launch the parsing giving the stream and the "handler"
         parser.parse(input, this);
     }
 
@@ -69,43 +49,37 @@ public class LevelHandler extends DefaultHandler {
         parse(new FileInputStream(filename));
     }
 
-    // détection d'ouverture de balise
+    // Detect the beginning of a tag.
     public void startElement(String uri, String localName, String qName,
             Attributes attributes) throws SAXException {
 
         switch (localName) {
         case "Level":
-            inLevel = true;
             System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "Bomb":
             bomb = new Bomb();
-            inBomb = true;
             System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "MegaBomb":
             megaBomb = new Megabomb();
-            inMegaBomb = true;
             System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "Wave":
             wave = new Wave();
-            inWave = true;
             System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "Enemy":
             enemy = new Enemy();
-            inEnemy = true;
             System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
         case "Planet":
             planet = new Planet();
-            inPlanet = true;
             System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
             
@@ -117,7 +91,6 @@ public class LevelHandler extends DefaultHandler {
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            inTimer = true;
             System.out.println("Start: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
@@ -128,7 +101,6 @@ public class LevelHandler extends DefaultHandler {
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            inBombPercentage = true;
             System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
@@ -139,7 +111,6 @@ public class LevelHandler extends DefaultHandler {
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-            inMegaBombPercentage = true;
             System.out.println("\tStart: " + "<" +localName + ">" + attributes.getValue("id"));
             break;
 
@@ -275,113 +246,86 @@ public class LevelHandler extends DefaultHandler {
         
         switch (localName) {
         case "Level":
-            inLevel = false;
             System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "Bomb":
-            //bomb = null;
-            inBomb = false;
             System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "MegaBomb":
-            //megaBomb = null;
-            inMegaBomb = false;
             System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "Wave":
-            //wave = null;
-            inWave = false;
             System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "Enemy":
-            //enemy = null;
-            inEnemy = false;
             System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "Planet":
-            //planet = null;
-            inPlanet = false;
             System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "Timer":
-            //time = null;
-            inTimer = false;
             System.out.println("End: "+ "<\\" + localName + ">\n");
             break;
 
         case "TotalBombPercentage":
-            inBombPercentage = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "TotalMegabombPercentage":
-            inMegaBombPercentage = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "TotalWaveNumber":
-            inWaveNumber = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "TotalEnemyNumber":
-            inEnemyNumber = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "TieNumber":
-            inTieNumber = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "CruiserNumber":
-            inCruiserNumber = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "SquadronNumber":
-            inSquadronNumber = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
             
         case "SpaceBallNumber":
-            inSpaceBallNumber = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
             
         case "InvaderNumber":
-            inInvaderNumber = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "TotalPlanetPercentage":
-            inPlanetPercentage = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "RadiusMin":
-            inRadiusMin = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "RadiusMax":
-            inRadiusMax = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "DensityMin":
-            inDensityMin = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
         case "DensityMax":
-            inDensityMax = false;
             System.out.println("\tEnd: "+ "<\\" + localName + ">\n");
             break;
 
