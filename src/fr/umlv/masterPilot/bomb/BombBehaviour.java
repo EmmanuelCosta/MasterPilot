@@ -7,6 +7,10 @@ import org.jbox2d.dynamics.Fixture;
 import java.awt.*;
 
 /**
+ * This class specify the basic behaviour of bomb object when collision is detect
+ * tell him if it must explode or  not
+ * <p>if it must appear or not</p>
+ *
  * Created by emmanuel on 21/12/13.
  */
 public class BombBehaviour implements UserSpec {

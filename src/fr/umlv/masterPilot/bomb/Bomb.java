@@ -3,6 +3,9 @@ package fr.umlv.masterPilot.bomb;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
+/**
+ * all bomb in the game will derive from that intrerface
+ */
 public interface Bomb {
 
     public enum BombType{
