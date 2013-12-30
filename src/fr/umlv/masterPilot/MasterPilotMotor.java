@@ -1,6 +1,7 @@
 package fr.umlv.masterPilot;
 
 import fr.umlv.masterPilot.bomb.Bomb;
+
 import fr.umlv.masterPilot.parser.handler.LevelHandler;
 import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.SpaceShipFactory;
@@ -32,7 +33,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
     private final List<KeyMotionObserver> observerList = new ArrayList<>();
-
     private final float timeStep = 1.0f / 6f;
     private final int velocityIterations = 6;
     private final int positionIterations = 3;
@@ -147,7 +147,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         context.render(graphics -> {
             MasterPilotWorld masterPilotWorld = initPlateform(graphics);
-
             populatedWorld(masterPilotWorld, context, levelParser, mode);
 
         });
@@ -161,13 +160,13 @@ public class MasterPilotMotor implements KeyMotionObservable {
      * @return MasterPiloteWorld
      */
     private MasterPilotWorld initPlateform(Graphics2D graphics) {
-        // Create Master Pilote
+        
+        // Create Master Pilot
         MasterPilotWorld mp = new MasterPilotWorld(graphics);
         mp.initPlateForm(WIDTH, HEIGHT);
 
-        // SET REFERENTIEL
+        // Set referentiel
         mp.setLandMark(WIDTH / 2, HEIGHT / 2);
-
         return mp;
     }
 
@@ -199,9 +198,9 @@ public class MasterPilotMotor implements KeyMotionObservable {
         int squadronNumber = levelParser.getEnemy().getSquadronNumber();
         int invaderNumber = levelParser.getEnemy().getInvaderNumber();
         int spaceBallNumber = levelParser.getEnemy().getSpaceBallNumber();
-
         int bombPercentage = levelParser.getBomb().getBombPercentage();
         short megaBombPercentage = levelParser.getMegaBomb().getMegaBombPercentage();
+        
         /**
          * Put some planets
          */
