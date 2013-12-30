@@ -22,7 +22,7 @@ public class SpaceShipFactory {
      * create an hero at the given coordinate with the specify mode
      * @param x
      * @param y
-     * @param mode @see MODE
+     * @param mode Mode of game {CHEAT, HARDCORE}
      * @return
      */
     public Hero createHero(int x, int y, MasterPilotWorld.MODE mode) {

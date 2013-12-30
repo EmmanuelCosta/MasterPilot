@@ -4,7 +4,6 @@
 *.iml
 *.log
 *.properties
-*.jar
 *.war
 *.ear
 *.idea
