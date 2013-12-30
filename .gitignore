@@ -7,4 +7,9 @@
 *.jar
 *.war
 *.ear
+*.idea
+*.metadata
 *~
+.*
+Recovery*
+
