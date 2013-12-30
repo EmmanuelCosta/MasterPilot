@@ -17,7 +17,7 @@ import java.util.Objects;
 
 /**
  * Hero is the Main character of the Game
- * This class create his body and attach it in the world
+ * This class create his body and attach it in the jbox 2d world
  * <p>
  * created by Emmanuel Babala Costa
  */
@@ -92,10 +92,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fd.restitution = 1.5f;
 
         fd.userData = new HeroBehaviuor();
-        // fd garder une reference sur la classe
-        //fd.isSensor=true;
-        // si un contact verifier si il est du type shield
-        //si c'est le cas dessiner
+
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
@@ -132,7 +129,6 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
 
         this.body = body;
-//		body.createFixture(sd2);
 
 
     }
@@ -377,28 +373,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
 
 
-////LEFT
-//        Trail cBomb = new Trail(this.world, worldPoint.x, worldPoint.y,
-//                MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
-//                | MasterPilotWorld.ENEMY
-//                | MasterPilotWorld.RADAR, Color.CYAN, 2);
-//        cBomb.create();
-//
-//
-//
-////RIGHT
-//        cBomb = new Trail(this.world, worldPoint2.x, worldPoint2.y,
-//                MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
-//                | MasterPilotWorld.ENEMY
-//                | MasterPilotWorld.RADAR, Color.CYAN, 2);
-//        cBomb.create();
-//
-////MIDDLE
-//        cBomb = new Trail(this.world, worldPoint3.x, worldPoint3.y,
-//                MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
-//                | MasterPilotWorld.ENEMY
-//                | MasterPilotWorld.RADAR, Color.CYAN, 2);
-//        cBomb.create();
+
         Trail trail1 = new Trail(this.world, worldPoint.x, worldPoint.y,
                 MasterPilotWorld.TRAIL, MasterPilotWorld.PLANET
                 | MasterPilotWorld.ENEMY
@@ -433,13 +408,17 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     }
 
-
+    /**
+     * set a bomb in the hero item
+     * @param bomb
+     */
     public void setBomb(Bomb bomb) {
         if (!Objects.isNull(bomb) && bomb.getBombeState() != Bomb.BombState.ARMED) {
             this.bombType = bomb.getBombType();
             this.cBomb = bomb;
         }
     }
+
 
     public Vec2 getMaxSpeed() {
         return maxSpeed;

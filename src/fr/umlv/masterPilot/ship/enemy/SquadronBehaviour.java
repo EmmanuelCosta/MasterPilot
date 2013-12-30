@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * this imlplements the basic behaviour of squadron when collision is detect
  * Created by emmanuel on 22/12/13.
  */
 public class SquadronBehaviour extends EnemyBehaviour {

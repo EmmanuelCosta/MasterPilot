@@ -16,6 +16,10 @@ import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 
+/**
+ * this is an ennemy
+ * it look like a ball with 4 shape attached to him
+ */
 public class SpaceBall implements SpaceShip {
 
     private int maskBit;
@@ -34,11 +38,17 @@ public class SpaceBall implements SpaceShip {
     private Vec2 forceRight;
     private Vec2 forceDown;
     private volatile boolean fire;
-
-    public SpaceBall(World world, float x, float y, Hero hero) {
+    /**
+     *
+     * @param world
+     * @param x_axis : X coordinate of his initial position in yhe world
+     * @param y_axis : Y cordinate of his initial position in yhe world
+     * @param hero : the hero
+     */
+    public SpaceBall(World world, float x_axis, float y_axis, Hero hero) {
         this.world = world;
-        this.x_axis = x;
-        this.y_axis = y;
+        this.x_axis = x_axis;
+        this.y_axis = y_axis;
         this.hero = hero;
 
         /**

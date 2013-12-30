@@ -7,6 +7,11 @@ import org.jbox2d.dynamics.Fixture;
 
 
 /**
+ * some ennemies use this
+ * to know if something hostile come in their direction
+ * so they can performe some action like
+ * corrected their direction
+ *
  * Created by emmanuel on 26/12/13.
  */
 public class RadarBehaviour implements UserSpec {

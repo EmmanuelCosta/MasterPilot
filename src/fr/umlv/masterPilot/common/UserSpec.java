@@ -6,11 +6,9 @@ import java.awt.*;
 
 
 /**
- * This class have to be given in fixture.userData
+ * This class have to be given in fixture.userData object of jbox2D
  * it will contains the basic behaviour of body when collision is detected
- * <p>
- * <p>
- * <p>
+ *
  * Created by emmanuel on 19/12/13.
  */
 public interface UserSpec {
@@ -57,6 +55,7 @@ public interface UserSpec {
     /**
      * If the hero get a bomb, verify if the specific bomb can be added as an item.
      * if the specific bomb is an item, the hero can use it.
+     * other wise it can explode
      * @return
      */
     public default boolean isItem() {
@@ -71,6 +70,11 @@ public interface UserSpec {
         return null;
     }
 
+    /**
+     * tell if body has other joint body
+     * important for destroying every bodies joint to the main body
+     * @return
+     */
     public   default boolean hasJointBody(){
         return false;
     }

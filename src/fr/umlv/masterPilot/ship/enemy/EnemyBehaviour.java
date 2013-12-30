@@ -8,6 +8,8 @@ import org.jbox2d.dynamics.Fixture;
 import java.awt.*;
 
 /**
+ * define how ennemy shield body have to react when collision is detect
+ * see also @see UserSpec
  * Created by emmanuel on 21/12/13.
  */
 public class EnemyBehaviour implements UserSpec {

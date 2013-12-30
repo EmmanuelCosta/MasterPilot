@@ -8,10 +8,12 @@ import java.util.LinkedList;
 
 /**
  * This will Manage the RayFire which is fire of @SpaceShip
- * it gice information of distance they have done
+ * it gives information of distance they have done
  * and the attempt duration live of fire
- * we will remove the fire off the world if they have done some distance
+ * we will remove the fire of the world if they have done some distance
+ * <p>
  * Created by emmanuel on 28/12/13.
+ * </p>
  */
 public class  RayFireManager {
 
@@ -19,7 +21,7 @@ public class  RayFireManager {
     public static int limitLive = 500;
 
     /**
-     * add all RayFire to the Manager
+     * add all RayFire to the Manager with default live of 500
      * @param initPosition
      * @param rayFire
      */
@@ -28,10 +30,10 @@ public class  RayFireManager {
     }
 
     /**
-     * see
+     * add all RayFire to the Manager
      * @param initPosition
      * @param rayFire
-     * @param live
+     * @param live the duration live of a fire
      */
     public static void addRayFire(Vec2 initPosition,RayFire rayFire,int live){
         list.add(new Distance(initPosition,rayFire,live));
@@ -59,6 +61,13 @@ public class  RayFireManager {
          private Vec2 initPosition;
          private  RayFire rayFire;
          private  final int live;
+
+        /**
+         *
+         * @param initPosition initial positiuon in the world
+         * @param rayFire  the fire
+         * @param limitLive his attempting live duration
+         */
          private Distance(Vec2 initPosition, RayFire rayFire,int limitLive) {
              this.initPosition = initPosition;
              this.rayFire = rayFire;
@@ -81,6 +90,10 @@ public class  RayFireManager {
          }
      }
 
+    /**
+     * retreive a list of all rayfire with his distance
+     * @return
+     */
     public static LinkedList<Distance> getList() {
         return list;
     }

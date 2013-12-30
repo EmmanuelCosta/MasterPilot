@@ -13,6 +13,7 @@ import org.jbox2d.dynamics.*;
 import java.awt.*;
 
 /**
+ * that ennemy look like a small circle with to wings
  * Created by emmanuel on 22/12/13.
  */
 public class TIE implements SpaceShip {
@@ -36,7 +37,13 @@ public class TIE implements SpaceShip {
     private volatile boolean fire;
     private Thread thread;
 
-
+    /**
+     *
+     * @param world
+     * @param x_axis : X coordinate of his initial position in yhe world
+     * @param y_axis : Y cordinate of his initial position in yhe world
+     * @param hero : the hero
+     */
     public TIE(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
         this.x_axis = x_axis;

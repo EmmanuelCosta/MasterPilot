@@ -7,9 +7,9 @@ import org.jbox2d.dynamics.*;
 import java.awt.*;
 
 /**
- * classic bomb are normal bomb
- * by default is hero friendly but
- * enemy hostile
+ *
+ *
+ * is the trace left by hero spaceship when it move up
  * <p>
  * created By Babala Costa Emmanuel
  */
@@ -24,20 +24,19 @@ public class Trail {
     private int radius = 2;
     private Body body;
 
-    public Trail(World world, float x_axis, float y_axis) {
-        this.world = world;
-        this.x_axis = x_axis;
-        this.y_axis = y_axis;
 
 
-        this.category = MasterPilotWorld.ENEMY;
-        this.maskBit = MasterPilotWorld.PLANET;
-
-        this.color = Color.WHITE;
-
-
-    }
-
+    /**
+     *
+     *@param world
+     * @param x_axis : X coordinate of his initial position in yhe world
+     * @param y_axis : Y cordinate of his initial position in yhe world
+     * @param category : Define the category
+     * @param maskBit : Define the order category with which it can collide
+     *
+     * @param color :color of trail
+     * @param radius :radius of trail
+     */
 
     public Trail(World world, float x_axis, float y_axis, int category, int maskBit, Color color, int radius) {
         this.world = world;
@@ -52,6 +51,9 @@ public class Trail {
         this.radius = radius;
     }
 
+    /**
+     * create a body trail in the jbox 2d world
+     */
     public void create() {
 
 

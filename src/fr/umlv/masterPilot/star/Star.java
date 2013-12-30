@@ -22,7 +22,7 @@ public class Star {
     private Body body;
 
     /**
-     * created a star at the secify coordinate
+     * created a star at the specify coordinate
      *
      * @param world
      * @param x_axis
@@ -60,7 +60,7 @@ public class Star {
     }
 
     /**
-     *
+     *create a star body in the jbox 2d world
      */
     public void create() {
 

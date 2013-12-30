@@ -40,6 +40,8 @@ public class MasterPilotWorld implements ContactListener {
 
     /**
      * this is the available mode game
+     * CHEAT : AUTOMATIC SHIELD FOR SPACESHIP HERO
+     * HARDCORE : YOU MANAGE IT MANUALY
      */
     public static enum MODE{
         CHEAT,HARDCORE;
@@ -65,15 +67,31 @@ public class MasterPilotWorld implements ContactListener {
      * use this to render purpose
      */
     private final MasterPilot2D masterPilot2D;
+    /**
+     * this is a enny manager
+     */
     private final HashMap<Body, SpaceShip> enemyManager;
+    /**
+     * this is a Bomb manager
+     */
     private final HashMap<Body, Bomb> bombManager;
+    /**
+     * this is a star Manager
+     */
     private final HashMap<Body, Star> starManager;
+    /**
+     * register here all the body to be remove from the jbox 2d world
+     */
     private final ArrayList<Body> destroyBody;
     /**
      * keep reference o main character of the game
      */
     private Hero hero;
 
+    /**
+     *
+     * @param masterPilot2D
+     */
     public MasterPilotWorld(Graphics2D masterPilot2D) {
         this.world = new World(new Vec2(0, 0f));
 
@@ -89,12 +107,16 @@ public class MasterPilotWorld implements ContactListener {
 
     }
 
+    /**
+     * get the Hero register in the world
+     * @return
+     */
     public Hero getHero() {
         return this.hero;
     }
 
     /**
-     * set Hero to this class
+     * register Hero in the MasterPilotWorld
      *
      * @param hero
      */
@@ -105,7 +127,7 @@ public class MasterPilotWorld implements ContactListener {
 
     /**
      * call this to initiate
-     * the plate
+     * the plate with the given size
      *
      * @param WIDTH
      * @param HEIGHT
@@ -118,7 +140,8 @@ public class MasterPilotWorld implements ContactListener {
     }
 
     /**
-     * reset the panel
+     * refresh the panel
+     * Background color is Black
      *
      * @param WIDTH
      * @param HEIGHT
@@ -131,13 +154,18 @@ public class MasterPilotWorld implements ContactListener {
 
     }
 
+    /**
+     * get the instance of jbox 2d world register in thjat class
+     * his the one used for the game physic purpose
+     * @return
+     */
     public World getWorld() {
         return world;
     }
 
     /**
      * this iterate on every body in the world
-     * and call the {@code drawShape}
+     * and call the {@code drawShape} to draw the body
      */
     public void draw() {
 /**
@@ -159,7 +187,7 @@ public class MasterPilotWorld implements ContactListener {
      * this call the {@code MasterPilot2D }
      * to draw fixture of the World
      * <p>
-     * The key is to use  Transform.mulToOutUnsafe() method to apply
+     *
      *
      * @param fixture : fixture of the body to draw
      * @param xf      : necessary for translation purpose
@@ -171,10 +199,10 @@ public class MasterPilotWorld implements ContactListener {
          *
          */
 
-
+//to be sure that we have a usefull fixture
         if (Objects.isNull(fixture) || Objects.isNull(fixture.getType())) {
             //Just ignore it
-            System.out.println("null");
+
             throw new RuntimeException();
 
         }
@@ -312,10 +340,10 @@ public class MasterPilotWorld implements ContactListener {
 
 
 /**
- * put the shield only if i won ' t it an item
+ * retreive from userData the UserSpec implementation of the body
+ * apply the onCollide method in order to perform his basic behavior
+ * set the sensor for drawing it or not
  */
-
-
         UserSpec userData = (UserSpec) fixtureA.getUserData();
         userData.onCollide(fixtureB, true);
         fixtureA.m_isSensor = userData.getSensor();
@@ -324,6 +352,11 @@ public class MasterPilotWorld implements ContactListener {
         userData2.onCollide(fixtureA, true);
         fixtureB.m_isSensor = userData2.getSensor();
 
+
+        /**
+         * is he is an item
+         * perform task on it
+         */
         if (userData.isItem()) {
             Body b = fixtureA.getBody();
 
@@ -335,9 +368,7 @@ public class MasterPilotWorld implements ContactListener {
             Bomb bomb = this.bombManager.get(fixtureB.getBody());
             this.hero.setBomb(bomb);
         }
-/**
- * collision with bomb
- */
+
 
 
     }
@@ -347,18 +378,28 @@ public class MasterPilotWorld implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
+/**
+ * retreive from userData the UserSpec implementation of the body
+ * apply the onCollide method in order to perform his basic behavior
+ * set the sensor for drawing it or not
+ */
 
         UserSpec userData = (UserSpec) fixtureA.getUserData();
         userData.onCollide(fixtureB, false);
         fixtureA.m_isSensor = userData.getSensor();
-
+/**
+ * if the object is destroyable added it into the destroyBody List
+ * and remove it from the rayFireManager if it is contains
+ */
         if (userData.isDestroyable()) {
             destroyBody.add(fixtureA.getBody());
 
             RayFireManager.remove(fixtureA.getBody());
 
         }
-
+/**
+ * this is for destroying every joint to the main body if it is destroy
+ */
         if (userData.hasJointBody()) {
             List<Body> jointBody = userData.getJointBody();
             for (Body b = world.getBodyList(); b != null; b = b.getNext()) {
@@ -405,7 +446,7 @@ public class MasterPilotWorld implements ContactListener {
      * this will return a body list of all body
      * which collide and it is destinate to be destroyed
      *
-     * @return
+     * @return list of body to destroy
      */
     public List<Body> getDestroyBody() {
 
@@ -422,7 +463,7 @@ public class MasterPilotWorld implements ContactListener {
             }
         }
 /**
- * because we want to erase the trail
+ * because we want to erase the trail at the back of hero
  */
         Iterator<TrailManager.DistanceTrail> trailManagerIterator = TrailManager.getList().iterator();
 
@@ -441,28 +482,48 @@ public class MasterPilotWorld implements ContactListener {
         for (Body bd : newList) {
 
             SpaceShip spaceShip = this.removeToSpaceshipManager(bd);
-            // Do THIS in order to stop all living thread created in spaceship ennemy
+            /**
+             *  Do THIS in order to stop all living thread created in spaceship ennemy
+              */
+
             if (Objects.nonNull(spaceShip)) {
                 spaceShip.destroySpaceShip();
             }
 
         }
 
-
+/**
+ * reset the destroyBodyList
+ */
         destroyBody.clear();
         return newList;
     }
 
+    /**
+     * get the body of the hero register in the masterPilotWorld
+     * @return the body of the hero register in the masterPilotWorld
+     */
     public Body getBodyHero() {
         return hero.getBody();
     }
 
-    public void addToSpaceshipManager(Body bodySpaceship, SpaceShip spaceShip) {
+    /**
+     * register a spaceship to the ennemyManager
+
+     * @param spaceShip : the space ship register
+     */
+    public void addToSpaceshipManager( SpaceShip spaceShip) {
+        Body bodySpaceship= spaceShip.getBody();
         if (!enemyManager.containsKey(bodySpaceship)) {
             this.enemyManager.put(bodySpaceship, spaceShip);
         }
     }
 
+    /**
+     * remove a spaceShip from the spaceship manager
+     * @param bodySpaceship : the body of ennemy to remove
+     * @return
+     */
     public SpaceShip removeToSpaceshipManager(Body bodySpaceship) {
 
         return this.enemyManager.remove(bodySpaceship);
@@ -477,7 +538,13 @@ public class MasterPilotWorld implements ContactListener {
         return new ArrayList<>(this.enemyManager.values());
     }
 
-    public void addToBombManager(Body body, Bomb bomb) {
+    /**
+     * add a bomb to his manager
+
+     * @param bomb the bomb to be had
+     */
+    public void addToBombManager( Bomb bomb) {
+        Body body= bomb.getBody();
         if (!this.bombManager.containsKey(body)) {
             this.bombManager.put(body, bomb);
         }
@@ -485,11 +552,11 @@ public class MasterPilotWorld implements ContactListener {
 
     /**
      * register the star to his manager in MasterPilotWorld
-     * @param body
-     * @param star
-     */
-    public void addToStarManager(Body body, Star star) {
 
+     * @param star : the star to be register
+     */
+    public void addToStarManager( Star star) {
+        Body body = star.getBody();
         if (!this.starManager.containsKey(body)) {
             this.starManager.put(body, star);
         }

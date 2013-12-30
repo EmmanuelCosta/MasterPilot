@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 /**
  * an ennemy spaceShip which is protected by a 7 small triangle
+ * the mother ship is a square
  */
 public class Squadron implements SpaceShip {
     private final int maskBit;
@@ -37,6 +38,14 @@ public class Squadron implements SpaceShip {
     private RadarBehaviour radar;
     private Thread thread;
 
+
+    /**
+     *
+     * @param world
+     * @param x_axis : X coordinate of his initial position in yhe world
+     * @param y_axis : Y cordinate of his initial position in yhe world
+     * @param hero : the hero
+     */
     public Squadron(World world, int x_axis, int y_axis, Hero hero) {
 
 
@@ -408,13 +417,12 @@ public class Squadron implements SpaceShip {
 
     @Override
     public void fireBomb() {
-        // TODO Auto-generated method stub
-
+      throw new UnsupportedOperationException();
     }
 
     @Override
     public void shield() {
-        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
 
     }
 

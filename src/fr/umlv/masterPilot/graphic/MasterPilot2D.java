@@ -32,24 +32,29 @@ public class MasterPilot2D {
 
     }
 
+    /**
+     * use this to write a string
+     * @param position
+     * @param s
+     */
     public void drawString(Vec2 position, String s) {
         Vec2 sp1 = new Vec2();
 
 
         getWorldToScreenToOut(position, sp1);
 
-//        AffineTransform inverse = new AffineTransform();
-//        AffineTransform transform = new AffineTransform() ;
-//        transform.scale(20,20);
-//        inverse.scale(-20,20);
-//
-//        Graphics2D g2d = (Graphics2D) graphic ;
-//        g2d.transform(transform);
+
         this.graphic.setColor(Color.white);
         this.graphic.drawString(s, (int) sp1.x - 2, (int) sp1.y + 2);
-//        g2d.transform(inverse);
+
     }
 
+    /**
+     * draw a line connecting the two points
+     * @param p1 coordinate of the first point
+     * @param p2 coordinate of the second point
+     * @param color color of the line
+     */
     public void drawSegment(Vec2 p1, Vec2 p2, Color color) {
 
         Vec2 sp1 = new Vec2();
@@ -65,6 +70,14 @@ public class MasterPilot2D {
 
     }
 
+    /**
+     * draw a circle filled if filled parametr is true
+     *
+     * @param center center of circle
+     * @param radius radius of circle
+     * @param color color of the circle
+     * @param filled indicates if the crecle must be filled if true
+     */
     public void drawCircle(Vec2 center, float radius,
                            Color color, boolean filled) {
 
@@ -80,6 +93,11 @@ public class MasterPilot2D {
 
     }
 
+    /**
+     * the shield is a circle of radius given
+     * @param center center of circle
+     * @param radius radius
+     */
     public void drawShield(Vec2 center, float radius) {
         Vec2 sp1 = new Vec2();
 
@@ -97,8 +115,6 @@ public class MasterPilot2D {
         getWorldToScreenToOut(center, sp1);
 
 
-        //  System.out.println((int) ((int) sp1.x - (radius))+"  "+(int) ((int) sp1.y - (radius)) +" radius "
-//        +(int) ((int) sp2.x - (int) sp1.x) * 2);
         graphic.drawOval((int) ((int) sp1.x - (radius)),
                 (int) ((int) sp1.y - (radius)),
                 radius * 2, radius * 2);
@@ -116,12 +132,16 @@ public class MasterPilot2D {
                 (int) ((int) sp1.y - (radius)),
                 radius * 2, radius * 2);
 
-//        graphic.fillOval((int) ((int) sp1.x - (radius)),
-//                (int) ((int) sp1.y - (radius)),
-//                (int) ((int) sp2.x - (int) sp1.x) * 2, (int) ((int) sp2.x - (int) sp1.x) * 2);
+
 
     }
 
+    /**
+     * for drawing a polygon filled with the given color
+     * @param vertices :
+     * @param vertexCount : number of vertices of the polygon
+     * @param color : color of the polygon
+     */
     public void drawFilledPolygon(Vec2[] vertices, int vertexCount, Color color) {
 
         IntArray xIntsPool = new IntArray();

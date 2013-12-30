@@ -12,6 +12,11 @@ import org.jbox2d.dynamics.*;
 
 import java.awt.*;
 
+/**
+ * this is an ennemy look like a rod
+ * and can only fire in one side
+ * can only goes left to right or up and down
+ */
 public class Cruiser implements SpaceShip {
     private  final Vec2 maxSpeed;
     private final int maskBit;
@@ -37,7 +42,13 @@ public class Cruiser implements SpaceShip {
     private boolean direction = false;
     private Vec2 reference;
     private Thread thread;
-
+    /**
+     *
+     * @param world
+     * @param x_axis : X coordinate of his initial position in yhe world
+     * @param y_axis : Y cordinate of his initial position in yhe world
+     * @param hero : the hero
+     */
 
     public Cruiser(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
