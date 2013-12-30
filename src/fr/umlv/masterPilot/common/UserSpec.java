@@ -56,7 +56,7 @@ public interface UserSpec {
     /**
      * If the hero get a bomb, verify if the specific bomb can be added as an item.
      * if the specific bomb is an item, the hero can use it.
-     * other wise it can explode 
+     * other wise it can explode
      * @return
      */
     public default boolean isItem() {
