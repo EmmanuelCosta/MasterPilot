@@ -204,6 +204,10 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
 //        generateEnemies(1, 1, 1, 1, 1, h, masterPilotWorld);
 
+
+
+        createVogueEnnemy(masterPilotWorld,5,2,4,2,7);
+
 //        factory.createEnemy("INVADER", 150, 50, h);
 //
 //        factory.createEnemy("TIE", 150, 50, h);
@@ -219,7 +223,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
 //        factory.createEnemy("SPACEBALL", -20, 90, h);
         // //
         // //
-        factory.createEnemy("TIE", 200, 90, h);
+//        factory.createEnemy("TIE", 200, 90, h);
         //
 //        factory.createEnemy("TIE", 200, 90, h);
         //
@@ -451,15 +455,15 @@ public class MasterPilotMotor implements KeyMotionObservable {
     public void createVogueEnnemy(MasterPilotWorld masterPilotWorld, Integer... ennemyTab) {
         Body bodyHero = masterPilotWorld.getBodyHero();
         Hero hero = masterPilotWorld.getHero();
-        float x = bodyHero.getPosition().x;
-        float y = bodyHero.getPosition().y;
+        int x =(int) bodyHero.getPosition().x;
+        int y =(int) bodyHero.getPosition().y;
 
         int size = ennemyTab.length;
         int compt = 0;
 
-        float init_x = 0;
-        float init_y = 0;
-
+        int init_x = 0;
+        int init_y = 0;
+        int direction;
         SpaceshipFactory enemyFactory = new SpaceshipFactory(masterPilotWorld);
 
 
@@ -469,18 +473,99 @@ public class MasterPilotMotor implements KeyMotionObservable {
                     //TIE
                     init_x = x + 300;
                     init_y = y + 300;
+
+                     direction =0;
                     while( i > 0){
-//                        enemyFactory.createEnemy("TIE",init_x,init_y,hero);
+                        if(direction %4 == 0){
+                            enemyFactory.createEnemy("TIE",init_x+50*i,init_y,hero);
+                        }else if(direction %4 == 1){
+                            enemyFactory.createEnemy("TIE",init_x-50*i,init_y,hero);
+                        }else if(direction %4 == 2){
+                            enemyFactory.createEnemy("TIE",init_x-50*i,init_y+50,hero);
+                        }else{
+                            enemyFactory.createEnemy("TIE",init_x+50*i,init_y-50,hero);
+                        }
+                        i--;
+                        direction++;
                     }
 
                     break;
                 case 1:
+                    //CRUISER
+                    init_x = x + 300;
+                    init_y = y + 300;
+
+                     direction =0;
+                    while( i > 0){
+                        if(direction %4 == 0){
+                            enemyFactory.createEnemy("CRUISER",init_x+70*i,init_y,hero);
+                        }else if(direction %4 == 1){
+                            enemyFactory.createEnemy("CRUISER",init_x-70*i,-init_y,hero);
+                        }else if(direction %4 == 2){
+                            enemyFactory.createEnemy("CRUISER",init_x-70*i,-init_y+70,hero);
+                        }else{
+                            enemyFactory.createEnemy("CRUISER",init_x+70*i,init_y-70,hero);
+                        }
+                        i--;
+                        direction++;
+                    }
                     break;
                 case 2:
+                    init_x = x + 200;
+                    init_y = y + 250;
+
+                    direction =0;
+                    while( i > 0){
+                        if(direction %4 == 0){
+                            enemyFactory.createEnemy("SQUADRON",init_x+30*i,init_y,hero);
+                        }else if(direction %4 == 1){
+                            enemyFactory.createEnemy("SQUADRON",init_x-30*i,-init_y,hero);
+                        }else if(direction %4 == 2){
+                            enemyFactory.createEnemy("SQUADRON",init_x-30*i,-init_y+30,hero);
+                        }else{
+                            enemyFactory.createEnemy("SQUADRON",init_x+30*i,init_y-30,hero);
+                        }
+                        i--;
+                        direction++;
+                    }
                     break;
                 case 3:
+                    init_x = x + 200;
+                    init_y = y + 250;
+
+                    direction =0;
+                    while( i > 0){
+                        if(direction %4 == 0){
+                            enemyFactory.createEnemy("INVADER",init_x+150*i,init_y,hero);
+                        }else if(direction %4 == 1){
+                            enemyFactory.createEnemy("INVADER",init_x-150*i,-init_y,hero);
+                        }else if(direction %4 == 2){
+                            enemyFactory.createEnemy("INVADER",init_x-150*i,-init_y+100,hero);
+                        }else{
+                            enemyFactory.createEnemy("INVADER",init_x+150*i,init_y-100,hero);
+                        }
+                        i--;
+                        direction++;
+                    }
                     break;
                 case 4:
+                    init_x = x + 200;
+                    init_y = y + 250;
+
+                    direction =0;
+                    while( i > 0){
+                        if(direction %4 == 0){
+                            enemyFactory.createEnemy("SPACEBALL",init_x+100*i,init_y,hero);
+                        }else if(direction %4 == 1){
+                            enemyFactory.createEnemy("SPACEBALL",init_x-100*i,-init_y,hero);
+                        }else if(direction %4 == 2){
+                            enemyFactory.createEnemy("SPACEBALL",init_x-100*i,-init_y+80,hero);
+                        }else{
+                            enemyFactory.createEnemy("SPACEBALL",init_x+100*i,init_y-80,hero);
+                        }
+                        i--;
+                        direction++;
+                    }
                     break;
                 case 5:
                     break;
