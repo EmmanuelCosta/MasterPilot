@@ -42,6 +42,7 @@ public class Cruiser implements SpaceShip {
     private boolean direction = false;
     private Vec2 reference;
     private Thread thread;
+    
     /**
      *
      * @param world
@@ -49,7 +50,6 @@ public class Cruiser implements SpaceShip {
      * @param y_axis : Y cordinate of his initial position in yhe world
      * @param hero : the hero
      */
-
     public Cruiser(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
         this.x_axis = x_axis;
