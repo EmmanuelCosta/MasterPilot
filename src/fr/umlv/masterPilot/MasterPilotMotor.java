@@ -124,7 +124,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         final LevelHandler levelParser = new LevelHandler();
 
         try {
-     
+
             InputStream fichier = new FileInputStream(new File(levelFile));
             levelParser.parse(fichier);
 

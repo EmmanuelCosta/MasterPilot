@@ -17,6 +17,7 @@ import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 
 /**
+ * @author sybille
  * this is an ennemy
  * it look like a ball with 4 shape attached to him
  */
