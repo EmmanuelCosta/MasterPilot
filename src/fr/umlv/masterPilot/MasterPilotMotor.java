@@ -33,7 +33,6 @@ import java.util.List;
 public class MasterPilotMotor implements KeyMotionObservable {
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
-    // OBSERVER LIST
     private final List<KeyMotionObserver> observerList = new ArrayList<>();
 
     private final float timeStep = 1.0f / 6f;
@@ -42,23 +41,26 @@ public class MasterPilotMotor implements KeyMotionObservable {
     private int gameTiming;
 
 
-
+    /**
+     * this class contains the main specification of a MasterPilot Session of game
+     * like time of the game, number of ennemy by type, number of wave
+     */
     private class GameSpec{
         private final int tieNumber;
         private final int cruiserNumber;
         private final int squadronNumber;
         private final int invaderNumber;
         private final int spaceBallNumber;
-        private final int vogueNumber;
+        private final int waveNumber;
         private final int timer;
 
-        private GameSpec(int tieNumber, int cruiserNumber, int squadronNumber, int invaderNumber, int spaceBallNumber, int vogueNumber, int timer) {
+        private GameSpec(int tieNumber, int cruiserNumber, int squadronNumber, int invaderNumber, int spaceBallNumber, int waveNumber, int timer) {
             this.tieNumber = tieNumber;
             this.cruiserNumber = cruiserNumber;
             this.squadronNumber = squadronNumber;
             this.invaderNumber = invaderNumber;
             this.spaceBallNumber = spaceBallNumber;
-            this.vogueNumber = vogueNumber;
+            this.waveNumber = waveNumber;
             this.timer = timer;
         }
 
@@ -71,7 +73,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         }
 
         public int getWaveNumber() {
-            return vogueNumber;
+            return waveNumber;
         }
 
         public int getSpaceBallNumber() {
@@ -90,6 +92,14 @@ public class MasterPilotMotor implements KeyMotionObservable {
             return cruiserNumber;
         }
     }
+
+    /**
+     * this is use for launching the game  from the levelFile given
+     *
+     * @param context : The context which handle a graphic objects for rendreng of the game
+     * @param levelFile : path to the level file config
+     * @param mode : mode of game { CHEAT OR HARDCORE}
+     */
     public void launchGame(ApplicationContext context, String levelFile, String mode) {
 
 
@@ -128,6 +138,11 @@ public class MasterPilotMotor implements KeyMotionObservable {
         });
     }
 
+    /**
+     * this will create the main plateform of the game
+     * @param graphics : the Graphics2D objects use for rendering purpose
+     * @return  MasterPiloteWorld
+     */
     private MasterPilotWorld initPlateform(Graphics2D graphics) {
         // Create Master Pilote
         MasterPilotWorld mp = new MasterPilotWorld(graphics);
@@ -346,6 +361,8 @@ public class MasterPilotMotor implements KeyMotionObservable {
     /**
      * main loop of the game
      *
+     *
+     *
      * @param masterPilotWorld : This is the masterpilot world
      * @param context
      */
@@ -444,6 +461,10 @@ public class MasterPilotMotor implements KeyMotionObservable {
         }
     }
 
+    /**
+     * will destroy the enemy in the world jbox2d that were destroyed in the game
+     * @param masterPilotWorld
+     */
     private void destroyCharacter(MasterPilotWorld masterPilotWorld) {
         List<Body> destroyBody = masterPilotWorld.getDestroyBody();
         Iterator<Body> iterator = destroyBody.iterator();
@@ -488,6 +509,20 @@ public class MasterPilotMotor implements KeyMotionObservable {
         }
     }
 
+    /**
+     * this will create in the world ennemies accroding to the given ennemyTab
+     * each indices of tab concern a specific type of ennemy in the world
+     *
+     * look at the correlation table below :
+     * [0] : TIE
+     * [1]: CRUISER
+     * [2] : SQUADRON
+     * [3] : INVADER
+     * [4] : SPACEBALL
+     *
+     * @param masterPilotWorld the world of the game
+     * @param ennemyTab number of attempt ennemy in the game per wave
+     */
     public void createEnnemyWave(MasterPilotWorld masterPilotWorld, Integer... ennemyTab) {
         Body bodyHero = masterPilotWorld.getBodyHero();
         Hero hero = masterPilotWorld.getHero();
@@ -500,6 +535,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
         int init_x = 0;
         int init_y = 0;
         int direction;
+        String type;
         SpaceshipFactory enemyFactory = new SpaceshipFactory(masterPilotWorld);
 
 
@@ -511,15 +547,16 @@ public class MasterPilotMotor implements KeyMotionObservable {
                     init_y = y + 300;
 
                      direction =0;
+                    type="TIE";
                     while( i > 0){
                         if(direction %4 == 0){
-                            enemyFactory.createEnemy("TIE",init_x+50*i,init_y,hero);
+                            enemyFactory.createEnemy(type,init_x+50*i,init_y,hero);
                         }else if(direction %4 == 1){
-                            enemyFactory.createEnemy("TIE",init_x-50*i,init_y,hero);
+                            enemyFactory.createEnemy(type,init_x-50*i,init_y,hero);
                         }else if(direction %4 == 2){
-                            enemyFactory.createEnemy("TIE",init_x-50*i,init_y+50,hero);
+                            enemyFactory.createEnemy(type,init_x-50*i,init_y+50,hero);
                         }else{
-                            enemyFactory.createEnemy("TIE",init_x+50*i,init_y-50,hero);
+                            enemyFactory.createEnemy(type,init_x+50*i,init_y-50,hero);
                         }
                         i--;
                         direction++;
@@ -532,15 +569,16 @@ public class MasterPilotMotor implements KeyMotionObservable {
                     init_y = y + 300;
 
                      direction =0;
+                    type="CRUISER";
                     while( i > 0){
                         if(direction %4 == 0){
-                            enemyFactory.createEnemy("CRUISER",init_x+70*i,init_y,hero);
+                            enemyFactory.createEnemy(type,init_x+70*i,init_y,hero);
                         }else if(direction %4 == 1){
-                            enemyFactory.createEnemy("CRUISER",init_x-70*i,-init_y,hero);
+                            enemyFactory.createEnemy(type,init_x-70*i,-init_y,hero);
                         }else if(direction %4 == 2){
-                            enemyFactory.createEnemy("CRUISER",init_x-70*i,-init_y+70,hero);
+                            enemyFactory.createEnemy(type,init_x-70*i,-init_y+70,hero);
                         }else{
-                            enemyFactory.createEnemy("CRUISER",init_x+70*i,init_y-70,hero);
+                            enemyFactory.createEnemy(type,init_x+70*i,init_y-70,hero);
                         }
                         i--;
                         direction++;
@@ -551,15 +589,16 @@ public class MasterPilotMotor implements KeyMotionObservable {
                     init_y = y + 250;
 
                     direction =0;
+                    type="SQUADRON";
                     while( i > 0){
                         if(direction %4 == 0){
-                            enemyFactory.createEnemy("SQUADRON",init_x+30*i,init_y,hero);
+                            enemyFactory.createEnemy(type,init_x+30*i,init_y,hero);
                         }else if(direction %4 == 1){
-                            enemyFactory.createEnemy("SQUADRON",init_x-30*i,-init_y,hero);
+                            enemyFactory.createEnemy(type,init_x-30*i,-init_y,hero);
                         }else if(direction %4 == 2){
-                            enemyFactory.createEnemy("SQUADRON",init_x-30*i,-init_y+30,hero);
+                            enemyFactory.createEnemy(type,init_x-30*i,-init_y+30,hero);
                         }else{
-                            enemyFactory.createEnemy("SQUADRON",init_x+30*i,init_y-30,hero);
+                            enemyFactory.createEnemy(type,init_x+30*i,init_y-30,hero);
                         }
                         i--;
                         direction++;
@@ -570,15 +609,16 @@ public class MasterPilotMotor implements KeyMotionObservable {
                     init_y = y + 250;
 
                     direction =0;
+                    type="INVADER";
                     while( i > 0){
                         if(direction %4 == 0){
-                            enemyFactory.createEnemy("INVADER",init_x+150*i,init_y,hero);
+                            enemyFactory.createEnemy(type,init_x+150*i,init_y,hero);
                         }else if(direction %4 == 1){
-                            enemyFactory.createEnemy("INVADER",init_x-150*i,-init_y,hero);
+                            enemyFactory.createEnemy(type,init_x-150*i,-init_y,hero);
                         }else if(direction %4 == 2){
-                            enemyFactory.createEnemy("INVADER",init_x-150*i,-init_y+100,hero);
+                            enemyFactory.createEnemy(type,init_x-150*i,-init_y+100,hero);
                         }else{
-                            enemyFactory.createEnemy("INVADER",init_x+150*i,init_y-100,hero);
+                            enemyFactory.createEnemy(type,init_x+150*i,init_y-100,hero);
                         }
                         i--;
                         direction++;
@@ -589,21 +629,20 @@ public class MasterPilotMotor implements KeyMotionObservable {
                     init_y = y + 250;
 
                     direction =0;
+                    type="SPACEBALL";
                     while( i > 0){
                         if(direction %4 == 0){
-                            enemyFactory.createEnemy("SPACEBALL",init_x+100*i,init_y,hero);
+                            enemyFactory.createEnemy(type,init_x+100*i,init_y,hero);
                         }else if(direction %4 == 1){
-                            enemyFactory.createEnemy("SPACEBALL",init_x-100*i,-init_y,hero);
+                            enemyFactory.createEnemy(type,init_x-100*i,-init_y,hero);
                         }else if(direction %4 == 2){
-                            enemyFactory.createEnemy("SPACEBALL",init_x-100*i,-init_y+80,hero);
+                            enemyFactory.createEnemy(type,init_x-100*i,-init_y+80,hero);
                         }else{
-                            enemyFactory.createEnemy("SPACEBALL",init_x+100*i,init_y-80,hero);
+                            enemyFactory.createEnemy(type,init_x+100*i,init_y-80,hero);
                         }
                         i--;
                         direction++;
                     }
-                    break;
-                case 5:
                     break;
                 default:
                     break;
@@ -616,61 +655,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
     }
 
-    private void generateEnemies(int tieNumber, int cruiserNumber,
-                                 int squadronNumber, int invaderNumber,
-                                 int spaceBallNumber,
-                                 Hero hero,
-                                 MasterPilotWorld masterPilotWorld) {
-
-        generateEnemy("TIE", tieNumber, hero, masterPilotWorld);
-        generateEnemy("CRUISER", cruiserNumber, hero, masterPilotWorld);
-        generateEnemy("SQUADRON", squadronNumber, hero, masterPilotWorld);
-        generateEnemy("INVADER", invaderNumber, hero, masterPilotWorld);
-        generateEnemy("SPACEBALL", spaceBallNumber, hero, masterPilotWorld);
-    }
-
-    private void generateEnemy(String type, int number, Hero hero, MasterPilotWorld masterPilotWorld) {
-        /**
-         * Generate x position
-         */
-        float x_min = hero.getBody().getPosition().x - WIDTH;
-        float x_max = hero.getBody().getPosition().x + WIDTH;
-        Random x_rand = new Random();
-        float x_mod = x_max - x_min + 1;
-        float x_pos;
-
-        /**
-         * Generate y position
-         */
-        float y_min = hero.getBody().getPosition().y;
-        float y_max = hero.getBody().getPosition().y + HEIGHT + 200;
-        Random y_rand = new Random();
-        float y_mod = y_max - y_min + 1;
-        float y_pos;
-
-        SpaceshipFactory enemyFactory = new SpaceshipFactory(masterPilotWorld);
-
-        // Generate enemy
-        while (number > 0) {
-            x_pos = x_rand.nextFloat() % x_mod;
-            y_pos = y_rand.nextFloat() % y_mod;
-
-            // Check if the tie position is not on a planet
-            for (Star planet : masterPilotWorld.getStarList()) {
-
-                // If its not, generate a tie.
-                if (x_pos < planet.getBody().getPosition().x - 150f && x_pos > planet.getBody().getPosition().x + 50) {
-                    if (y_pos < planet.getBody().getPosition().y - 150f && y_pos > planet.getBody().getPosition().y + 50) {
-                        enemyFactory.createEnemy(type, (int) x_pos, (int) y_pos, hero);
-                        --number;
-                    }
-                } else {
-                    enemyFactory.createEnemy(type, (int) x_pos, (int) y_pos + 150, hero);
-                    --number;
-                }
-            }
-        }
-    }
 
 
 }
