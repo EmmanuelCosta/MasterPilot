@@ -162,7 +162,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
      * @param masterPilotWorld
      * @param context
      */
-
     private void populatedWorld(MasterPilotWorld masterPilotWorld,
             ApplicationContext context, LevelHandler levelParser, String mode) {
 
