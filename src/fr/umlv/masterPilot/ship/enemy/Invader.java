@@ -10,6 +10,11 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 import java.awt.*;
 
+
+/**
+ * his a ennemy which look like a cardinal cross
+ * have some complex behavior
+ */
 public class Invader implements SpaceShip {
 
     private int maskBit;
@@ -29,6 +34,13 @@ public class Invader implements SpaceShip {
     private Body body;
     private volatile boolean fire;
 
+    /**
+     *
+     * @param world
+     * @param x_axis : X coordinate of his initial position in yhe world
+     * @param y_axis : Y cordinate of his initial position in yhe world
+     * @param hero : the hero
+     */
     public Invader(World world, int x_axis, int y_axis, Hero hero) {
         this.world = world;
         this.x_axis = x_axis;

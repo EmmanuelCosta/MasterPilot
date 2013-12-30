@@ -71,6 +71,11 @@ public interface UserSpec {
         return null;
     }
 
+    /**
+     * tell if body has other joint body
+     * important for destroying every bodies joint to the main body
+     * @return
+     */
     public   default boolean hasJointBody(){
         return false;
     }

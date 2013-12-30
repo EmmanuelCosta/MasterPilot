@@ -12,6 +12,11 @@ import org.jbox2d.dynamics.*;
 
 import java.awt.*;
 
+/**
+ * this is an ennemy look like a rod
+ * and can only fire in one side
+ * can only goes left to right or up and down
+ */
 public class Cruiser implements SpaceShip {
     private  final Vec2 maxSpeed;
     private final int maskBit;
