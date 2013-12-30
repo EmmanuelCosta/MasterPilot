@@ -12,6 +12,7 @@ import java.awt.*;
 
 
 /**
+ * @author sybille
  * his a ennemy which look like a cardinal cross
  * have some complex behavior
  */

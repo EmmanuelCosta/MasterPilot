@@ -1,5 +1,9 @@
 package fr.umlv.masterPilot.parser.xml;
 
+/**
+ * @author Sybille
+ * Object containing informations about the xml parsing 
+ */
 public class Planet {
     private short totalPercentage;
     private short radiusMin;

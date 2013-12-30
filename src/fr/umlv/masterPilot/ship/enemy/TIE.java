@@ -40,8 +40,8 @@ public class TIE implements SpaceShip {
     /**
      *
      * @param world
-     * @param x_axis : X coordinate of his initial position in yhe world
-     * @param y_axis : Y cordinate of his initial position in yhe world
+     * @param x_axis : X coordinate of his initial position in the world
+     * @param y_axis : Y cordinate of his initial position in the world
      * @param hero : the hero
      */
     public TIE(World world, int x_axis, int y_axis, Hero hero) {
@@ -257,19 +257,6 @@ public class TIE implements SpaceShip {
         float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
         float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
         int limit = 100;
-
-//        if(x_distance > 800 || y_distance > 800){
-//            this.body.setTransform(new Vec2(this.hero.getBody().getPosition().x +200,
-//                    this.hero.getBody().getPosition().y+300),
-//                    this.getBody().getAngle());
-//        }
-
-//        if (x_distance > -30 && x_distance < 30 && fire == true) {
-//
-//            fire();
-//            fire = false;
-//        }
-
 
         if ((x_distance >= -50 - limit && x_distance <= 50 + limit) && (y_distance >= -50 - limit && y_distance <= 50 + limit)
                 && fire == true) {

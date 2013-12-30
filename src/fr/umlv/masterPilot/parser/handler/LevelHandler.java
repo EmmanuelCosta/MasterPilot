@@ -16,6 +16,10 @@ import fr.umlv.masterPilot.parser.xml.Megabomb;
 import fr.umlv.masterPilot.parser.xml.Planet;
 import fr.umlv.masterPilot.parser.xml.Timer;
 import fr.umlv.masterPilot.parser.xml.Wave;
+/**
+ * @author Sybille
+ * Handler that allows to parse the xml file. 
+ */
 
 public class LevelHandler extends DefaultHandler {
 
@@ -240,7 +244,7 @@ public class LevelHandler extends DefaultHandler {
         }
     }
 
-    // détection fin de balise
+    // Detect the end of a tag
     public void endElement(String uri, String localName, String qName)
             throws SAXException {
         
@@ -335,12 +339,12 @@ public class LevelHandler extends DefaultHandler {
         
     }
 
-    // début du parsing
+    // Begin parsing
     public void startDocument() throws SAXException {
-        System.out.println("Beginning of parsing");
+        System.out.println("Begining of parsing");
     }
 
-    // fin du parsing
+    // End parsing
     public void endDocument() throws SAXException {
         System.out.println("End of parsing");
         System.out.println("Result of parsing");

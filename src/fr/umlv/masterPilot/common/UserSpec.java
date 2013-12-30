@@ -7,17 +7,17 @@ import java.awt.*;
 
 /**
  * This class have to be given in fixture.userData object of jbox2D
- * it will contains the basic behaviour of body when collision is detected
+ * it will contains the basic behavior of body when collision is detected
  *
- * Created by emmanuel on 19/12/13.
+ * Created by Emmanuel on 19/12/13.
  */
 public interface UserSpec {
 
     /**
-     * add the basic behaviuor  of your
+     * add the basic behavior  of your
      * object while collision is detect
      *
-     * true flag  tag the begining of contact
+     * true flag  tag the beginning of contact
      * false the end
      * @param fix2
      * @param flag
@@ -63,7 +63,7 @@ public interface UserSpec {
     }
 
     /**
-     * retreive all the body joint to the main body
+     * retrieve all the body joint to the main body
      * @return
      */
     public default java.util.List<Body> getJointBody(){
