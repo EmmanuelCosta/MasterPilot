@@ -31,19 +31,47 @@ import java.util.List;
 
 
 /**
- * created by Babala Costa Emmanuel
+
  * <p>
- * This represent MasterPilotWorld
+ * This is the world of master pilot game
+ * <p>
+ *     it contains manager of spaceship ennemy, star, bomb and a reference of the hero
+ * </p>
+ * <p>
+ *     it call the method of the MasterPilot2D class in order to draw the correct shape of the body
+ *  </p>
+ *  <p>
+ *      it also manage with collision . Knowing how to treat body if it detected
+ *  </p>
+ *  <p>
+ *      it can also fill a list of body to be destroy which can be taken in order to manage with destruction
+ *  </p>
+ *  <p>
+ *      because he is the only one which know the MasterPilot2D,it will be the interlocutory between the motor and the masterPilot2D
+ *      for refreshing the panel, refreshing the framework clock etc
+ *  </p>
+  * @author Babala Costa Emmanuel
  */
 public class MasterPilotWorld implements ContactListener {
 
     /**
      * this is the available mode game
-     * CHEAT : AUTOMATIC SHIELD FOR SPACESHIP HERO
-     * HARDCORE : YOU MANAGE IT MANUALY
+     * <p>CHEAT : AUTOMATIC SHIELD FOR SPACESHIP HERO
+     * <br>HARDCORE : YOU MANAGE IT MANUALLY
+     * </br>
+     *
+     * </p>
+     *
      */
     public static enum MODE{
-        CHEAT,HARDCORE;
+        /**
+         * Shield of hero is put automatically
+         */
+        CHEAT,
+        /**
+         * Shield of hero must be set manually
+         */
+        HARDCORE;
     }
     /**
      * This is category of MasterPilotworld
@@ -312,6 +340,19 @@ public class MasterPilotWorld implements ContactListener {
         this.masterPilot2D.setCamera(position);
     }
 
+    /**
+     * this is call at the begining of collision
+     * <p>
+     *     in that function, we will ask the two body to perform their design behavior when a collision begining is detected
+     *      we will also retreive their knew sensiblity in collision because it can change.
+     *      <br> That can change for instance if on a collision a body is destroy so his sensority is passed to the false status
+     *      Object off that sensority are not draw </br>
+     *      <br>
+     *          we manage also with retreivable item here
+     *      </br>
+     * </p>
+     * @param contact
+     */
     @Override
     public void beginContact(Contact contact) {
         Fixture fixtureA = contact.getFixtureA();
@@ -343,6 +384,13 @@ public class MasterPilotWorld implements ContactListener {
             this.hero.setBomb(bomb);
         }
     }
+
+    /**
+     * he is call at the end of a collision.
+     * here we manage with destroyable status of the object in collision.
+     * If is set to true so it can be move to the destroyable list
+     * @param contact
+     */
 
     @Override
     public void endContact(Contact contact) {

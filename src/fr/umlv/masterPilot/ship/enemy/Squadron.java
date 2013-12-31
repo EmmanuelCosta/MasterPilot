@@ -17,6 +17,7 @@ import java.util.ArrayList;
 /**
  * an ennemy spaceShip which is protected by a 7 small triangle
  * the mother ship is a square
+ * @author Babala Costa Emmanuel
  */
 public class Squadron implements SpaceShip {
     private final int maskBit;
@@ -147,7 +148,7 @@ public class Squadron implements SpaceShip {
             ft.friction = 0.2f;
             ft.filter.maskBits = maskBit;
             ft.filter.categoryBits = category;
-            ft.userData = new TriangleBehaviour(this, Color.BLUE, this.bodyJointList);
+            ft.userData = new TriangleBehaviour( Color.BLUE, this.bodyJointList);
 
             BodyDef bg = new BodyDef();
             bg.type = BodyType.DYNAMIC;

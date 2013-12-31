@@ -7,12 +7,16 @@ import org.jbox2d.dynamics.Fixture;
 
 
 /**
- * some ennemies use this
- * to know if something hostile come in their direction
+ *
+ * <p>This is for ennemy ship who need to detect an event in
+ * their area of influence
+ * </p>
+ * some ennemy use this
+ * to know if something hostile come in their trajectory
  * so they can performe some action like
  * corrected their direction
  *
- * Created by emmanuel on 26/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class RadarBehaviour implements UserSpec {
     private Vec2 collidePosition = new Vec2();

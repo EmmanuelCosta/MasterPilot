@@ -7,8 +7,8 @@ import org.jbox2d.dynamics.*;
 import java.awt.*;
 
 /**
- * created a star in the world
- * Created by emmanuel
+ * This object represent a star in the world
+ * @author Babala Costa Emmanuel
  */
 public class Star {
     private final int radius;

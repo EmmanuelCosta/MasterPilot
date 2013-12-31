@@ -12,7 +12,7 @@ import java.util.LinkedList;
  * and the attempt duration live of fire
  * we will remove the fire of the world if they have done some distance
  * <p>
- * Created by emmanuel on 28/12/13.
+ * @author Babala Costa Emmanuel
  * </p>
  */
 public class  RayFireManager {

@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * this imlplements the basic behaviour of squadron when collision is detect
- * Created by emmanuel on 22/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class SquadronBehaviour extends EnemyBehaviour {
     private final List<Body> bodyJointList;

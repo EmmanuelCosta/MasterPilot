@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * Hero is the Main character of the Game
  * This class create his body and attach it in the jbox 2d world
- * <p>
+ * <p></p>
  * created by Emmanuel Babala Costa
  */
 public class Hero implements KeyMotionObserver, SpaceShip {
@@ -345,9 +345,9 @@ public class Hero implements KeyMotionObserver, SpaceShip {
                 , Color.CYAN, 2);
         trail3.create();
 
-        TrailManager.addTrail(this.getBody(), trail1);
-        TrailManager.addTrail(this.getBody(), trail2);
-        TrailManager.addTrail(this.getBody(), trail3);
+        TrailManager.addTrail(this.getBody().getPosition(), trail1);
+        TrailManager.addTrail(this.getBody().getPosition(), trail2);
+        TrailManager.addTrail(this.getBody().getPosition(), trail3);
     }
 
     /**

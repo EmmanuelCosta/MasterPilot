@@ -1,7 +1,8 @@
 package fr.umlv.masterPilot.bomb;
 
 /**
- * Created by emmanuel on 17/12/13.
+ *  @author Babala Costa Emmanuel
+
  */
 
 import org.jbox2d.callbacks.QueryCallback;

@@ -12,7 +12,7 @@ import java.util.Iterator;
  * this bomb will can create a bomb of two type
  * explode and implode
  * this behaviour depend on the type given in constructor
- * Created by emmanuel on 19/12/13.
+ *  @author Babala Costa Emmanuel
  */
 public class GenericBomb implements Bomb {
     private final int maskBit;
@@ -84,9 +84,7 @@ public class GenericBomb implements Bomb {
         this.body = body;
     }
 
-    /**
-     * this will create an expulsion effect
-     */
+
     @Override
     public void boum() {
         Vec2 center = this.body.getPosition();

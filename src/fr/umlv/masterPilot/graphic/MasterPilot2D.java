@@ -13,9 +13,9 @@ import java.awt.*;
  * which contains some interesting methods
  * for translation calculation
  * <p>
- * using @IViewportTransform which is use every time to manage with transformation from jbox world to oustide
+ *  @IViewportTransform which is use every time to manage with transformation from jbox world to oustide
  * <p>
- * Created by emmanuel on 10/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class MasterPilot2D {
     private final IViewportTransform viewportTransform;
@@ -85,6 +85,12 @@ public class MasterPilot2D {
         graphic.drawOval((int) sp1.x, (int) sp1.y, (int) radius + 30, (int) radius + 30);
     }
 
+    /**
+     * will draw a not filled circle with the specify circle
+     * @param center
+     * @param color
+     * @param radius
+     */
     private void emptyCircle(Vec2 center, Color color, int radius) {
         Vec2 sp1 = new Vec2();
         getWorldToScreenToOut(center, sp1);
@@ -93,6 +99,12 @@ public class MasterPilot2D {
                 radius * 2, radius * 2);
     }
 
+    /**
+     * will draw a filled circle of the given color
+     * @param center
+     * @param color
+     * @param radius
+     */
     private void filledCircle(Vec2 center, Color color, int radius) {
         Vec2 sp1 = new Vec2();
         getWorldToScreenToOut(center, sp1);
@@ -163,6 +175,13 @@ public class MasterPilot2D {
         this.viewportTransform.setExtents(i, j);
     }
 
+    /**
+     * draw the framework clock at the top left corner
+     *
+     * @param hour
+     * @param minute
+     * @param second
+     */
     public void drawFrameworkClock(int hour, int minute, int second) {
         this.graphic.setColor(Color.WHITE);
         this.graphic.fill3DRect(0, 0, 100, 30, true);
@@ -181,9 +200,16 @@ public class MasterPilot2D {
         this.graphic.setFont(font);
     }
 
-
-    public void drawFrameworkEnd(boolean win,int x,int y) {
-      if(win){
+    /**
+     * show the message end status
+     * if true you win
+     * else you loose
+     * @param status : status of the game
+     * @param x the width of the game scree
+     * @param y the height of the game screen
+     */
+    public void drawFrameworkEnd(boolean status,int x,int y) {
+      if(status){
           this.graphic.setColor(Color.WHITE);
           Font font = this.graphic.getFont();
           this.graphic.setFont(new Font(null, Font.PLAIN, 38));
