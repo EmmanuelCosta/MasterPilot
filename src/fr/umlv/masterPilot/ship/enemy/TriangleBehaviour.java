@@ -1,7 +1,6 @@
 package fr.umlv.masterPilot.ship.enemy;
 
 import fr.umlv.masterPilot.common.UserSpec;
-import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
