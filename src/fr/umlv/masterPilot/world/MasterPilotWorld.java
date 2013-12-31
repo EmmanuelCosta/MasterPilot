@@ -396,12 +396,12 @@ public class MasterPilotWorld implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-        throw new UnsupportedOperationException();
+
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
-        throw new UnsupportedOperationException();
+
     }
 
     /**
