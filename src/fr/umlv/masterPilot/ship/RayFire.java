@@ -92,7 +92,7 @@ public class RayFire {
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = new RayFireBehaviour(this.color);
+        fd.userData = new RayFireBehavior(this.color);
 
         /**
          * join the fixture to the body

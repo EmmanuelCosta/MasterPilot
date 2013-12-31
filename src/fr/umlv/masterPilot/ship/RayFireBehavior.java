@@ -12,11 +12,11 @@ import java.awt.*;
  * behaviour collision of RayFire
  * Created by emmanuel on 28/12/13.
  */
-public class RayFireBehaviour implements UserSpec {
+public class RayFireBehavior implements UserSpec {
     private boolean destroy=false;
     private final Color color;
 
-    public RayFireBehaviour(Color color) {
+    public RayFireBehavior(Color color) {
         this.color = color;
     }
 

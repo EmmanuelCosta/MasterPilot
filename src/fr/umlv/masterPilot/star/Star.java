@@ -77,7 +77,7 @@ public class Star {
         fd.density = this.density;
         fd.friction = 50f;
         fd.restitution = 0.5f;
-        fd.userData = new StarBehaviour(this.color);
+        fd.userData = new StarBehavior(this.color);
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
 

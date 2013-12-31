@@ -13,7 +13,7 @@
            <mkdir dir="${bin.dir}" />        
                  <mkdir dir="${docs.dir}/doc" />
         </target>
-  <target name="compile" depends="init">
+  <target name="compile">
            <javac srcdir="${src.dir}" destdir="${bin.dir}" includeantruntime="false" classpathref="classpath"/>
     <echo message="Ant Done!"/>
   </target>

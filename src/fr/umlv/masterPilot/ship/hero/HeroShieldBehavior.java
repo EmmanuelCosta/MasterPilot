@@ -8,7 +8,7 @@ import org.jbox2d.dynamics.Fixture;
  * @see fr.umlv.masterPilot.common.UserSpec
  * Created by emmanuel on 21/12/13.
  */
-public class HeroShieldBehaviour implements UserSpec {
+public class HeroShieldBehavior implements UserSpec {
     private final MasterPilotWorld.MODE mode;
     private boolean collide = true;
 
@@ -17,7 +17,7 @@ public class HeroShieldBehaviour implements UserSpec {
      * if is HARDCORE YOU MUST ACTIVATE IT MANUALY
      * @param mode {@link fr.umlv.masterPilot.world.MasterPilotWorld.MODE} MODE
      */
-    public HeroShieldBehaviour(MasterPilotWorld.MODE mode) {
+    public HeroShieldBehavior(MasterPilotWorld.MODE mode) {
         this.mode = mode;
     }
 

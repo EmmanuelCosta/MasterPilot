@@ -62,7 +62,7 @@ public class Trail {
         fd.restitution = 0.0f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = new TrailBehaviour(this.color);
+        fd.userData = new TrailBehavior(this.color);
 
         Body body = this.world.createBody(bd);
         body.createFixture(fd);

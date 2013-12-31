@@ -11,6 +11,7 @@ import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+
 import java.awt.*;
 import java.util.Objects;
 
@@ -31,7 +32,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
     private Body body;
     private Bomb.BombType bombType = Bomb.BombType.NONE;
     private Bomb cBomb;
-    private final Vec2 maxSpeed = new Vec2(5,5);
+    private final Vec2 maxSpeed = new Vec2(5, 5);
+    private final HeroBehavior heroBehavior;
 
     /**
      * create the hero at the specify coordinate
@@ -45,6 +47,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         this.y_axis = y_axis;
         this.world = world;
         this.mode = mode;
+        this.heroBehavior = new HeroBehavior(mode);
     }
 
     /**
@@ -60,6 +63,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         this.y_axis = y_axis;
         this.world = world;
         this.mode = mode;
+        this.heroBehavior = new HeroBehavior(mode);
     }
 
     /**
@@ -84,7 +88,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fd.density = 0.09f;
         fd.friction = 0.001f;
         fd.restitution = 1.5f;
-        fd.userData = new HeroBehaviuor();
+        fd.userData = this.heroBehavior;
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
@@ -94,12 +98,12 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         bd.position.set(x_axis, y_axis);
         bd.angle = 3.14f;
         bd.allowSleep = false;
-        
+
 /**************************SHIELD ************************************************************************/
 
         CircleShape cs = new CircleShape();
         cs.setRadius(23);
-        
+
         FixtureDef fs = new FixtureDef();
         fs.shape = cs;
         fs.isSensor = true;
@@ -107,8 +111,8 @@ public class Hero implements KeyMotionObserver, SpaceShip {
         fs.friction = 0.3f;
         fs.restitution = 0.5f;
         fs.filter.categoryBits = MasterPilotWorld.SHIELD;
-        fs.userData = new HeroShieldBehaviour(mode);
-        
+        fs.userData = new HeroShieldBehavior(mode);
+
         Body body = this.world.createBody(bd);
         body.createFixture(fs);
         body.createFixture(fd);
@@ -130,17 +134,17 @@ public class Hero implements KeyMotionObserver, SpaceShip {
             case "UP":
                 up();
                 break;
-                
+
             case "LEFT":
                 left();
                 break;
-                
+
             case "RIGHT":
                 right();
                 break;
-                
+
             case "SPACE":
-                
+
                 /**
                  * fire only if we are not in shield mode
                  */
@@ -148,13 +152,13 @@ public class Hero implements KeyMotionObserver, SpaceShip {
                     fire();
                 }
                 break;
-                
+
             case "B":
                 if (!isShieldSet() && this.bombType != Bomb.BombType.NONE) {
                     fireBomb();
                 }
                 break;
-                
+
             case "S":
                 shield();
                 break;
@@ -182,7 +186,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          * and create a Bomb from that point
          */
         PolygonShape sha = (PolygonShape) body.getFixtureList().getShape();
-        
+
         /**
          * Here the tip is store on third vertices
          * careful if body construction change
@@ -200,7 +204,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          */
         RayFire cBomb = new RayFire(this.world, worldPoint.x, worldPoint.y);
         cBomb.create();
-        
+
         Vec2 force = body.getWorldVector(classicBombSpeed);
         Vec2 point = body.getWorldPoint(cBomb.getBody().getWorldCenter());
 
@@ -224,7 +228,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
          * and create a Bomb from that point
          */
         PolygonShape sha = (PolygonShape) body.getFixtureList().getShape();
-        
+
         /**
          * Here the tip is store on third vertices
          * careful if body construction change
@@ -348,6 +352,7 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     /**
      * set a bomb in the hero item
+     *
      * @param bomb
      */
     public void setBomb(Bomb bomb) {
@@ -359,5 +364,18 @@ public class Hero implements KeyMotionObserver, SpaceShip {
 
     public Vec2 getMaxSpeed() {
         return maxSpeed;
+    }
+
+    public int getHeroLive() {
+        /**
+         * cheat mode infinite live
+         */
+        if(this.mode == MasterPilotWorld.MODE.CHEAT){
+            return 1000;
+        }
+        /**
+         * return the left live
+         */
+        return this.heroBehavior.getHeroLive();
     }
 }

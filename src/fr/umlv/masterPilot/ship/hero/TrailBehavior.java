@@ -8,10 +8,10 @@ import java.awt.*;
  * @see fr.umlv.masterPilot.common.UserSpec
  * Created by emmanuel on 28/12/13.
  */
-public class TrailBehaviour implements UserSpec {
+public class TrailBehavior implements UserSpec {
     private Color color;
 
-    public TrailBehaviour(Color color) {
+    public TrailBehavior(Color color) {
         this.color = color;
     }
 

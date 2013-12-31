@@ -351,6 +351,8 @@ public class MasterPilotMotor implements KeyMotionObservable {
             masterPilotWorld.getWorld().step(timeStep, velocityIterations,
                     positionIterations);
             destroyCharacter(masterPilotWorld);
+
+
             if(lastNumber > masterPilotWorld.getEnemyList().size()){
                 generateBomb(masterPilotWorld,gameSpec.getBombPercentage(),"BOMB");
                 generateBomb(masterPilotWorld,gameSpec.getMegaBombPercentage(),"MEGABOMB");
@@ -362,7 +364,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
             /**
              * this for notify the hero that event have been find
              */
-            if (keyEvent != null) {
+            if (keyEvent != null && masterPilotWorld.getHero().getHeroLive() > 0) {
                 this.notifyObserver(keyEvent);
             }
 
@@ -388,7 +390,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
                 } catch (InterruptedException ex) {
                 }
             }
-            if (gameTiming < 0) {
+            if (gameTiming < 0 || masterPilotWorld.getHero().getHeroLive() <= 0) {
                 masterPilotWorld.drawFrameworkEnd(false, WIDTH / 2, HEIGHT / 2);
                 return;
             } else if (masterPilotWorld.getEnemyList().isEmpty()) {
@@ -418,6 +420,9 @@ public class MasterPilotMotor implements KeyMotionObservable {
      * @param masterPilotWorld
      */
     private void destroyCharacter(MasterPilotWorld masterPilotWorld) {
+        if(masterPilotWorld.getHero().getHeroLive() <= 0){
+            masterPilotWorld.getWorld().destroyBody(masterPilotWorld.getBodyHero());
+        }
         List<Body> destroyBody = masterPilotWorld.getDestroyBody();
         Iterator<Body> iterator = destroyBody.iterator();
 

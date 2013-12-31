@@ -11,11 +11,11 @@ import java.awt.*;
  * specify the collision behaviour of the star
  * Created by emmanuel on 29/12/13.
  */
-public class StarBehaviour implements UserSpec {
+public class StarBehavior implements UserSpec {
 
     private final Color color;
 
-    public StarBehaviour(Color color) {
+    public StarBehavior(Color color) {
         this.color = color;
     }
 
