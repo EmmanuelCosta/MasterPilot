@@ -16,7 +16,7 @@ public class EnemyBehaviour implements UserSpec {
 
     private boolean destroy = false;
     private final Color color;
-    public EnemyBehaviour(SpaceShip enemySpaceShip,Color color) {
+    public EnemyBehaviour(Color color) {
         this.color=color;
     }
 

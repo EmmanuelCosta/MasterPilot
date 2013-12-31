@@ -21,7 +21,18 @@ public interface Bomb {
      * </p>
      */
     public enum BombType{
-        NONE,BOMB,MEGABOMB;
+        /**
+         * No bomb
+         */
+        NONE,
+        /**
+         * expulse effect
+         */
+        BOMB,
+        /**
+         * impuse effect
+         */
+        MEGABOMB;
     }
 
     /**
@@ -30,7 +41,14 @@ public interface Bomb {
      * armed it can
      */
     public enum BombState{
-        NOT_ARMED,ARMED,;
+        /**
+         * bomb cant explode
+         */
+        NOT_ARMED,
+        /**
+         * bomb can explode
+         */
+        ARMED;
     }
 
     /**

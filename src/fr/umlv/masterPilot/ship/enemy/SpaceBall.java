@@ -99,7 +99,7 @@ public class SpaceBall implements SpaceShip {
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = new EnemyBehaviour(this, Color.CYAN);
+        fd.userData = new EnemyBehaviour( Color.CYAN);
         body.createFixture(fd);
 
         /************* LOSANGE UP *********************/
@@ -120,7 +120,7 @@ public class SpaceBall implements SpaceShip {
         fdup.restitution = 0.5f;
         fdup.filter.categoryBits = this.category;
         fdup.filter.maskBits = this.maskBit;
-        fdup.userData = new EnemyBehaviour(this, Color.BLUE);
+        fdup.userData = new EnemyBehaviour( Color.BLUE);
         body.createFixture(fdup);
 
         /************* LOSANGE DOWN *******************/
@@ -141,7 +141,7 @@ public class SpaceBall implements SpaceShip {
         fddown.restitution = 0.5f;
         fddown.filter.categoryBits = this.category;
         fddown.filter.maskBits = this.maskBit;
-        fddown.userData = new EnemyBehaviour(this, Color.BLUE);
+        fddown.userData = new EnemyBehaviour(Color.BLUE);
         body.createFixture(fddown);
 
         /************* LOSANGE LEFT *******************/
@@ -162,7 +162,7 @@ public class SpaceBall implements SpaceShip {
         fdleft.restitution = 0.5f;
         fdleft.filter.categoryBits = this.category;
         fdleft.filter.maskBits = this.maskBit;
-        fdleft.userData = new EnemyBehaviour(this, Color.BLUE);
+        fdleft.userData = new EnemyBehaviour(Color.BLUE);
         body.createFixture(fdleft);
 
         /************* LOSANGE RIGHT ******************/
@@ -183,7 +183,7 @@ public class SpaceBall implements SpaceShip {
         fdright.restitution = 0.5f;
         fdright.filter.categoryBits = this.category;
         fdright.filter.maskBits = this.maskBit;
-        fdright.userData = new EnemyBehaviour(this, Color.BLUE);
+        fdright.userData = new EnemyBehaviour( Color.BLUE);
         body.createFixture(fdright);
 
         /**

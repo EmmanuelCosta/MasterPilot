@@ -94,7 +94,7 @@ public class Squadron implements SpaceShip {
         fd.restitution = 0.0005f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = new SquadronBehaviour(this, Color.GREEN, this.bodyJointList);
+        fd.userData = new SquadronBehaviour( Color.GREEN, this.bodyJointList);
 
         /**
          * Integrate the body in the world.

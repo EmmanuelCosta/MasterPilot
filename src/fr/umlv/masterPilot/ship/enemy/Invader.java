@@ -105,7 +105,7 @@ public class Invader implements SpaceShip {
         fd.restitution = 2.f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = new EnemyBehaviour(this, Color.green);
+        fd.userData = new EnemyBehaviour(Color.green);
         body.createFixture(fd);
 
         /***************** LEFT WINGS ***********************/
@@ -133,7 +133,7 @@ public class Invader implements SpaceShip {
         fdlw.restitution = 2f;
         fdlw.filter.categoryBits = this.category;
         fdlw.filter.maskBits = this.maskBit;
-        fdlw.userData = new EnemyBehaviour(this, Color.green);
+        fdlw.userData = new EnemyBehaviour( Color.green);
         body.createFixture(fdlw);
 
         /***************** RIGHT WINGS ***********************/
@@ -162,7 +162,7 @@ public class Invader implements SpaceShip {
         fdrw.restitution = 2.f;
         fdrw.filter.categoryBits = this.category;
         fdrw.filter.maskBits = this.maskBit;
-        fdrw.userData = new EnemyBehaviour(this, Color.green);
+        fdrw.userData = new EnemyBehaviour( Color.green);
         body.createFixture(fdrw);
 
         /************* CREATE SHIELD ****************/

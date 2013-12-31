@@ -17,8 +17,8 @@ public class SquadronBehaviour extends EnemyBehaviour {
     private final List<Body> bodyJointList;
     private boolean destroyedTriangle =false;
 
-    public SquadronBehaviour(SpaceShip enemySpaceShip, Color color, List<Body> bodyJointList) {
-        super(enemySpaceShip, color);
+    public SquadronBehaviour(Color color, List<Body> bodyJointList) {
+        super( color);
         this.bodyJointList=bodyJointList;
     }
 

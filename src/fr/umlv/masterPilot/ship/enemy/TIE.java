@@ -88,7 +88,7 @@ public class TIE implements SpaceShip {
         fd.restitution = 10.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = new EnemyBehaviour(this, Color.BLUE);
+        fd.userData = new EnemyBehaviour( Color.BLUE);
 
 /**************  LEFT WING  *********************/
 
@@ -113,7 +113,7 @@ public class TIE implements SpaceShip {
         fs.restitution = 0.5f;
         fs.filter.categoryBits = MasterPilotWorld.ENEMY;
         fs.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.SHIELD;
-        fs.userData = new EnemyBehaviour(this, Color.BLUE);
+        fs.userData = new EnemyBehaviour( Color.BLUE);
 
         /**** RIGHT  WING **********************************/
 
@@ -138,7 +138,7 @@ public class TIE implements SpaceShip {
         fr.restitution = 1.5f;
         fr.filter.categoryBits = MasterPilotWorld.ENEMY;
         fr.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.SHIELD;
-        fr.userData = new EnemyBehaviour(this, Color.BLUE);
+        fr.userData = new EnemyBehaviour( Color.BLUE);
 
 /*****************************************************/
         bd.angularDamping = 2.0f;

@@ -25,7 +25,7 @@ public class Trail {
      *
      *@param world
      * @param x_axis : X coordinate of his initial position in yhe world
-     * @param y_axis : Y cordinate of his initial position in yhe world
+     * @param y_axis : Y coOrdinate of his initial position in yhe world
      * @param category : Define the category
      * @param maskBit : Define the order category with which it can collide
      *

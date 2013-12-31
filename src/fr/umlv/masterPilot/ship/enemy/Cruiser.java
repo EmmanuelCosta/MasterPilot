@@ -106,7 +106,7 @@ public class Cruiser implements SpaceShip {
         fd.restitution = 0.05f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-        fd.userData = new EnemyBehaviour(this, Color.CYAN);
+        fd.userData = new EnemyBehaviour( Color.CYAN);
 
         /*********************************************************/
 
