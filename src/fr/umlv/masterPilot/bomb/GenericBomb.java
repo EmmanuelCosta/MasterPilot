@@ -84,9 +84,7 @@ public class GenericBomb implements Bomb {
         this.body = body;
     }
 
-    /**
-     * this will create an expulsion effect
-     */
+
     @Override
     public void boum() {
         Vec2 center = this.body.getPosition();

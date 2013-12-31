@@ -7,11 +7,27 @@ import org.jbox2d.dynamics.Body;
  * all bomb in the game will derive from that intrerface
  */
 public interface Bomb {
-
+    /**
+     * type of bomb
+     *
+     * Bomb is a explosion bomb
+     * <p>
+     *  MegaBomb is an implosion bomb
+     * </p>
+     * <p>
+     *     NONE : is use in the spaceShip  that may have bomb in reserve
+     *     it tell that they dont hold any
+     * </p>
+     */
     public enum BombType{
         NONE,BOMB,MEGABOMB;
     }
 
+    /**
+     * state of bomb
+     * Not armed it can not explode
+     * armed it can
+     */
     public enum BombState{
         NOT_ARMED,ARMED,;
     }
@@ -27,7 +43,7 @@ public interface Bomb {
      * we simulate here an explode blast
      *
      * we will apply force on the body
-     * See c++ source here : http://www.iforce2d.net/b2dtut/explosions
+     * {@link} http://www.iforce2d.net/b2dtut/explosions
      *
      * @param body
      * @param blastCenter
@@ -57,6 +73,10 @@ public interface Bomb {
         return BombState.NOT_ARMED;
     }
 
+    /**
+     * use to change the state of bomb
+     * @param launched
+     */
     public default void setBombState(BombState launched){
     }
 

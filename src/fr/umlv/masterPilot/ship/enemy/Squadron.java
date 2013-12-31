@@ -147,7 +147,7 @@ public class Squadron implements SpaceShip {
             ft.friction = 0.2f;
             ft.filter.maskBits = maskBit;
             ft.filter.categoryBits = category;
-            ft.userData = new TriangleBehaviour(this, Color.BLUE, this.bodyJointList);
+            ft.userData = new TriangleBehaviour( Color.BLUE, this.bodyJointList);
 
             BodyDef bg = new BodyDef();
             bg.type = BodyType.DYNAMIC;

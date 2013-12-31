@@ -21,7 +21,7 @@ public class TriangleBehaviour implements UserSpec {
     private final ArrayList<Body> bodyJointList;
     private boolean destroy = false;
 
-    public TriangleBehaviour(SpaceShip enemySpaceShip, Color color, ArrayList<Body> bodyJointList) {
+    public TriangleBehaviour(Color color, ArrayList<Body> bodyJointList) {
         this.color = color;
         this.bodyJointList = bodyJointList;
     }

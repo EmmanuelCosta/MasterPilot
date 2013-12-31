@@ -5,12 +5,19 @@ import fr.umlv.masterPilot.world.MasterPilotWorld;
 import org.jbox2d.dynamics.Fixture;
 
 /**
+ * this is class which defines the action of shield ennemy
+ * when collision is detect
+ * give it to the spaceship ennemy that have been design to use shield
  * Created by emmanuel on 22/12/13.
  */
 public class EnemyShieldBehaviour implements UserSpec {
     private int nbShield;
     private boolean collide = true;
 
+    /**
+     * create an instance of that class with the number of attempt shield
+     * @param nbShield
+     */
     public EnemyShieldBehaviour(int nbShield) {
         this.nbShield = nbShield;
     }
@@ -33,12 +40,7 @@ public class EnemyShieldBehaviour implements UserSpec {
         }
     }
 
-    /**
-     * according to jbox sensor if is set to false
-     * so collision must append
-     *
-     * @return
-     */
+
     @Override
     public boolean getSensor() {
         return collide;

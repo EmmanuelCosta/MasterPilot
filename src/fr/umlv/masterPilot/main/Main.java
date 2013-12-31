@@ -8,6 +8,7 @@ import fr.umlv.zen3.Application;
 /**
  *Main class of the Game
  * Created by emmanuel on 06/12/13.
+ * Version 1.0.0
  */
 public class Main {
     public static void main(String[] args) {
