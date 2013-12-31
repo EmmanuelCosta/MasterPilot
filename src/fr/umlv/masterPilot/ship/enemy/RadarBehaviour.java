@@ -16,7 +16,7 @@ import org.jbox2d.dynamics.Fixture;
  * so they can performe some action like
  * corrected their direction
  *
- * Created by emmanuel on 26/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class RadarBehaviour implements UserSpec {
     private Vec2 collidePosition = new Vec2();

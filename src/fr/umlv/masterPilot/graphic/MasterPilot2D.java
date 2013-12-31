@@ -15,7 +15,7 @@ import java.awt.*;
  * <p>
  *  @IViewportTransform which is use every time to manage with transformation from jbox world to oustide
  * <p>
- * Created by emmanuel on 10/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class MasterPilot2D {
     private final IViewportTransform viewportTransform;

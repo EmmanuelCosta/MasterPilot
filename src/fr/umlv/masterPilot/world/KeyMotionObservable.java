@@ -3,7 +3,8 @@ package fr.umlv.masterPilot.world;
 import fr.umlv.zen3.KeyboardEvent;
 
 /**
- *
+ * This will be implemented by all classes which have to catch keyMotion and
+ * notify a list of object which way for that event
  * Created by emmanuel on 07/12/13.
  */
 public interface KeyMotionObservable {

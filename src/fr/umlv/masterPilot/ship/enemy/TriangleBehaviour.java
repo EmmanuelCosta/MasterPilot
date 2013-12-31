@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * basic collision behaviour of the triangle space which protect the Squadon Mother Ship
  * @see fr.umlv.masterPilot.ship.enemy.Squadron
- * Created by emmanuel on 22/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class TriangleBehaviour implements UserSpec {
     private final Color color;

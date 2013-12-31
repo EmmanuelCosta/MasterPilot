@@ -14,7 +14,7 @@ import java.awt.*;
 
 /**
  * that ennemy look like a small circle with to wings
- * Created by emmanuel on 22/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class TIE implements SpaceShip {
     private  final Vec2 maxSpeed;

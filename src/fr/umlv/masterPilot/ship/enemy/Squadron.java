@@ -17,6 +17,7 @@ import java.util.ArrayList;
 /**
  * an ennemy spaceShip which is protected by a 7 small triangle
  * the mother ship is a square
+ * @author Babala Costa Emmanuel
  */
 public class Squadron implements SpaceShip {
     private final int maskBit;

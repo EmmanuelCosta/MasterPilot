@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * This is the motor of the game it launch and end the game create and destroy
- * his character Created by emmanuel on 06/12/13.
+ *   @author Babala Costa Emmanuel and Sybille Crimet
  */
 public class MasterPilotMotor implements KeyMotionObservable {
     private final int WIDTH = 800;
@@ -458,8 +458,14 @@ public class MasterPilotMotor implements KeyMotionObservable {
         observerList.remove(observer);
     }
 
-    private void proccessManager(List<SpaceShip> spaceShips, Hero hero) {
-        for (SpaceShip space : spaceShips) {
+    /**
+     * this method will ask every spaceship of the given list
+     * to perform their doMove() task
+     * @param spaceShipEnnemy
+     * @param hero
+     */
+    private void proccessManager(List<SpaceShip> spaceShipEnnemy, Hero hero) {
+        for (SpaceShip space : spaceShipEnnemy) {
             space.doMove();
         }
     }
@@ -557,7 +563,7 @@ public class MasterPilotMotor implements KeyMotionObservable {
                             enemyFactory.createEnemy(type, init_x - 70 * i,
                                     -init_y, hero);
                         } else if (direction % 4 == 2) {
-                            enemyFactory.createEnemy(type, init_x - 70 * i,
+                            enemyFactory.createEnemy(type, init_x + 70 * i,
                                     -init_y + 70, hero);
                         } else {
                             enemyFactory.createEnemy(type, init_x + 70 * i,

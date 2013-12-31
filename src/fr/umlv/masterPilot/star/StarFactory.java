@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Use this to create star in jbox2d world
  * it will register it into the StarManager of the MasterPiloteWorld
- * Created by emmanuel on 28/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class StarFactory {
     private final MasterPilotWorld masterPilotWorld;

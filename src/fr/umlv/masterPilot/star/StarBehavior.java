@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * @see fr.umlv.masterPilot.common.UserSpec
  * specify the collision behaviour of the star
- * Created by emmanuel on 29/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class StarBehavior implements UserSpec {
 

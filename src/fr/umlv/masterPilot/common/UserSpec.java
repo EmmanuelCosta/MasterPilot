@@ -9,7 +9,7 @@ import java.awt.*;
  * This class have to be given in fixture.userData object of jbox2D
  * it will contains the basic behavior of body when collision is detected
  *
- * Created by Emmanuel on 19/12/13.
+ * @author Babala Costa Emmanuel
  */
 public interface UserSpec {
 

@@ -7,8 +7,8 @@ import fr.umlv.masterPilot.world.MasterPilotWorld;
 
 /**
  * this will create a spaceship and register it to the SpaceShipManager in MasterPilotWorld
- * Created by emmanuel on 28/12/13.
-
+ * @author Babala Costa Emmanuel
+ *
  */
 public class SpaceShipFactory {
     private MasterPilotWorld masterPilotWorld;

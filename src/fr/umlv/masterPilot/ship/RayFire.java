@@ -8,11 +8,11 @@ import org.jbox2d.dynamics.*;
 import java.awt.*;
 
 /**
- * Ray bomb are normal fire
+ * Ray fire are classic fire
  * by default is hero friendly but
  * enemy and star hostile
  * <p>
- * created By Babala Costa Emmanuel
+ * @author Babala Costa Emmanuel
  */
 public class RayFire {
     private final int maskBit;

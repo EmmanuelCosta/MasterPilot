@@ -11,7 +11,7 @@ import java.awt.*;
  * tell him if it must explode or  not
  * <p>if it must appear or not</p>
  *
- * Created by emmanuel on 21/12/13.
+ *   @author Babala Costa Emmanuel
  */
 public class BombBehaviour implements UserSpec {
     private final Bomb bomb;

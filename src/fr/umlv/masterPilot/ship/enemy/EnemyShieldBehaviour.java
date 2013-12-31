@@ -8,7 +8,7 @@ import org.jbox2d.dynamics.Fixture;
  * this is class which defines the action of shield ennemy
  * when collision is detect
  * give it to the spaceship ennemy that have been design to use shield
- * Created by emmanuel on 22/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class EnemyShieldBehaviour implements UserSpec {
     private int nbShield;

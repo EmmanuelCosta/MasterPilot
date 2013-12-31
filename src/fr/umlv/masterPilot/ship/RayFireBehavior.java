@@ -10,7 +10,7 @@ import java.awt.*;
  * @see fr.umlv.masterPilot.common.UserSpec
  *
  * behaviour collision of RayFire
- * Created by emmanuel on 28/12/13.
+ * @author Babala Costa Emmanuel
  */
 public class RayFireBehavior implements UserSpec {
     private boolean destroy=false;
