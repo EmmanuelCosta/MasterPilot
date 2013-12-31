@@ -63,49 +63,30 @@ public class Star {
      *create a star body in the jbox 2d world
      */
     public void create() {
-
         CircleShape cs = new CircleShape();
-
         cs.m_radius = radius;
 
         BodyDef bd = new BodyDef();
-
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.STATIC;
         bd.allowSleep = true;
         bd.userData = this.getClass();
 
-
-        // Create a fi xture for ball
         FixtureDef fd = new FixtureDef();
-        // applique toi a cs
         fd.shape = cs;
         fd.density = this.density;
         fd.friction = 50f;
         fd.restitution = 0.5f;
-
-
-        /**
-         * we set the color of
-         * the body
-         */
         fd.userData = new StarBehaviour(this.color);
-
         fd.filter.categoryBits = this.category;
-
         fd.filter.maskBits = this.maskBit;
 
-
-        // body
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
-
         this.body = body;
-
     }
 
     public Body getBody() {
         return body;
     }
-
 }

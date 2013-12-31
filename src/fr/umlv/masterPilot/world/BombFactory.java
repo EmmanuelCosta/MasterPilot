@@ -8,11 +8,9 @@ import fr.umlv.masterPilot.bomb.GenericBomb;
  * Created by emmanuel on 20/12/13.
  */
 public class BombFactory {
-
     private final MasterPilotWorld masterPilotWorld;
 
     public BombFactory(MasterPilotWorld masterPilotWorld) {
-
         this.masterPilotWorld = masterPilotWorld;
     }
 
@@ -27,7 +25,6 @@ public class BombFactory {
         GenericBomb gBomb = new GenericBomb(this.masterPilotWorld.getWorld(), x, y, type);
 gBomb.create();
         this.masterPilotWorld.addToBombManager( gBomb);
-
         return gBomb;
     }
 }

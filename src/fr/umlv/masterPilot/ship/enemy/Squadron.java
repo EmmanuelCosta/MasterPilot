@@ -38,7 +38,6 @@ public class Squadron implements SpaceShip {
     private RadarBehaviour radar;
     private Thread thread;
 
-
     /**
      *
      * @param world
@@ -47,15 +46,12 @@ public class Squadron implements SpaceShip {
      * @param hero : the hero
      */
     public Squadron(World world, int x_axis, int y_axis, Hero hero) {
-
-
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
-
         this.hero = hero;
-
         this.maxSpeed=hero.getMaxSpeed();
+        
         /**
          * Interactions with the other bodies.
          */
@@ -66,27 +62,22 @@ public class Squadron implements SpaceShip {
                 | MasterPilotWorld.MEGABOMB
                 | MasterPilotWorld.PLANET
                 | MasterPilotWorld.HERO;
-
         this.bodyJointList = new ArrayList<>();
     }
 
     @Override
     public void create() {
-
         Vec2[] vertices = new Vec2[4];
         vertices[0] = new Vec2(-8, -8);
         vertices[1] = new Vec2(-8, 8);
         vertices[2] = new Vec2(8, 8);
         vertices[3] = new Vec2(8, -8);
-
-        this.referenceVertices1=vertices[0];
-        this.referenceVertices2=vertices[3];
+        this.referenceVertices1 = vertices[0];
+        this.referenceVertices2 = vertices[3];
 
         PolygonShape ps = new PolygonShape();
         ps.set(vertices, 4);
-//        ps.setAsBox(8, 8);
-
-
+        
         BodyDef bd = new BodyDef();
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.DYNAMIC;
@@ -102,10 +93,7 @@ public class Squadron implements SpaceShip {
         fd.restitution = 0.0005f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-
-
         fd.userData = new SquadronBehaviour(this, Color.GREEN, this.bodyJointList);
-
 
         /**
          * Integrate the body in the world.
@@ -116,24 +104,21 @@ public class Squadron implements SpaceShip {
         body.createFixture(fd);
         this.body = body;
 
-
         /************invisible radar**************/
 
         CircleShape cs = new CircleShape();
         cs.setRadius(75);
+        
         FixtureDef fs = new FixtureDef();
         fs.shape = cs;
-
         fs.isSensor = false;
         fs.density = 0.0f;
         fs.friction = 0.3f;
         fs.restitution = 0.5f;
-
         fs.filter.categoryBits = MasterPilotWorld.RADAR;
         fs.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.SHOOT | MasterPilotWorld.SHIELD;
         this.radar = new RadarBehaviour();
         fs.userData = this.radar;
-
         body.createFixture(fs);
 
         /******************************************/
@@ -146,6 +131,7 @@ public class Squadron implements SpaceShip {
         position[4] = new Vec2(x_axis + 40, y_axis - 15);
         position[5] = new Vec2(x_axis - 40, y_axis - 15);
         position[6] = new Vec2(x_axis, y_axis - 25);
+        
         //TRIANGLE JOINT CREATION
         for (int i = 0; i < 7; i++) {
             PolygonShape px = new PolygonShape();
@@ -153,7 +139,6 @@ public class Squadron implements SpaceShip {
             triangle[0] = new Vec2(0, -8);
             triangle[1] = new Vec2(-5, 0);
             triangle[2] = new Vec2(5, 0);
-
             px.set(triangle, 3);
 
             FixtureDef ft = new FixtureDef();
@@ -165,33 +150,22 @@ public class Squadron implements SpaceShip {
             ft.userData = new TriangleBehaviour(this, Color.BLUE, this.bodyJointList);
 
             BodyDef bg = new BodyDef();
-            //bg.position.set(x_axis, y_axis);
             bg.type = BodyType.DYNAMIC;
-
             bg.position.set(position[i].x, position[i].y);
-//
-
             Body bodyTriangle = this.world.createBody(bg);
-
             bodyTriangle.createFixture(ft);
             bodyJointList.add(bodyTriangle);
 
-
             RevoluteJointDef jd = new RevoluteJointDef();
-
             jd.initialize(body, bodyTriangle, body.getWorldCenter());
             jd.collideConnected = false;
             jd.enableLimit = true;
             jd.upperAngle = 1;
             jd.enableMotor = true;
             world.createJoint(jd);
-
-
             body.createFixture(ft);
         }
-        //***********************
-
-
+        
         this.thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -214,14 +188,15 @@ public class Squadron implements SpaceShip {
         Vec2 worldPoint1 = body.getWorldPoint( this.referenceVertices1);
         Vec2 worldPoint2 = body.getWorldPoint( this.referenceVertices2);
         Vec2 force;
+        
         if (worldPoint1.x < worldPoint2.x) {
             force = body.getWorldVector(forceRight);
         } else {
             force = body.getWorldVector(forceLeft);
         }
+        
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         Vec2 lVelocity = this.body.getLinearVelocity();
-
 
         if (Math.abs(lVelocity.y) < maxSpeed.y) {
             this.body.applyForceToCenter(force);
@@ -233,14 +208,15 @@ public class Squadron implements SpaceShip {
         Vec2 worldPoint1 = body.getWorldPoint( this.referenceVertices1);
         Vec2 worldPoint2 = body.getWorldPoint( this.referenceVertices2);
         Vec2 force;
+        
         if (worldPoint1.x < worldPoint2.x) {
             force = body.getWorldVector(forceLeft);
         } else {
             force = body.getWorldVector(forceRight);
         }
+        
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         Vec2 lVelocity = this.body.getLinearVelocity();
-
 
         if (Math.abs(lVelocity.y) < maxSpeed.y) {
             this.body.applyForceToCenter(force);
@@ -253,37 +229,35 @@ public class Squadron implements SpaceShip {
         Vec2 worldPoint1 = body.getWorldPoint( this.referenceVertices1);
         Vec2 worldPoint2 = body.getWorldPoint( this.referenceVertices2);
         Vec2 force;
+        
         if (worldPoint1.x < worldPoint2.x) {
             force = body.getWorldVector(forceUp);
         } else {
             force = body.getWorldVector(forceDown);
         }
+        
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         Vec2 lVelocity = this.body.getLinearVelocity();
-
 
         if (Math.abs(lVelocity.y) < maxSpeed.y) {
             this.body.applyForceToCenter(force);
         }
-
-//        this.body.applyForce(for);
-
     }
 
     @Override
     public void down() {
-
         Vec2 worldPoint1 = body.getWorldPoint( this.referenceVertices1);
         Vec2 worldPoint2 = body.getWorldPoint( this.referenceVertices2);
         Vec2 force;
+        
         if (worldPoint1.x < worldPoint2.x) {
             force = body.getWorldVector(forceDown);
         } else {
             force = body.getWorldVector(forceUp);
         }
+        
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         Vec2 lVelocity = this.body.getLinearVelocity();
-
 
         if (Math.abs(lVelocity.y) < maxSpeed.y) {
             this.body.applyForceToCenter(force);
@@ -293,8 +267,8 @@ public class Squadron implements SpaceShip {
 
     @Override
     public void fire() {
-
         ArrayList<Body> bdt = new ArrayList<>();
+        
         for (Body b = this.world.getBodyList(); b != null; b = b.getNext()) {
             if (this.bodyJointList.contains(b)) {
                 bdt.add(b);
@@ -308,17 +282,11 @@ public class Squadron implements SpaceShip {
                     | MasterPilotWorld.MEGABOMB
                     | MasterPilotWorld.HERO, Color.CYAN);
             rayon1.create();
-
             Vec2 worldCenter = body.getWorldCenter();
             Vec2 blastDir = worldCenter.sub(hero.getBody().getPosition());
-
             rayon1.getBody().applyLinearImpulse(blastDir.mul(-10000), worldCenter);
-
             RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon1);
-
         }
-
-
     }
 
     @Override
@@ -326,72 +294,53 @@ public class Squadron implements SpaceShip {
         float x_distance = body.getPosition().x - hero.getBody().getPosition().x;
         float y_distance = body.getPosition().y - hero.getBody().getPosition().y;
         int limit = 150;
-
-
+        
         tryToProtectTheMotherShip();
-
 
         //MANAGE WITH RECUL WHEN COLLISION WITH HERO IS POSSIBLE
         if ((y_distance < 50 && y_distance >= 0) && ((x_distance <= 0 && x_distance > -150)
                 || (x_distance >= 0 && x_distance < 150))) {
-
-
             up();
-
             return;
         } else if ((y_distance > -150 && y_distance <= 0) && ((x_distance <= 0 && x_distance > -150)
                 || (x_distance >= 0 && x_distance < 150))) {
-
             down();
-
-
             return;
         }
+        
         /**
          * fire in this area
          */
         if (x_distance <= limit+50 && x_distance >= -limit-50
                 && y_distance <= limit+50 && y_distance >= -limit-50 && fire == true) {
-
             fire();
             fire = false;
-
         }
 
-/**
- * set a limit altitude
- */
+        /**
+         * set a limit altitude
+         */
         if (y_distance >= 0 && y_distance <= limit) {
-
             up();
         } else if (y_distance >= limit) {
-
             down();
         } else if (y_distance <= 0 && y_distance >= -limit) {
-
             down();
         } else if (y_distance <= -limit) {
-
             up();
         }
-/**
- * set a limit latitude
- */
+        /**
+         * set a limit latitude
+         */
         if (x_distance >= 0 && x_distance <= limit) {
-
             right();
         } else if (x_distance >= limit) {
-
             left();
         } else if (x_distance <= 0 && x_distance > -limit) {
-
             left();
         } else if (x_distance <= -limit) {
-
             right();
         }
-
-
     }
 
     /**
@@ -399,17 +348,14 @@ public class Squadron implements SpaceShip {
      */
     private void tryToProtectTheMotherShip() {
         Vec2 positionOfCollision = this.radar.getPositionOfCollision();
+        
         if (!positionOfCollision.equals(new Vec2())) {
-
-
             for (Body b = this.world.getBodyList(); b != null; b = b.getNext()) {
                 if (this.bodyJointList.contains(b)) {
                     Vec2 worldCenter = b.getWorldCenter();
                     Vec2 blastDir = worldCenter.sub(positionOfCollision);
                     body.applyLinearImpulse(blastDir.mul(9), worldCenter);
                     b.applyLinearImpulse(blastDir.mul(-9), worldCenter);
-
-
                 }
             }
         }
@@ -439,6 +385,4 @@ public class Squadron implements SpaceShip {
         }
         return false;
     }
-
-
 }

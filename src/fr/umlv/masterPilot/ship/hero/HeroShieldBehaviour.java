@@ -23,35 +23,28 @@ public class HeroShieldBehaviour implements UserSpec {
 
     @Override
     public void onCollide(Fixture fix2, boolean flag) {
+        
         if (this.mode == MasterPilotWorld.MODE.CHEAT) {
             if (fix2.getFilterData().categoryBits == MasterPilotWorld.TRAIL)
                 return;
-/**
- * i put the shield in the begining of collision
- * and i retreive it a the end
- */
+            
+            /**
+             * i put the shield in the begining of collision
+             * and i retreive it a the end
+             */
             if (flag == true) {
-
                 if (fix2.getFilterData().categoryBits != MasterPilotWorld.BOMB ||
                         fix2.getFilterData().categoryBits !=  MasterPilotWorld.MEGABOMB) {
-
-
                     collide = false;
                 }
-
-
             } else if (flag == false) {
-
                 collide = true;
-
             }
         }
-
     }
 
     @Override
     public boolean getSensor() {
         return collide;
     }
-
 }

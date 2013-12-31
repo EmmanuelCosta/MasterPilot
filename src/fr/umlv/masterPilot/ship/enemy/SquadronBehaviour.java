@@ -22,7 +22,6 @@ public class SquadronBehaviour extends EnemyBehaviour {
         this.bodyJointList=bodyJointList;
     }
 
-
     @Override
     public void onCollide(Fixture fix2, boolean flag) {
         super.onCollide(fix2, flag);
@@ -35,7 +34,7 @@ public class SquadronBehaviour extends EnemyBehaviour {
     public java.util.List<Body> getJointBody() {
         if(destroyedTriangle ){
             destroyedTriangle=false;
-        return this.bodyJointList;
+            return this.bodyJointList;
         }
         else{
             return new ArrayList<Body>();

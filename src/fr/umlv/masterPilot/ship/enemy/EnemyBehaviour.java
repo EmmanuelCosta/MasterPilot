@@ -25,9 +25,7 @@ public class EnemyBehaviour implements UserSpec {
         if (flag == false) {
             if (fix2.getFilterData().categoryBits == (MasterPilotWorld.SHOOT)
                     || fix2.getFilterData().categoryBits == (MasterPilotWorld.SHIELD)) {
-
                 this.destroy = true;
-
             }
         }
     }

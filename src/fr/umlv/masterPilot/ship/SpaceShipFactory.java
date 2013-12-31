@@ -11,7 +11,6 @@ import fr.umlv.masterPilot.world.MasterPilotWorld;
 
  */
 public class SpaceShipFactory {
-
     private MasterPilotWorld masterPilotWorld;
 
     public SpaceShipFactory(MasterPilotWorld masterPilotWorld) {
@@ -27,11 +26,8 @@ public class SpaceShipFactory {
      */
     public Hero createHero(int x, int y, MasterPilotWorld.MODE mode) {
         Hero h = new Hero(masterPilotWorld.getWorld(), 0, 0, mode);
-
-
         h.create();
         masterPilotWorld.setHero(h);
-
         return h;
     }
 
@@ -40,8 +36,6 @@ public class SpaceShipFactory {
      * create an enemy according to his type
      * create his body in the jbox 2d world
      * and register it in enemy Manager in MasterPilotWorld
-     *
-     *
      *
      * @param enemyType
      * @param x

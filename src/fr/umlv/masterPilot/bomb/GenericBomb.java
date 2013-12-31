@@ -33,15 +33,12 @@ public class GenericBomb implements Bomb {
      * @param y_axis y_coordinate
      * @param bombType type of the bomb @see BombType
      */
-
     public GenericBomb(World world, float x_axis, float y_axis, BombType bombType) {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
 
         switch (bombType) {
-
-
             case BOMB:
                 this.category = MasterPilotWorld.BOMB;
                 break;
@@ -49,18 +46,13 @@ public class GenericBomb implements Bomb {
                 this.category = MasterPilotWorld.MEGABOMB;
                 break;
             default:
-
                 throw new UnsupportedOperationException();
         }
-
         this.maskBit = MasterPilotWorld.PLANET | MasterPilotWorld.ENEMY| MasterPilotWorld.HERO;
         this.bombType = bombType;
-
     }
 
-//
     public void create() {
-
         PolygonShape ps = new PolygonShape();
 
         Vec2[] vertices = new Vec2[6];
@@ -75,7 +67,6 @@ public class GenericBomb implements Bomb {
         BodyDef bd = new BodyDef();
         bd.position.set(x_axis, y_axis);
         bd.type = BodyType.DYNAMIC;
-
         bd.userData = this.getClass();
 
         // Create a fixture for TIE
@@ -86,9 +77,7 @@ public class GenericBomb implements Bomb {
         fd.restitution = 0.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-
         fd.userData = new BombBehaviour(this);
-
 
         Body body = this.world.createBody(bd);
         body.createFixture(fd);
@@ -114,29 +103,22 @@ public class GenericBomb implements Bomb {
         //create an aabb vector represent a surface
         Vec2 sub = center.sub(new Vec2(blastRadius, blastRadius));
         Vec2 add = center.add(new Vec2(blastRadius, blastRadius));
-
         AABB aabb = new AABB(sub, add);
-
-
         this.world.queryAABB(queryCallback, aabb);
 
         //check which of these bodies have their center of mass within the blast radius
         Iterator<Body> bodyTouched = queryCallback.getBodyTouch().iterator();
-
 
         while (bodyTouched.hasNext()) {
             Body body = bodyTouched.next();
             Vec2 bodyCom = body.getWorldCenter();
 
             //ignore bodies outside the blast range
-
-
             if ((bodyCom.sub(center)).length() >= blastRadius)
                 continue;
 
             applyBlastImpulse(body, center, bodyCom, powerBlast);
         }
-
     }
 
     @Override

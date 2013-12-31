@@ -10,7 +10,6 @@ import org.jbox2d.dynamics.Fixture;
  */
 public class HeroBehaviuor implements UserSpec {
 
-
     @Override
     public void onCollide(Fixture fix2, boolean flag) {
 

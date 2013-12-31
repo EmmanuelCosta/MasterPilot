@@ -16,7 +16,6 @@ import java.util.LinkedList;
  * </p>
  */
 public class  RayFireManager {
-
     private static  final LinkedList<Distance> list = new LinkedList<>();
     public static int limitLive = 500;
 
@@ -41,11 +40,10 @@ public class  RayFireManager {
 
     public static void remove(Body body) {
         Iterator<Distance> iterator = list.iterator();
+        
         while(iterator.hasNext()){
-
             Distance next = iterator.next();
             if(next.getBodyRayFire().equals(body)){
-
                 iterator.remove();
                 return;
             }
@@ -57,7 +55,6 @@ public class  RayFireManager {
      *
      */
     public  static class Distance{
-
          private Vec2 initPosition;
          private  RayFire rayFire;
          private  final int live;
@@ -77,6 +74,7 @@ public class  RayFireManager {
          public float getX_distance() {
              return initPosition.x - rayFire.getBody().getPosition().x;
          }
+         
          public float getY_distance() {
              return initPosition.y - rayFire.getBody().getPosition().y;
          }

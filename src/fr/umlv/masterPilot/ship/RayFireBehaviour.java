@@ -13,8 +13,6 @@ import java.awt.*;
  * Created by emmanuel on 28/12/13.
  */
 public class RayFireBehaviour implements UserSpec {
-
-
     private boolean destroy=false;
     private final Color color;
 

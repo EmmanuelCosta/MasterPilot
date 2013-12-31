@@ -17,7 +17,6 @@ import java.awt.*;
  * have some complex behavior
  */
 public class Invader implements SpaceShip {
-
     private int maskBit;
     private int category;
     private int x_axis;
@@ -63,12 +62,10 @@ public class Invader implements SpaceShip {
         this.forceLeft = new Vec2(-1000f, 0);
         this.forceRight = new Vec2(+1000f, 0);
         this.forceDown = new Vec2(0, -70000f);
-
     }
 
     @Override
     public void create() {
-
         PolygonShape ps = new PolygonShape();
 
         /**
@@ -81,7 +78,6 @@ public class Invader implements SpaceShip {
         vertices[3] = new Vec2(+5f, +10f);
         vertices[4] = new Vec2(+0, +20f);
         vertices[5] = new Vec2(-5f, +10f);
-
         this.shootUp = vertices[4];
         this.shootDown = vertices[1];
         ps.set(vertices,6);
@@ -124,7 +120,6 @@ public class Invader implements SpaceShip {
         leftWingVertices[2] = new Vec2(-20, +0);
         leftWingVertices[3] = new Vec2(-15, -5);
         leftWingVertices[4] = new Vec2(-5, -5);
-
         this.shootLeft = leftWingVertices[2];
         leftWing.set(leftWingVertices, 5);
 
@@ -154,7 +149,6 @@ public class Invader implements SpaceShip {
         rightWingVertices[2] = new Vec2(+20, +0);
         rightWingVertices[3] = new Vec2(+15, -5);
         rightWingVertices[4] = new Vec2(+5, -5);
-
         this.shootRight = rightWingVertices[2];
         rightWing.set(rightWingVertices, 5);
 
@@ -177,12 +171,10 @@ public class Invader implements SpaceShip {
         shield.setRadius(25);
         FixtureDef fshield = new FixtureDef();
         fshield.shape = shield;
-
         fshield.isSensor = true;
         fshield.density = 0.0f;
         fshield.friction = 0.3f;
         fshield.restitution = 0.5f;
-
         fshield.filter.categoryBits = MasterPilotWorld.ENEMY;
         fshield.filter.maskBits = MasterPilotWorld.SHOOT | MasterPilotWorld.PLANET
                 | MasterPilotWorld.SHIELD | MasterPilotWorld.HERO;
@@ -410,5 +402,4 @@ public class Invader implements SpaceShip {
     public Body getBody() {
         return body;
     }
-
 }

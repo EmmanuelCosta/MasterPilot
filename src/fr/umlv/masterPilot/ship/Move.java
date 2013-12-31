@@ -11,6 +11,7 @@ public interface Move {
 	public void up();
 
 	public void down();
+	
     /**
      * for complex movement
      */

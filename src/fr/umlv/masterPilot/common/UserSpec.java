@@ -75,7 +75,7 @@ public interface UserSpec {
      * important for destroying every bodies joint to the main body
      * @return
      */
-    public   default boolean hasJointBody(){
+    public default boolean hasJointBody(){
         return false;
     }
 }

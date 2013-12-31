@@ -44,5 +44,4 @@ public class StarFactory {
         this.masterPilotWorld.addToStarManager( star);
         return star;
     }
-
 }

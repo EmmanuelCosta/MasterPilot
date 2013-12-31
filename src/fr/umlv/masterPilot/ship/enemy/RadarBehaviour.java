@@ -15,22 +15,16 @@ import org.jbox2d.dynamics.Fixture;
  * Created by emmanuel on 26/12/13.
  */
 public class RadarBehaviour implements UserSpec {
-
     private Vec2 collidePosition = new Vec2();
-
 
     @Override
     public void onCollide(Fixture fix2, boolean flag) {
-
         if (flag == true) {
             if (fix2.getFilterData().categoryBits == MasterPilotWorld.HERO ||
                     fix2.getFilterData().categoryBits == MasterPilotWorld.SHOOT
                     || fix2.getFilterData().categoryBits == MasterPilotWorld.BOMB
                     || fix2.getFilterData().categoryBits == MasterPilotWorld.MEGABOMB) {
                 collidePosition.set(fix2.getBody().getPosition());
-
-
-
             }
         }
     }
@@ -46,8 +40,5 @@ public class RadarBehaviour implements UserSpec {
         } finally {
             this.collidePosition = new Vec2();
         }
-
     }
-
-
 }

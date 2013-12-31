@@ -33,11 +33,10 @@ public class TrailManager {
 
     public static void remove(Body body) {
         Iterator<DistanceTrail> iterator = list.iterator();
+        
         while(iterator.hasNext()){
-
             DistanceTrail next = iterator.next();
             if(next.getBodyTrail().equals(body)){
-
                 iterator.remove();
                 return;
             }
@@ -49,7 +48,6 @@ public class TrailManager {
      *
      */
     public  static class DistanceTrail{
-
         private Body refBody;
         private Trail trail;
         private  final int live;
@@ -62,6 +60,7 @@ public class TrailManager {
         public float getX_distance() {
             return refBody.getPosition().x - trail.getBody().getPosition().x;
         }
+        
         public float getY_distance() {
             return refBody.getPosition().y - trail.getBody().getPosition().y;
         }

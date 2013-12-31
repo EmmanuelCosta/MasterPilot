@@ -18,26 +18,19 @@ public class EnemyShieldBehaviour implements UserSpec {
     @Override
     public void onCollide(Fixture fix2, boolean flag) {
 
-
-/**
- * i put the shield in the begining of collision
- * and i retreive it a the end
- */
+        /**
+         * i put the shield in the begining of collision
+         * and i retreive it a the end
+         */
         if (fix2.getFilterData().categoryBits != MasterPilotWorld.ENEMY
                 || fix2.getFilterData().categoryBits != MasterPilotWorld.RADAR) {
             if (flag == true && nbShield > 0) {
-
                 collide = false;
-
                 nbShield--;
-
             } else if (flag == false) {
-
                 collide = true;
-
             }
         }
-
     }
 
     /**

@@ -18,18 +18,13 @@ import java.awt.*;
  * Created by emmanuel on 10/12/13.
  */
 public class MasterPilot2D {
-
-
     private final IViewportTransform viewportTransform;
     private final Graphics2D graphic;
 
     public MasterPilot2D(Graphics2D graphic) {
-
         viewportTransform = new OBBViewportTransform();
         viewportTransform.setYFlip(true);
         this.graphic = graphic;
-
-
     }
 
     /**
@@ -39,14 +34,9 @@ public class MasterPilot2D {
      */
     public void drawString(Vec2 position, String s) {
         Vec2 sp1 = new Vec2();
-
-
         getWorldToScreenToOut(position, sp1);
-
-
         this.graphic.setColor(Color.white);
         this.graphic.drawString(s, (int) sp1.x - 2, (int) sp1.y + 2);
-
     }
 
     /**
@@ -56,18 +46,12 @@ public class MasterPilot2D {
      * @param color color of the line
      */
     public void drawSegment(Vec2 p1, Vec2 p2, Color color) {
-
         Vec2 sp1 = new Vec2();
         Vec2 sp2 = new Vec2();
-
         getWorldToScreenToOut(p1, sp1);
         getWorldToScreenToOut(p2, sp2);
-
-
         this.graphic.setColor(color);
-
         this.graphic.drawLine((int) sp1.x, (int) sp1.y, (int) sp2.x, (int) sp2.y);
-
     }
 
     /**
@@ -80,8 +64,6 @@ public class MasterPilot2D {
      */
     public void drawCircle(Vec2 center, float radius,
                            Color color, boolean filled) {
-
-
         this.graphic.setColor(color);
 
         if (filled == true) {
@@ -89,8 +71,6 @@ public class MasterPilot2D {
         } else {
             emptyCircle(center, color, (int) radius);
         }
-
-
     }
 
     /**
@@ -100,40 +80,25 @@ public class MasterPilot2D {
      */
     public void drawShield(Vec2 center, float radius) {
         Vec2 sp1 = new Vec2();
-
         getWorldToScreenToOut(center, sp1);
-
         graphic.setColor(Color.white);
         graphic.drawOval((int) sp1.x, (int) sp1.y, (int) radius + 30, (int) radius + 30);
-
-
     }
 
     private void emptyCircle(Vec2 center, Color color, int radius) {
-
         Vec2 sp1 = new Vec2();
         getWorldToScreenToOut(center, sp1);
-
-
         graphic.drawOval((int) ((int) sp1.x - (radius)),
                 (int) ((int) sp1.y - (radius)),
                 radius * 2, radius * 2);
-
-
     }
 
     private void filledCircle(Vec2 center, Color color, int radius) {
         Vec2 sp1 = new Vec2();
-
         getWorldToScreenToOut(center, sp1);
-
-
         graphic.fillOval((int) ((int) sp1.x - (radius)),
                 (int) ((int) sp1.y - (radius)),
                 radius * 2, radius * 2);
-
-
-
     }
 
     /**
@@ -143,10 +108,8 @@ public class MasterPilot2D {
      * @param color : color of the polygon
      */
     public void drawFilledPolygon(Vec2[] vertices, int vertexCount, Color color) {
-
         IntArray xIntsPool = new IntArray();
         IntArray yIntsPool = new IntArray();
-
         int[] xInts = xIntsPool.get(vertexCount);
         int[] yInts = yIntsPool.get(vertexCount);
         Vec2 temp = new Vec2();
@@ -157,14 +120,8 @@ public class MasterPilot2D {
             yInts[i] = (int) temp.y;
 
         }
-
-
         this.graphic.setColor(color);
-
-
         this.graphic.fillPolygon(xInts, yInts, vertexCount);
-
-
     }
 
     public Graphics getGraphics() {
@@ -204,20 +161,14 @@ public class MasterPilot2D {
      */
     public void setLandMark(int i, int j) {
         this.viewportTransform.setExtents(i, j);
-
     }
 
     public void drawFrameworkClock(int hour, int minute, int second) {
-
         this.graphic.setColor(Color.WHITE);
         this.graphic.fill3DRect(0, 0, 100, 30, true);
-
-//           this.graphic.draw3DRect(0,0,100,30,false);
-
         this.graphic.setColor(Color.BLACK);
 
         StringBuilder strb = new StringBuilder();
-
         strb.append(hour)
             .append(":")
             .append(minute)
@@ -228,29 +179,23 @@ public class MasterPilot2D {
         this.graphic.setFont(new Font(null, Font.PLAIN, 28));
         this.graphic.drawString(strb.toString(), 7, 23);
         this.graphic.setFont(font);
-
-
     }
 
 
     public void drawFrameworkEnd(boolean win,int x,int y) {
-
       if(win){
           this.graphic.setColor(Color.WHITE);
-          //this.graphic.fill3DRect(0, 0, 100, 30, true);
           Font font = this.graphic.getFont();
           this.graphic.setFont(new Font(null, Font.PLAIN, 38));
           this.graphic.drawString(" WINNER ", x/2,y/2);
           this.graphic.setFont(font);
-
       }else{
           this.graphic.setColor(Color.GRAY);
-
           Font font = this.graphic.getFont();
           this.graphic.setFont(new Font(null, Font.PLAIN, 38));
           this.graphic.drawString(" GAME OVER ", x/2,y/2);
           this.graphic.drawString(" YOU LOSE ", x,y);
           this.graphic.setFont(font);
       }
-    }
+   }
 }

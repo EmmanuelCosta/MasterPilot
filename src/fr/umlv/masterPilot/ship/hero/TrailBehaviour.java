@@ -9,20 +9,15 @@ import java.awt.*;
  * Created by emmanuel on 28/12/13.
  */
 public class TrailBehaviour implements UserSpec {
-
     private Color color;
-
 
     public TrailBehaviour(Color color) {
         this.color = color;
     }
 
-
     @Override
     public void onCollide(Fixture fix2, boolean flag) {
     }
-
-
 
     @Override
     public Color getColor() {

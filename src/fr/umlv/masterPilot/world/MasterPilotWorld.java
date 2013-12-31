@@ -8,6 +8,7 @@ import fr.umlv.masterPilot.ship.SpaceShip;
 import fr.umlv.masterPilot.ship.hero.Hero;
 import fr.umlv.masterPilot.ship.hero.TrailManager;
 import fr.umlv.masterPilot.star.Star;
+
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -36,8 +37,6 @@ import java.util.List;
  */
 public class MasterPilotWorld implements ContactListener {
 
-
-
     /**
      * this is the available mode game
      * CHEAT : AUTOMATIC SHIELD FOR SPACESHIP HERO
@@ -58,31 +57,37 @@ public class MasterPilotWorld implements ContactListener {
     public static int SHIELD = 0x040;
     public static int TRAIL = 0x080;
     public static int RADAR = 0x100;
+    
     /**
      * this is my world
      */
-
     private final World world;
+    
     /**
      * use this to render purpose
      */
     private final MasterPilot2D masterPilot2D;
+    
     /**
      * this is a enny manager
      */
     private final HashMap<Body, SpaceShip> enemyManager;
+    
     /**
      * this is a Bomb manager
      */
     private final HashMap<Body, Bomb> bombManager;
+    
     /**
      * this is a star Manager
      */
     private final HashMap<Body, Star> starManager;
+    
     /**
      * register here all the body to be remove from the jbox 2d world
      */
     private final ArrayList<Body> destroyBody;
+    
     /**
      * keep reference o main character of the game
      */
@@ -94,17 +99,12 @@ public class MasterPilotWorld implements ContactListener {
      */
     public MasterPilotWorld(Graphics2D masterPilot2D) {
         this.world = new World(new Vec2(0, 0f));
-
         this.world.setContactListener(this);
         this.masterPilot2D = new MasterPilot2D(masterPilot2D);
-
-
         this.enemyManager = new HashMap<>();
         this.bombManager = new HashMap<>();
         this.starManager = new HashMap<>();
         this.destroyBody = new ArrayList<>();
-
-
     }
 
     /**
@@ -151,7 +151,6 @@ public class MasterPilotWorld implements ContactListener {
         Graphics2D graphics = (Graphics2D) mp2D.getGraphics();
         graphics.setColor(Color.BLACK);
         graphics.fill(new Rectangle(0, 0, WIDTH, HEIGHT));
-
     }
 
     /**
@@ -168,16 +167,15 @@ public class MasterPilotWorld implements ContactListener {
      * and call the {@code drawShape} to draw the body
      */
     public void draw() {
-/**
- * this loop iterate on all body attach to the world
- *
- */
-
+        
+        /**
+         * this loop iterate on all body attach to the world
+         *
+         */
         Transform xf = new Transform();
         for (Body b = this.world.getBodyList(); b != null; b = b.getNext()) {
             xf.set(b.getTransform());
             for (Fixture f = b.getFixtureList(); f != null; f = f.getNext()) {
-
                 drawShape(f, xf);
             }
         }
@@ -198,24 +196,22 @@ public class MasterPilotWorld implements ContactListener {
          * retreive body color
          *
          */
-
-//to be sure that we have a usefull fixture
         if (Objects.isNull(fixture) || Objects.isNull(fixture.getType())) {
-            //Just ignore it
-
             throw new RuntimeException();
-
         }
 
-//
-        if (fixture.m_isSensor) return;
+        if (fixture.m_isSensor) 
+            return;
+        
         UserSpec userData = (UserSpec) fixture.getUserData();
         Color color = userData.getColor();
+        
         switch (fixture.getType()) {
             case CIRCLE: {
                 Vec2 center = new Vec2();
                 CircleShape circle = (CircleShape) fixture.getShape();
-//take the default position and calculate his actual position in the world
+                
+                //take the default position and calculate his actual position in the world
                 Transform.mulToOutUnsafe(xf, circle.m_p, center);
                 float radius = circle.m_radius;
 
@@ -224,48 +220,39 @@ public class MasterPilotWorld implements ContactListener {
                  * so we can draw it
                  */
                 if (fixture.getFilterData().categoryBits == MasterPilotWorld.SHIELD) {
+                    
                     /**
                      * we draw only if
                      * shield can collide which other
                      */
-
                     if (!fixture.m_isSensor) {
                         masterPilot2D.drawCircle(center, radius, color, false);
-
                     }
                 } else if (fixture.getFilterData().categoryBits != MasterPilotWorld.RADAR) {
                     masterPilot2D.drawCircle(center, radius, color, true);
                 }
-
             }
             break;
 
             case POLYGON: {
-
                 Vec2Array tlvertices = new Vec2Array();
-
                 PolygonShape poly = (PolygonShape) fixture.getShape();
                 int vertexCount = poly.m_count;
+                
                 //BEcause Jbox doent allow a polygon with more than maxPolygonVertices
                 assert (vertexCount <= Settings.maxPolygonVertices);
+                
                 //Create a vertices array of size given
                 Vec2[] vertices = tlvertices.get(Settings.maxPolygonVertices);
-
                 for (int i = 0; i < vertexCount; ++i) {
                     Transform.mulToOutUnsafe(xf, poly.m_vertices[i], vertices[i]);
                 }
-
                 masterPilot2D.drawFilledPolygon(vertices, vertexCount, color);
-
                 if (fixture.getFilterData().categoryBits == MasterPilotWorld.BOMB) {
-
                     Vec2 position = fixture.getBody().getWorldCenter();
-
                     masterPilot2D.drawString(position, "B");
-
                 } else if (fixture.getFilterData().categoryBits == MasterPilotWorld.MEGABOMB) {
                     Vec2 position = fixture.getBody().getWorldCenter();
-
                     masterPilot2D.drawString(position, "M.B");
                 }
             }
@@ -273,11 +260,9 @@ public class MasterPilotWorld implements ContactListener {
             case EDGE: {
                 Vec2 v1 = new Vec2();
                 Vec2 v2 = new Vec2();
-
                 EdgeShape edge = (EdgeShape) fixture.getShape();
                 Transform.mulToOutUnsafe(xf, edge.m_vertex1, v1);
                 Transform.mulToOutUnsafe(xf, edge.m_vertex2, v2);
-
                 masterPilot2D.drawSegment(v1, v2, color);
             }
             break;
@@ -288,23 +273,18 @@ public class MasterPilotWorld implements ContactListener {
                 Vec2[] vertices = chain.m_vertices;
                 Vec2 v1 = new Vec2();
                 Vec2 v2 = new Vec2();
-
                 Transform.mulToOutUnsafe(xf, vertices[0], v1);
                 for (int i = 1; i < count; ++i) {
                     Transform.mulToOutUnsafe(xf, vertices[i], v2);
                     masterPilot2D.drawSegment(v1, v2, color);
-//                    masterPilot2D.drawCircle(v1, 0.05f);
                     v1.set(v2);
                 }
             }
             break;
 
-
             default:
                 break;
         }
-
-
     }
 
     /**
@@ -320,7 +300,6 @@ public class MasterPilotWorld implements ContactListener {
      */
     public void setLandMark(int i, int j) {
         this.masterPilot2D.setLandMark(i, j);
-
     }
 
     /**
@@ -339,74 +318,63 @@ public class MasterPilotWorld implements ContactListener {
         Fixture fixtureB = contact.getFixtureB();
 
 
-/**
- * retreive from userData the UserSpec implementation of the body
- * apply the onCollide method in order to perform his basic behavior
- * set the sensor for drawing it or not
- */
+     /**
+     * retrieve from userData the UserSpec implementation of the body
+     * apply the onCollide method in order to perform his basic behavior
+     * set the sensor for drawing it or not
+     */
         UserSpec userData = (UserSpec) fixtureA.getUserData();
         userData.onCollide(fixtureB, true);
         fixtureA.m_isSensor = userData.getSensor();
-
         UserSpec userData2 = (UserSpec) fixtureB.getUserData();
         userData2.onCollide(fixtureA, true);
         fixtureB.m_isSensor = userData2.getSensor();
-
-
         /**
          * is he is an item
          * perform task on it
          */
         if (userData.isItem()) {
             Body b = fixtureA.getBody();
-
             Bomb bomb = this.bombManager.get(b);
-
             this.hero.setBomb(bomb);
         }
         if (userData2.isItem()) {
             Bomb bomb = this.bombManager.get(fixtureB.getBody());
             this.hero.setBomb(bomb);
         }
-
-
-
     }
 
     @Override
     public void endContact(Contact contact) {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
-
-/**
- * retreive from userData the UserSpec implementation of the body
- * apply the onCollide method in order to perform his basic behavior
- * set the sensor for drawing it or not
- */
-
+        /**
+         * retrieve from userData the UserSpec implementation of the body
+         * apply the onCollide method in order to perform his basic behavior
+         * set the sensor for drawing it or not
+         */
         UserSpec userData = (UserSpec) fixtureA.getUserData();
         userData.onCollide(fixtureB, false);
         fixtureA.m_isSensor = userData.getSensor();
-/**
- * if the object is destroyable added it into the destroyBody List
- * and remove it from the rayFireManager if it is contains
- */
+        
+        /**
+         * if the object is destroyable added it into the destroyBody List
+         * and remove it from the rayFireManager if it is contains
+         */
         if (userData.isDestroyable()) {
             destroyBody.add(fixtureA.getBody());
-
             RayFireManager.remove(fixtureA.getBody());
-
         }
-/**
- * this is for destroying every joint to the main body if it is destroy
- */
+        
+        /**
+         * this is for destroying every joint to the main body if it is destroy
+         */
         if (userData.hasJointBody()) {
             List<Body> jointBody = userData.getJointBody();
             for (Body b = world.getBodyList(); b != null; b = b.getNext()) {
                 if (jointBody.contains(b)) {
                     destroyBody.add(b);
                 }
-
             }
         }
         UserSpec userData2 = (UserSpec) fixtureB.getUserData();
@@ -414,10 +382,7 @@ public class MasterPilotWorld implements ContactListener {
         fixtureB.m_isSensor = userData2.getSensor();
         if (userData2.isDestroyable()) {
             destroyBody.add(fixtureB.getBody());
-
-
             RayFireManager.remove(fixtureB.getBody());
-
         }
         if (userData2.hasJointBody()) {
             List<Body> jointBody = userData2.getJointBody();
@@ -425,21 +390,18 @@ public class MasterPilotWorld implements ContactListener {
                 if (jointBody.contains(b)) {
                     destroyBody.add(b);
                 }
-
             }
         }
-
-
     }
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
-
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -450,51 +412,47 @@ public class MasterPilotWorld implements ContactListener {
      */
     public List<Body> getDestroyBody() {
 
-/**
- * suppress all register Ray fire if they have reached a certain distance
- */
+        /**
+         * suppress all register Ray fire if they have reached a certain distance
+         */
         Iterator<RayFireManager.Distance> iterator = RayFireManager.getList().iterator();
         while (iterator.hasNext()) {
             RayFireManager.Distance distance = iterator.next();
             if (Math.abs(distance.getX_distance()) > distance.getLive() || Math.abs(distance.getY_distance()) > distance.getLive()) {
-
                 destroyBody.add(distance.getBodyRayFire());
                 iterator.remove();
             }
         }
-/**
- * because we want to erase the trail at the back of hero
- */
+        /**
+         * because we want to erase the trail at the back of hero
+         */
         Iterator<TrailManager.DistanceTrail> trailManagerIterator = TrailManager.getList().iterator();
-
         while (trailManagerIterator.hasNext()) {
             TrailManager.DistanceTrail live = trailManagerIterator.next();
             if (Math.abs(live.getX_distance()) > live.getLive() || Math.abs(live.getY_distance()) > live.getLive()) {
-
                 destroyBody.add(live.getBodyTrail());
                 trailManagerIterator.remove();
             }
         }
         List<Body> newList = new ArrayList<>(destroyBody);
+        
         /**
          * retreive spaceship destroyed from manager
          */
         for (Body bd : newList) {
-
             SpaceShip spaceShip = this.removeToSpaceshipManager(bd);
+            
             /**
-             *  Do THIS in order to stop all living thread created in spaceship ennemy
-              */
-
+             *  Do THIS in order to stop all living thread created in spaceship enemy
+             * */
             if (Objects.nonNull(spaceShip)) {
                 spaceShip.destroySpaceShip();
             }
-
         }
 
-/**
- * reset the destroyBodyList
- */
+        /**
+         * reset the destroyBodyList
+         */
         destroyBody.clear();
         return newList;
     }
@@ -509,7 +467,6 @@ public class MasterPilotWorld implements ContactListener {
 
     /**
      * register a spaceship to the ennemyManager
-
      * @param spaceShip : the space ship register
      */
     public void addToSpaceshipManager( SpaceShip spaceShip) {
@@ -525,9 +482,7 @@ public class MasterPilotWorld implements ContactListener {
      * @return
      */
     public SpaceShip removeToSpaceshipManager(Body bodySpaceship) {
-
         return this.enemyManager.remove(bodySpaceship);
-
     }
 
     /**
@@ -540,7 +495,6 @@ public class MasterPilotWorld implements ContactListener {
 
     /**
      * add a bomb to his manager
-
      * @param bomb the bomb to be had
      */
     public void addToBombManager( Bomb bomb) {
@@ -552,7 +506,6 @@ public class MasterPilotWorld implements ContactListener {
 
     /**
      * register the star to his manager in MasterPilotWorld
-
      * @param star : the star to be register
      */
     public void addToStarManager( Star star) {

@@ -15,7 +15,6 @@ import java.awt.*;
  * created By Babala Costa Emmanuel
  */
 public class RayFire {
-
     private final int maskBit;
     private final int category;
     private final Color color;
@@ -38,12 +37,9 @@ public class RayFire {
         this.world = world;
         this.x_axis = x_axis;
         this.y_axis = y_axis;
-
         this.category = MasterPilotWorld.SHOOT;
         this.maskBit = MasterPilotWorld.PLANET | MasterPilotWorld.ENEMY | MasterPilotWorld.RADAR;
-
         this.color = Color.WHITE;
-
     }
 
     /***
@@ -68,6 +64,7 @@ public class RayFire {
      * create the RayFire in the jbox2d  world
      */
     public void create() {
+        
         /**
          * create body shape and specification
          */
@@ -105,14 +102,10 @@ public class RayFire {
         bd.allowSleep = true;
         bd.angularDamping = 4f;
         bd.linearDamping = 0.1f;
-
         this.body = body;
-
     }
-
 
     public Body getBody() {
         return this.body;
     }
-
 }

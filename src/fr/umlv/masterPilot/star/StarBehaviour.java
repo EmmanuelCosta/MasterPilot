@@ -21,12 +21,12 @@ public class StarBehaviour implements UserSpec {
 
     @Override
     public void onCollide(Fixture fix2, boolean flag) {
+        
         /**
          * i have to put hero shield when  it
          * will collide with a star
          */
         if(fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD){
-
             fix2.m_isSensor = false;
         }
     }

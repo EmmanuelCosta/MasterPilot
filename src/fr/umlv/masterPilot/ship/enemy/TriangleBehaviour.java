@@ -17,7 +17,6 @@ import java.util.ArrayList;
  * Created by emmanuel on 22/12/13.
  */
 public class TriangleBehaviour implements UserSpec {
-
     private final Color color;
     private final ArrayList<Body> bodyJointList;
     private boolean destroy = false;
@@ -33,21 +32,14 @@ public class TriangleBehaviour implements UserSpec {
         if (flag == false) {
             if (fix2.getFilterData().categoryBits == (MasterPilotWorld.SHOOT)
                     || fix2.getFilterData().categoryBits == (MasterPilotWorld.SHIELD)) {
-
                 this.destroy = true;
                 this.bodyJointList.remove(fix2.getBody());
-
             }
         }
     }
 
-
-
-
-
     @Override
     public boolean isDestroyable() {
-
         return destroy;
     }
 
@@ -55,5 +47,4 @@ public class TriangleBehaviour implements UserSpec {
     public Color getColor() {
         return this.color;
     }
-
 }

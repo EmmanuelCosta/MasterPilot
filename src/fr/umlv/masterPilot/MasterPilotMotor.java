@@ -15,7 +15,6 @@ import fr.umlv.zen3.ApplicationContext;
 import fr.umlv.zen3.KeyboardEvent;
 import org.jbox2d.dynamics.Body;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.File;
@@ -124,7 +123,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
         final LevelHandler levelParser = new LevelHandler();
 
         try {
-
             InputStream fichier = new FileInputStream(new File(levelFile));
             levelParser.parse(fichier);
 
@@ -144,7 +142,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
         context.render(graphics -> {
             MasterPilotWorld masterPilotWorld = initPlateform(graphics);
             populatedWorld(masterPilotWorld, context, levelParser, mode);
-
         });
     }
 
@@ -265,13 +262,11 @@ public class MasterPilotMotor implements KeyMotionObservable {
             }
             tour++;
         }
-
         tour = 0;
         for (int i = -(WIDTH / 2) * 10; i <= 0; i = i + 280) {
             if (tour % 3 == 0) {
                 tc = pc;
             }
-
             for (int p = -(HEIGHT / 2) * 10; p <= 0; p = p + 180) {
                 int rInterval = 2 + (int) (Math.random() * ((pc - 2) + 1));
                 if (rInterval % pc == 0 && tc >= 0) {
@@ -303,7 +298,6 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
             if (tour % 3 == 0) {
                 tc = pc;
-
             }
             for (int p = (HEIGHT / 2) * 10; p >= 0; p = p - 180) {
                 int rInterval = 2 + (int) (Math.random() * ((pc - 2) + 1));
@@ -314,10 +308,8 @@ public class MasterPilotMotor implements KeyMotionObservable {
                     tc--;
                 }
             }
-
             tour++;
         }
-
         System.out.println("THIS MAP CONTAINS "
                 + masterPilotWorld.getStarList().size() + "  star");
     }
@@ -335,49 +327,41 @@ public class MasterPilotMotor implements KeyMotionObservable {
             ApplicationContext context, GameSpec gameSpec) {
 
         long beforeTime, afterTime, timeDiff, sleepTime;
-
+        int lastNumber, wave;
         beforeTime = System.nanoTime();
-
         Timer timer = new Timer();
-
         gameTiming = gameSpec.getTimer();
+        
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-
                 gameTiming--;
-
             }
         }, 1000, 1000);
 
-        int wave = gameSpec.getWaveNumber();
+        wave = gameSpec.getWaveNumber();
         wave--;
         createEnnemyWave(masterPilotWorld, gameSpec.getTieNumber(),
                 gameSpec.getCruiserNumber(), gameSpec.getSquadronNumber(),
                 gameSpec.getInvaderNumber(), gameSpec.getSpaceBallNumber());
 
-        int lastNumber=masterPilotWorld.getEnemyList().size();
+        lastNumber = masterPilotWorld.getEnemyList().size();
 
         for (;;) {
-
             masterPilotWorld.getWorld().step(timeStep, velocityIterations,
                     positionIterations);
-
             destroyCharacter(masterPilotWorld);
-
             if(lastNumber > masterPilotWorld.getEnemyList().size()){
                 generateBomb(masterPilotWorld,gameSpec.getBombPercentage(),"BOMB");
                 generateBomb(masterPilotWorld,gameSpec.getMegaBombPercentage(),"MEGABOMB");
                 lastNumber=masterPilotWorld.getEnemyList().size();
             }
 
-
             KeyboardEvent keyEvent = context.pollKeyboard();
 
             /**
              * this for notify the hero that event have been find
              */
-
             if (keyEvent != null) {
                 this.notifyObserver(keyEvent);
             }
@@ -385,49 +369,39 @@ public class MasterPilotMotor implements KeyMotionObservable {
             context.render(graphics -> {
                 masterPilotWorld.repaint(WIDTH, HEIGHT);
                 masterPilotWorld.draw();
-
-                masterPilotWorld.drawFrameworkClock(gameTiming / 3600,
-                        (gameTiming % 3600) / 60, (gameTiming % 3600) % 60);
-
+                masterPilotWorld.drawFrameworkClock(gameTiming / 3600, (gameTiming % 3600) / 60, (gameTiming % 3600) % 60);
                 Body hero = masterPilotWorld.getBodyHero();
 
                 // use this to center view place it in proper place
                 masterPilotWorld.setCamera(hero.getPosition());
-
             });
 
-            proccessManager(masterPilotWorld.getEnemyList(),
-                    masterPilotWorld.getHero());
+            proccessManager(masterPilotWorld.getEnemyList(), masterPilotWorld.getHero());
+            
             afterTime = System.nanoTime();
-
             timeDiff = afterTime - beforeTime;
             sleepTime = (1000000000 / 60 - timeDiff) / 1000000;
+            
             if (sleepTime > 0) {
                 try {
-
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException ex) {
                 }
             }
-
             if (gameTiming < 0) {
                 masterPilotWorld.drawFrameworkEnd(false, WIDTH / 2, HEIGHT / 2);
                 return;
             } else if (masterPilotWorld.getEnemyList().isEmpty()) {
-                // If there is wave again
-                // Generate enemies.
+                // If there is wave again, generate enemies.
                 if (wave > 0) {
                     createEnnemyWave(masterPilotWorld, gameSpec.getTieNumber(),
                             gameSpec.getCruiserNumber(),
                             gameSpec.getSquadronNumber(),
                             gameSpec.getInvaderNumber(),
                             gameSpec.getSpaceBallNumber());
-
                     wave--;
                 } else {
-
-                    // If there is no waves again
-                    // YOU WIN
+                    // If there is no waves again, YOU WIN
                     masterPilotWorld.drawFrameworkEnd(true, WIDTH / 2,
                             HEIGHT / 2);
                     return;
@@ -449,11 +423,9 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         while (iterator.hasNext()) {
             Body next = iterator.next();
-
             iterator.remove();
             masterPilotWorld.getWorld().destroyBody(next);
         }
-
     }
 
     public int getHEIGHT() {
@@ -496,18 +468,14 @@ public class MasterPilotMotor implements KeyMotionObservable {
      */
     public void generateBomb(MasterPilotWorld masterPilotWorld,int bombPercentage,String type){
         Body bodyHero = masterPilotWorld.getBodyHero();
-
         int x = (int) bodyHero.getPosition().x;
         int y = (int) bodyHero.getPosition().y;
-
         int rand = new Random().nextInt();
-
         rand= Math.abs(rand)%100;
 
         BombFactory bombFactory = new BombFactory(masterPilotWorld);
 
         if(rand <= bombPercentage){
-
             switch (type){
                 case "BOMB":
                     bombFactory.createBomb(x+200,y-50, Bomb.BombType.BOMB);
@@ -547,139 +515,133 @@ public class MasterPilotMotor implements KeyMotionObservable {
 
         for (int i : ennemyTab) {
             switch (compt) {
-            case 0:
-                // TIE
-                init_x = x + 300;
-                init_y = y + 300;
-
-                direction = 0;
-                type = "TIE";
-                while (i > 0) {
-                    if (direction % 4 == 0) {
-                        enemyFactory.createEnemy(type, init_x + 50 * i, init_y,
-                                hero);
-                    } else if (direction % 4 == 1) {
-                        enemyFactory.createEnemy(type, init_x - 50 * i, init_y,
-                                hero);
-                    } else if (direction % 4 == 2) {
-                        enemyFactory.createEnemy(type, init_x - 50 * i,
-                                init_y + 50, hero);
-                    } else {
-                        enemyFactory.createEnemy(type, init_x + 50 * i,
-                                init_y - 50, hero);
+                case 0:
+                    init_x = x + 300;
+                    init_y = y + 300;
+                    direction = 0;
+                    type = "TIE";
+                    while (i > 0) {
+                        if (direction % 4 == 0) {
+                            enemyFactory.createEnemy(type, init_x + 50 * i, init_y,
+                                    hero);
+                        } else if (direction % 4 == 1) {
+                            enemyFactory.createEnemy(type, init_x - 50 * i, init_y,
+                                    hero);
+                        } else if (direction % 4 == 2) {
+                            enemyFactory.createEnemy(type, init_x - 50 * i,
+                                    init_y + 50, hero);
+                        } else {
+                            enemyFactory.createEnemy(type, init_x + 50 * i,
+                                    init_y - 50, hero);
+                        }
+                        i--;
+                        direction++;
                     }
-                    i--;
-                    direction++;
-                }
-
-                break;
-            
-            case 1:
-                // CRUISER
-                init_x = x + 300;
-                init_y = y + 300;
-
-                direction = 0;
-                type = "CRUISER";
-                while (i > 0) {
-                    if (direction % 4 == 0) {
-                        enemyFactory.createEnemy(type, init_x + 70 * i, init_y,
-                                hero);
-                    } else if (direction % 4 == 1) {
-                        enemyFactory.createEnemy(type, init_x - 70 * i,
-                                -init_y, hero);
-                    } else if (direction % 4 == 2) {
-                        enemyFactory.createEnemy(type, init_x - 70 * i,
-                                -init_y + 70, hero);
-                    } else {
-                        enemyFactory.createEnemy(type, init_x + 70 * i,
-                                init_y - 70, hero);
+                    break;
+                
+                case 1:
+                    init_x = x + 300;
+                    init_y = y + 300;
+                    direction = 0;
+                    type = "CRUISER";
+                    while (i > 0) {
+                        if (direction % 4 == 0) {
+                            enemyFactory.createEnemy(type, init_x + 70 * i, init_y,
+                                    hero);
+                        } else if (direction % 4 == 1) {
+                            enemyFactory.createEnemy(type, init_x - 70 * i,
+                                    -init_y, hero);
+                        } else if (direction % 4 == 2) {
+                            enemyFactory.createEnemy(type, init_x - 70 * i,
+                                    -init_y + 70, hero);
+                        } else {
+                            enemyFactory.createEnemy(type, init_x + 70 * i,
+                                    init_y - 70, hero);
+                        }
+                        i--;
+                        direction++;
                     }
-                    i--;
-                    direction++;
-                }
-                break;
-            
-            case 2:
-                init_x = x + 200;
-                init_y = y + 250;
-
-                direction = 0;
-                type = "SQUADRON";
-                while (i > 0) {
-                    if (direction % 4 == 0) {
-                        enemyFactory.createEnemy(type, init_x + 30 * i, init_y,
-                                hero);
-                    } else if (direction % 4 == 1) {
-                        enemyFactory.createEnemy(type, init_x - 30 * i,
-                                -init_y, hero);
-                    } else if (direction % 4 == 2) {
-                        enemyFactory.createEnemy(type, init_x - 30 * i,
-                                -init_y + 30, hero);
-                    } else {
-                        enemyFactory.createEnemy(type, init_x + 30 * i,
-                                init_y - 30, hero);
+                    break;
+                
+                case 2:
+                    init_x = x + 200;
+                    init_y = y + 250;
+    
+                    direction = 0;
+                    type = "SQUADRON";
+                    while (i > 0) {
+                        if (direction % 4 == 0) {
+                            enemyFactory.createEnemy(type, init_x + 30 * i, init_y,
+                                    hero);
+                        } else if (direction % 4 == 1) {
+                            enemyFactory.createEnemy(type, init_x - 30 * i,
+                                    -init_y, hero);
+                        } else if (direction % 4 == 2) {
+                            enemyFactory.createEnemy(type, init_x - 30 * i,
+                                    -init_y + 30, hero);
+                        } else {
+                            enemyFactory.createEnemy(type, init_x + 30 * i,
+                                    init_y - 30, hero);
+                        }
+                        i--;
+                        direction++;
                     }
-                    i--;
-                    direction++;
-                }
-                break;
-           
-            case 3:
-                init_x = x + 200;
-                init_y = y + 250;
-
-                direction = 0;
-                type = "INVADER";
-                while (i > 0) {
-                    if (direction % 4 == 0) {
-                        enemyFactory.createEnemy(type, init_x + 150 * i,
-                                init_y, hero);
-                    } else if (direction % 4 == 1) {
-                        enemyFactory.createEnemy(type, init_x - 150 * i,
-                                -init_y, hero);
-                    } else if (direction % 4 == 2) {
-                        enemyFactory.createEnemy(type, init_x - 150 * i,
-                                -init_y + 100, hero);
-                    } else {
-                        enemyFactory.createEnemy(type, init_x + 150 * i,
-                                init_y - 100, hero);
+                    break;
+               
+                case 3:
+                    init_x = x + 200;
+                    init_y = y + 250;
+    
+                    direction = 0;
+                    type = "INVADER";
+                    while (i > 0) {
+                        if (direction % 4 == 0) {
+                            enemyFactory.createEnemy(type, init_x + 150 * i,
+                                    init_y, hero);
+                        } else if (direction % 4 == 1) {
+                            enemyFactory.createEnemy(type, init_x - 150 * i,
+                                    -init_y, hero);
+                        } else if (direction % 4 == 2) {
+                            enemyFactory.createEnemy(type, init_x - 150 * i,
+                                    -init_y + 100, hero);
+                        } else {
+                            enemyFactory.createEnemy(type, init_x + 150 * i,
+                                    init_y - 100, hero);
+                        }
+                        i--;
+                        direction++;
                     }
-                    i--;
-                    direction++;
-                }
-                break;
-            
-            case 4:
-                init_x = x + 200;
-                init_y = y + 250;
-
-                direction = 0;
-                type = "SPACEBALL";
-                while (i > 0) {
-                    if (direction % 4 == 0) {
-                        enemyFactory.createEnemy(type, init_x + 100 * i,
-                                init_y, hero);
-                    } else if (direction % 4 == 1) {
-                        enemyFactory.createEnemy(type, init_x - 100 * i,
-                                -init_y, hero);
-                    } else if (direction % 4 == 2) {
-                        enemyFactory.createEnemy(type, init_x - 100 * i,
-                                -init_y + 80, hero);
-                    } else {
-                        enemyFactory.createEnemy(type, init_x + 100 * i,
-                                init_y - 80, hero);
+                    break;
+                
+                case 4:
+                    init_x = x + 200;
+                    init_y = y + 250;
+    
+                    direction = 0;
+                    type = "SPACEBALL";
+                    while (i > 0) {
+                        if (direction % 4 == 0) {
+                            enemyFactory.createEnemy(type, init_x + 100 * i,
+                                    init_y, hero);
+                        } else if (direction % 4 == 1) {
+                            enemyFactory.createEnemy(type, init_x - 100 * i,
+                                    -init_y, hero);
+                        } else if (direction % 4 == 2) {
+                            enemyFactory.createEnemy(type, init_x - 100 * i,
+                                    -init_y + 80, hero);
+                        } else {
+                            enemyFactory.createEnemy(type, init_x + 100 * i,
+                                    init_y - 80, hero);
+                        }
+                        i--;
+                        direction++;
                     }
-                    i--;
-                    direction++;
-                }
-                break;
-            default:
-                break;
+                    break;
+                    
+                default:
+                    break;
             }
             compt++;
         }
     }
-
-
 }

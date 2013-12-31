@@ -30,7 +30,6 @@ public class CustomQueryCalledBack implements QueryCallback {
 
     @Override
     public boolean reportFixture(Fixture fixture) {
-
         bodyTouch.add(fixture.getBody());
         return true;
     }

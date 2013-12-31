@@ -71,10 +71,10 @@ public class SpaceBall implements SpaceShip {
 
     @Override
     public void create() {
+        
         /**
          * Primitive form
          */
-
         CircleShape cs = new CircleShape();
         cs.setRadius(10);
 
@@ -110,7 +110,6 @@ public class SpaceBall implements SpaceShip {
         upVertices[1] = new Vec2(+5, +15);
         upVertices[2] = new Vec2(0, +20);
         upVertices[3] = new Vec2(-5, +15);
-
         this.shootUp = upVertices[2];
         up.set(upVertices, 4);
 
@@ -132,7 +131,6 @@ public class SpaceBall implements SpaceShip {
         downVertices[1] = new Vec2(+5, -15);
         downVertices[2] = new Vec2(0, -20);
         downVertices[3] = new Vec2(-5, -15);
-
         this.shootDown = downVertices[2];
         down.set(downVertices, 4);
 
@@ -154,7 +152,6 @@ public class SpaceBall implements SpaceShip {
         leftVertices[1] = new Vec2(-15, +5);
         leftVertices[2] = new Vec2(-20, 0);
         leftVertices[3] = new Vec2(-15, -5);
-
         this.shootLeft = leftVertices[2];
         left.set(leftVertices, 4);
 
@@ -176,7 +173,6 @@ public class SpaceBall implements SpaceShip {
         rightVertices[1] = new Vec2(+15, +5);
         rightVertices[2] = new Vec2(+20, 0);
         rightVertices[3] = new Vec2(+15, -5);
-
         this.shootRight = rightVertices[2];
         right.set(rightVertices, 4);
 
@@ -239,6 +235,7 @@ public class SpaceBall implements SpaceShip {
 
     @Override
     public void fire() {
+        
         /**
          * I get the actual tip coordinate in the world
          */
@@ -322,10 +319,8 @@ public class SpaceBall implements SpaceShip {
 
         RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayonRight);
         RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayonLeft);
-
         RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayonDown);
         RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayonUp);
-
     }
 
     @Override
@@ -335,7 +330,7 @@ public class SpaceBall implements SpaceShip {
 
     @Override
     public void shield() {
-        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -407,5 +402,4 @@ public class SpaceBall implements SpaceShip {
             fire = false;
         }
     }
-
 }

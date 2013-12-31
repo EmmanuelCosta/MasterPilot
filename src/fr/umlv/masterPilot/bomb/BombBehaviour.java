@@ -14,8 +14,6 @@ import java.awt.*;
  * Created by emmanuel on 21/12/13.
  */
 public class BombBehaviour implements UserSpec {
-
-
     private final Bomb bomb;
     private boolean hide = false;
     private boolean addable = false;
@@ -25,8 +23,6 @@ public class BombBehaviour implements UserSpec {
     public BombBehaviour(Bomb bomb) {
         this.bomb = bomb;
     }
-
-
 
     @Override
     public void onCollide(Fixture fix2, boolean flag) {
@@ -38,25 +34,21 @@ public class BombBehaviour implements UserSpec {
             addable = true;
             hide = true;
             state++;
-
-
-
         } else if (this.bomb.getBombeState() != Bomb.BombState.NOT_ARMED) {
             hide = false;
         }
         if (flag == true) {
             if (this.bomb.getBombeState() == Bomb.BombState.ARMED) {
+               
                 /**
                  * can collide if is not hero or shield
                  */
-
                 if (fix2.getFilterData().categoryBits != MasterPilotWorld.HERO
                         && fix2.getFilterData().categoryBits != MasterPilotWorld.SHIELD) {
                     this.bomb.boum();
                     destroyed = true;
-
-
                 }
+                
                 /**
                  * collide with hero or shield
                  * only after bomb has been lauch
@@ -66,9 +58,8 @@ public class BombBehaviour implements UserSpec {
                         || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD) && state >= 2) {
                     this.bomb.boum();
                     destroyed = true;
-
-
                 }
+                
                 /**
                  * if is hero or shield do not explode
                  * when launching
@@ -77,12 +68,8 @@ public class BombBehaviour implements UserSpec {
                         || fix2.getFilterData().categoryBits == MasterPilotWorld.SHIELD)) {
                     state++;
                     hide = false;
-
-
                 }
-
             }
-
         }
     }
 

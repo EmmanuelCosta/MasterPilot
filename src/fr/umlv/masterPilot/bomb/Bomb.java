@@ -36,16 +36,17 @@ public interface Bomb {
      */
     public default void applyBlastImpulse(Body body, Vec2 blastCenter, Vec2 applyPoint, float blastPower) {
         Vec2 blastDir = applyPoint.sub(blastCenter);
-        float blastRadius = blastDir.normalize();
+        float blastRadius, invDistance, impulseMag;
+        
+        blastRadius= blastDir.normalize();
 
         if (blastRadius == 0)
             return;
-        float invDistance = 1 / blastRadius;
-
-        float impulseMag = blastPower * invDistance * invDistance;
+        
+        invDistance = 1 / blastRadius;
+        impulseMag = blastPower * invDistance * invDistance;
 
         body.applyLinearImpulse(blastDir.mul(impulseMag), applyPoint);
-
     }
 
     public BombType getBombType();
@@ -57,7 +58,6 @@ public interface Bomb {
     }
 
     public default void setBombState(BombState launched){
-
     }
 
 }

@@ -348,7 +348,6 @@ public class LevelHandler extends DefaultHandler {
     public void endDocument() throws SAXException {
         System.out.println("End of parsing");
         System.out.println("Result of parsing");
-
         System.out.println(bomb.toString());
         System.out.println(megaBomb.toString());
         System.out.println(enemy.toString());

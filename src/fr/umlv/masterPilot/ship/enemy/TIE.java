@@ -17,11 +17,9 @@ import java.awt.*;
  * Created by emmanuel on 22/12/13.
  */
 public class TIE implements SpaceShip {
-
     private  final Vec2 maxSpeed;
     private final int maskBit;
     private final int category;
-
     private final int x_axis;
     private final int y_axis;
     private final Hero hero;
@@ -30,7 +28,6 @@ public class TIE implements SpaceShip {
     private final Vec2 forceUp = new Vec2(-5f, +150f);
     private final Vec2 forceDown = new Vec2(-5f, -150f);
     private final World world;
-
     private Body body;
     private Vec2 shoot1;
     private Vec2 shoot2;
@@ -60,8 +57,7 @@ public class TIE implements SpaceShip {
                 | MasterPilotWorld.BOMB
                 | MasterPilotWorld.MEGABOMB
                 | MasterPilotWorld.HERO
-                | MasterPilotWorld.PLANET
-        ;
+                | MasterPilotWorld.PLANET;
     }
 
     public void create() {
@@ -69,10 +65,8 @@ public class TIE implements SpaceShip {
         /**
          * Primitive form
          */
-
         CircleShape cs = new CircleShape();
         cs.setRadius(5);
-
 
         /**
          * Body definition of the TIE
@@ -94,14 +88,11 @@ public class TIE implements SpaceShip {
         fd.restitution = 10.5f;
         fd.filter.categoryBits = this.category;
         fd.filter.maskBits = this.maskBit;
-
         fd.userData = new EnemyBehaviour(this, Color.BLUE);
-
 
 /**************  LEFT WING  *********************/
 
         ChainShape chs = new ChainShape();
-
         chs.setRadius(3);
 
         /**
@@ -110,32 +101,23 @@ public class TIE implements SpaceShip {
         Vec2[] vertices = new Vec2[3];
         vertices[0] = new Vec2(-5, +10);
         vertices[1] = new Vec2(-15, 0);
-
         vertices[2] = new Vec2(-5, -10);
-
         this.shoot1 = vertices[1];
-
         chs.createChain(vertices, 3);
-
 
         FixtureDef fs = new FixtureDef();
         fs.shape = chs;
-
         fs.isSensor = false;
         fs.density = 0.0f;
         fs.friction = 0.3f;
         fs.restitution = 0.5f;
-
         fs.filter.categoryBits = MasterPilotWorld.ENEMY;
         fs.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.SHIELD;
-
-
         fs.userData = new EnemyBehaviour(this, Color.BLUE);
 
         /**** RIGHT  WING **********************************/
 
         ChainShape chr = new ChainShape();
-
         chs.setRadius(3);
 
         /**
@@ -144,30 +126,19 @@ public class TIE implements SpaceShip {
         Vec2[] rVertices = new Vec2[3];
         rVertices[0] = new Vec2(5, +10);
         rVertices[1] = new Vec2(15, 0);
-
         rVertices[2] = new Vec2(5, -10);
-
         this.shoot2 = rVertices[1];
-
         chr.createChain(rVertices, 3);
-
-
-
-
 
         FixtureDef fr = new FixtureDef();
         fr.shape = chr;
-
         fr.isSensor = false;
         fr.density = 0.0f;
         fr.friction = 0.3f;
         fr.restitution = 1.5f;
-
         fr.filter.categoryBits = MasterPilotWorld.ENEMY;
         fr.filter.maskBits = MasterPilotWorld.HERO | MasterPilotWorld.SHIELD;
-
         fr.userData = new EnemyBehaviour(this, Color.BLUE);
-
 
 /*****************************************************/
         bd.angularDamping = 2.0f;
@@ -176,8 +147,6 @@ public class TIE implements SpaceShip {
         body.createFixture(fd);
         body.createFixture(fs);
         body.createFixture(fr);
-
-
         this.body = body;
 
         this.thread = new Thread(new Runnable() {
@@ -202,54 +171,44 @@ public class TIE implements SpaceShip {
     public void right() {
         Vec2 force = body.getWorldVector(forceRight);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-
         Vec2 lVelocity = this.body.getLinearVelocity();
 
         if(  Math.abs(lVelocity.y) < maxSpeed.y){
             this.body.applyForceToCenter(force);
         }
-
-
     }
 
     @Override
     public void left() {
         Vec2 force = body.getWorldVector(forceLeft);
-
         this.body.setTransform(body.getPosition(), this.body.getAngle());
         Vec2 lVelocity = this.body.getLinearVelocity();
 
         if(  Math.abs(lVelocity.y) < maxSpeed.y){
             this.body.applyForceToCenter(force);
         }
-
-
     }
 
     @Override
     public void up() {
         Vec2 force = body.getWorldVector(forceUp);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-
         Vec2 lVelocity = this.body.getLinearVelocity();
 
         if(  Math.abs(lVelocity.y) < maxSpeed.y){
             this.body.applyForceToCenter(force);
         }
-
     }
 
     @Override
     public void down() {
         Vec2 force = body.getWorldVector(forceDown);
         this.body.setTransform(body.getPosition(), this.body.getAngle());
-
         Vec2 lVelocity = this.body.getLinearVelocity();
 
         if(  Math.abs(lVelocity.y) < maxSpeed.y){
             this.body.applyForceToCenter(force);
         }
-
     }
 
     @Override
@@ -261,78 +220,55 @@ public class TIE implements SpaceShip {
         if(Math.abs(x_distance) > 1000 || Math.abs(y_distance)> 1000){
                 adjustPath();
         }
-
         if ((x_distance >= -50 - limit && x_distance <= 50 + limit) && (y_distance >= -50 - limit && y_distance <= 50 + limit)
                 && fire == true) {
-
             fire();
             fire = false;
         }
-
         if (x_distance <= 0 && y_distance >= 0) {
-
             if (x_distance > -limit) {
                 left();
-
             } else {
-
                 right();
             }
-
             down();
-
-
         } else if (x_distance <= 0 && y_distance <= 0) {
-
-
             right();
-
             if (y_distance > -limit) {
                 down();
             } else {
                 up();
             }
-
-
         } else if (x_distance >= 0 && y_distance <= 0) {
-
-
             if (x_distance < limit) {
                 right();
             } else {
                 left();
             }
             up();
-
         } else if (x_distance >= 0 && y_distance >= 0) {
-
-
             left();
-
             if (y_distance < limit) {
                 up();
             } else {
                 down();
             }
-
-
         }
-
     }
 
     /**
      * this is use to reduce distance between ennemy and hero
      * otherwise it can be difficult to catch it again
      */
-private void adjustPath(){
-    /**
-     * I get the actual tip coordinate in the world
-     */
-
-
-    Vec2 position = hero.getBody().getPosition();
-    this.body.setTransform(new Vec2(position.x+50,position.y+150),0);
-}
+    private void adjustPath(){
+        
+        /**
+         * I get the actual tip coordinate in the world
+         */
+        Vec2 position = hero.getBody().getPosition();
+        this.body.setTransform(new Vec2(position.x+50,position.y+150),0);
+    }
+    
     @Override
     public void fire() {
 
@@ -353,20 +289,11 @@ private void adjustPath(){
         rayon2.create();
 
         /**
-         * Apply force to the specific point
-         */
-
-
-
-        /**
          * need to do transform to position the shoot
          * in good direction
          */
         rayon1.getBody().setTransform(worldPoint1, hero.getBody().getAngle());
-
         rayon2.getBody().setTransform(worldPoint2, hero.getBody().getAngle());
-
-
 
         Vec2 worldCenter = rayon1.getBody().getWorldCenter();
         Vec2 worldCenter2 = rayon2.getBody().getWorldCenter();
@@ -377,8 +304,6 @@ private void adjustPath(){
 
         RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon1);
         RayFireManager.addRayFire(new Vec2().set(body.getPosition()), rayon2);
-
-
     }
 
     @Override
